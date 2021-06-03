@@ -8,10 +8,13 @@ Description: This component is to be used for creating
        Date: 01/06/21 
 */
 
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useFormik} from 'formik';
 import Modal from 'react-modal';
 import * as Yup from 'yup';
+// import blank profile picture
+import blankProfile from './blankProfilePicture.png';
+import zoneLeaderStyles from './CreateZoneLeaderForm.module.css';
 
 // set up modal element
 Modal.setAppElement('body');
@@ -21,8 +24,8 @@ Modal.setAppElement('body');
 const FieldInput = (props) => {
     const {fieldName, formHook, labelKeys, typeKeys} = props
     return (
-        <div>
-            <div>
+        <div className={zoneLeaderStyles['input-field']}>
+            <div className={zoneLeaderStyles['input-label']}>
                 <label htmlFor={fieldName}>{labelKeys[fieldName]}</label>
             </div>
             <input
@@ -34,7 +37,7 @@ const FieldInput = (props) => {
                 value={formHook.values[fieldName]}
             />
             { formHook.touched[fieldName] && formHook.errors[fieldName] && (
-                <div>
+                <div className={zoneLeaderStyles['input-error-message']}>
                     {formHook.errors[fieldName]}
                 </div>
             )}
@@ -43,10 +46,7 @@ const FieldInput = (props) => {
 }
 
 const CreateZoneLeaderForm = (props) => {
-    // Unpack initial state, labelKeys and
-    // typeKeys from props
     const {defaultInitialValues, labelKeys, typeKeys} = props;
-    // Get values keys for simplicity
     const valueKeys = Object.keys(defaultInitialValues);
 
     // Split fields according to figma
@@ -56,6 +56,28 @@ const CreateZoneLeaderForm = (props) => {
 
     // Define state for showing modal
     const [showModal, setShowModal] = useState(false);
+    // Define state for profile
+    // picture preview input
+    const [profileImageInput, setProfileImageInput] = useState(null);
+    // Define state for profile
+    // picture preview source
+    const [profileImageSource, setProfileImageSource] = useState(blankProfile);
+
+    // use Effect hook for 
+    // generating profile image
+    // source when updating
+    // input
+    useEffect(() => {
+        if (profileImageInput) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setProfileImageSource(reader.result);
+            };
+            reader.readAsDataURL(profileImageInput);
+        } else {
+            setProfileImageSource(blankProfile);
+        }
+    }, [profileImageInput])
 
     // Get current date for validation
     const today = new Date();
@@ -69,7 +91,7 @@ const CreateZoneLeaderForm = (props) => {
         validationSchema : Yup.object({
             name : Yup.string()
                 .matches(/^[a-zA-Z]{1,10}[\s]{0,1}[a-zA-Z]{0,10}$/, 
-                    'Ingrese solo literales')
+                    'Ingrese un nombre válido')
                 .required('Campo requerido'),
             lastName : Yup.string()
                 .matches(/^[a-zA-Z]{1,10}[\s]{0,1}[a-zA-Z]{0,20}$/, 
@@ -97,7 +119,7 @@ const CreateZoneLeaderForm = (props) => {
                 .moreThan(999999999, 'Ingrese un número de celular válido en Colombia')
                 .required('Campo requerido'),
             zone : Yup.string()
-                .max(10, 'Ingrese máximo 10 caracteres')
+                .matches(/^[a-zA-Z]{3,15}$/, 'Ingrese máximo 10 letras')
                 .required('Campo requerido'),
             endContractDate : Yup.date()
                 .min(today, 'Ingrese una fecha en el futuro')
@@ -105,7 +127,11 @@ const CreateZoneLeaderForm = (props) => {
         }),
         /*set up submit callback*/
         onSubmit : (values) => {
-            console.log(values)
+            const leaderData = {
+                ...values,
+                profileImage : profileImageSource
+            }
+            console.log(leaderData)
         }
     });
 
@@ -125,26 +151,64 @@ const CreateZoneLeaderForm = (props) => {
         setShowModal(numErrors > 0 || emptyField)
     }
 
+    // Handler for input
+    // profile image
+    const handleInputProfileImage = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            setProfileImageInput(file)
+        }
+    }
+
     return (
         <form onSubmit = {formik.handleSubmit}>
-            <div>
-                <div>
-                    {
-                        leftFields.map((field) => {
-                                return (
-                                    <FieldInput 
-                                        key={field} 
-                                        fieldName={field} 
-                                        formHook={formik}
-                                        labelKeys={labelKeys}
-                                        typeKeys={typeKeys} 
-                                    />
-                                );
-                            }
-                        )
-                    }
+            <div className={zoneLeaderStyles['column-wrapper']}>
+                <div className={zoneLeaderStyles['col2']}>
+                    <div>
+                        <div className={zoneLeaderStyles['profile-image-card']}>
+                            <div className={zoneLeaderStyles['profile-image-label']}>
+                                <label
+                                    htmlFor='profileImage'
+                                >
+                                    Foto líder de zona
+                                </label>
+                            </div>
+                            <p align='center'>
+                                <img
+                                    className={zoneLeaderStyles['profile-image']}
+                                    src={profileImageSource} 
+                                    alt='Foto líder de zona' 
+                                />
+                            </p>
+                        </div>
+                        <div className={zoneLeaderStyles['input-field']}>
+                            <input 
+                                id='profileImage'
+                                name='profileImage'
+                                type='file'
+                                accept='image/*'
+                                onChange={handleInputProfileImage}
+                            />
+                        </div>
+                    </div>
+                    <div className={zoneLeaderStyles['form-container']}>
+                        {
+                            leftFields.map((field) => {
+                                    return (
+                                        <FieldInput 
+                                            key={field} 
+                                            fieldName={field} 
+                                            formHook={formik}
+                                            labelKeys={labelKeys}
+                                            typeKeys={typeKeys} 
+                                        />
+                                    );
+                                }
+                            )
+                        }
+                    </div> 
                 </div>
-                <div>
+                <div className={`${zoneLeaderStyles['col2']} ${zoneLeaderStyles['form-container']}`}>
                     {
                         rightFields.map((field) => {
                                 return (
@@ -160,18 +224,35 @@ const CreateZoneLeaderForm = (props) => {
                         )
                     }
                 </div>
+                <div className={zoneLeaderStyles['submit-button-div']}>
+                    <button 
+                        type='submit' 
+                        onClick={handleClick}
+                        className={zoneLeaderStyles['submit-info-button']}    
+                    >
+                        Crear líder
+                    </button>
+                </div>
             </div>
-            <button type='submit' onClick={handleClick}>
-                Crear Líder
-            </button>
-            <Modal isOpen={showModal}>
-                <p>
+            <Modal 
+                isOpen={showModal}
+                className={zoneLeaderStyles['Modal']}
+                overlayClassName={zoneLeaderStyles['Overlay']}
+            >
+                <p align='center'>
                     Hay un error en algunos campos del
                     formulario. Revise las alertas.
                 </p>
-                <button onClick={() => {setShowModal(false)}}>
-                    Cerrar
-                </button>
+                <div
+                    style={{textAlign : 'center'}}
+                >
+                    <button 
+                        onClick={() => {setShowModal(false)}}
+                        className={zoneLeaderStyles['modal-close-button']}
+                    >
+                        Cerrar
+                    </button>
+                </div>
             </Modal>
         </form>
     );

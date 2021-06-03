@@ -43,7 +43,6 @@ const typeKeys = {
 function App() {
   return (
     <div>
-     <h1>Hola Mundo desde dashboard sv</h1>
      <CreateZoneLeaderForm 
       defaultInitialValues={defaultInitialValues}
       labelKeys={labelKeys}

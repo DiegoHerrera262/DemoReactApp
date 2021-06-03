@@ -1,0 +1,145 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap");
+
+/*
+Responsive column layout
+*/
+.column-wrapper {
+  margin: 1vw 1vw 1vw 1vw;
+  padding: 0.2vw 0.5vw 0.5vw 0.2vw;
+
+  font-family: "Roboto", sans-serif;
+  font-size: 4vw;
+
+  background-color: #e5e5e5;
+}
+
+.col2 {
+}
+
+/*
+Form container
+*/
+.form-container {
+}
+
+/*
+Paragraph style
+*/
+p {
+  font-family: "Roboto", sans-serif;
+}
+
+/*
+Input field styles
+*/
+
+input {
+  width: 80vw;
+  height: 9vw;
+  border-radius: 7px;
+  border: none;
+}
+
+.input-file {
+  font-family: "Roboto", sans-serif;
+  margin: 1rem 1rem 1rem 1rem;
+  padding: 0.2rem 0.2rem 0.2rem 0.2rem;
+}
+
+.input-field {
+  margin: 1rem 1rem 1rem 1rem;
+  padding: 0.2rem 0.2rem 0.2rem 0.2rem;
+}
+
+.input-label {
+  padding: 0rem 0rem 0rem 0.1rem;
+}
+
+.input-error-message {
+  color: red;
+}
+
+/* 
+Profile image styles
+*/
+
+.profile-image-card {
+  width: 80vw;
+  margin: 1rem 1rem 1rem 1rem;
+  padding: 0.2rem 0.2rem 0.2rem 0.2rem;
+
+  border-radius: 7px;
+
+  background-color: #ffffff;
+
+  text-align: center;
+}
+
+.profile-image {
+  width: 75vw;
+  height: 75vw;
+
+  border-radius: 50%;
+}
+
+.profile-image-label {
+  margin: auto;
+  padding: 5px 1px 1px 1px;
+}
+
+/*
+Button styles
+*/
+
+.submit-button-div {
+  text-align: center;
+}
+
+.submit-info-button {
+  width: 30vw;
+  height: 8vw;
+
+  font-size: 4vw;
+  color: white;
+
+  border: none;
+  border-radius: 8px;
+
+  background-color: #4caf50;
+}
+
+.modal-close-button {
+  width: 30vw;
+  height: 8vw;
+
+  font-size: 4vw;
+  color: white;
+
+  border: none;
+  border-radius: 8px;
+
+  background-color: red;
+}
+
+/*
+Modal styles
+*/
+.Modal {
+  position: absolute;
+  top: 92vw;
+  left: 15vw;
+  right: 15vw;
+  bottom: 92vw;
+  background-color: #ffefd5;
+  border-radius: 8px;
+  border: 1px solid black;
+}
+
+.Overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ffffffbf;
+}
