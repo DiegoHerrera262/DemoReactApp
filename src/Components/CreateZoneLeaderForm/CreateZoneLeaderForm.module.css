@@ -5,7 +5,7 @@ Responsive column layout
 */
 .column-wrapper {
   margin: 1vw 1vw 1vw 1vw;
-  padding: 0.2vw 0.5vw 0.5vw 0.2vw;
+  padding: 2vw 5vw 5vw 2vw;
 
   font-family: "Roboto", sans-serif;
   font-size: 4vw;
@@ -34,6 +34,15 @@ Input field styles
 */
 
 input {
+  width: 80vw;
+  height: 9vw;
+  border-radius: 7px;
+  border: none;
+}
+
+select {
+  font-family: "Roboto", sans-serif;
+  font-size: 4vw;
   width: 80vw;
   height: 9vw;
   border-radius: 7px;
@@ -88,6 +97,14 @@ Profile image styles
 }
 
 /*
+Document thumbnail styles
+*/
+.doc-thumbnail {
+  width: 60px;
+  height: 80px;
+}
+
+/*
 Button styles
 */
 
@@ -133,6 +150,7 @@ Modal styles
   background-color: #ffefd5;
   border-radius: 8px;
   border: 1px solid black;
+  padding: 5px 0px 0px 5px;
 }
 
 .Overlay {

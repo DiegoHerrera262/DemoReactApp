@@ -1,6 +1,6 @@
 
 import './App.css';
-import CreateZoneLeaderForm from './Components/CreateZoneLeaderForm';
+import CreateZoneLeaderForm from './components/CreateZoneLeaderForm';
 
 // Default initial values for the form
 const defaultInitialValues = {
@@ -36,17 +36,26 @@ const typeKeys = {
     leaderCode : 'number',
     email : 'email',
     cellphone : 'number',
-    zone : 'text',
+    zone : 'select',
     endContractDate : 'date',
+}
+
+const selectValues = {
+    zone : [
+      '--Elija una zona--',
+      'Norte',
+      'Sur'
+    ]
 }
 
 function App() {
   return (
     <div>
-     <CreateZoneLeaderForm 
+     <CreateZoneLeaderForm
       defaultInitialValues={defaultInitialValues}
       labelKeys={labelKeys}
       typeKeys={typeKeys}
+      selectValues={selectValues}
      />
     </div>
   );

@@ -9,29 +9,40 @@ Description: This component is to be used for creating
 */
 
 import React, {useState, useEffect} from 'react';
+
+// Third party imports
 import {useFormik} from 'formik';
 import Modal from 'react-modal';
 import * as Yup from 'yup';
-// import blank profile picture
-import blankProfile from './blankProfilePicture.png';
+
+// Form components
+//import FieldInput from './components/FieldInput/FieldInput';
+
+import blankProfile from './assets/blankProfilePicture.png';
+import emptyFileLogo from '.assets/emptyFileLogo.png';
+import isPdfFile from './assets/isPdfFile.png';
+import isWordDoc from './assets/isWordDoc.png';
+
 import zoneLeaderStyles from './CreateZoneLeaderForm.module.css';
 
-// set up modal element
+// DO NOT DELETE THIS
 Modal.setAppElement('body');
 
-// arrow function for generating
-// an input object with its label
+
 const FieldInput = (props) => {
-    const {fieldName, formHook, labelKeys, typeKeys} = props
+    const {fieldName, formHook, labelKey, typeKey} = props;
     return (
         <div className={zoneLeaderStyles['input-field']}>
-            <div className={zoneLeaderStyles['input-label']}>
-                <label htmlFor={fieldName}>{labelKeys[fieldName]}</label>
-            </div>
+            <label 
+                htmlFor={fieldName}
+                className={zoneLeaderStyles['input-label']}
+            >
+                {labelKey}
+            </label>
             <input
                 id={fieldName}
                 name={fieldName}
-                type={typeKeys[fieldName]}
+                type={typeKey}
                 onChange={formHook.handleChange}
                 onBlur={formHook.handleBlur}
                 value={formHook.values[fieldName]}
@@ -45,42 +56,154 @@ const FieldInput = (props) => {
     );
 }
 
+
+const SelectInput = (props) => {
+    const {fieldName, formHook, labelKey, optionVals} = props;
+    return (
+        <div className={zoneLeaderStyles['input-field']}>
+            <label 
+                htmlFor={fieldName}
+                className={zoneLeaderStyles['input-label']}
+            >
+                {labelKey}
+            </label>
+            <select
+                id={fieldName}
+                onChange={formHook.handleChange}
+                value={formHook.values[fieldName]}
+            >
+                {
+                    optionVals.map((optn,index) => (
+                        <option
+                            key={`${labelKey}${index}`}
+                            value={optn}
+                        >
+                            {optn}
+                        </option>
+                    ))
+                }
+            </select>
+            { formHook.touched[fieldName] && formHook.errors[fieldName] && (
+                <div className={zoneLeaderStyles['input-error-message']}>
+                    {formHook.errors[fieldName]}
+                </div>
+            )}
+        </div>
+    );
+}
+
+const FileInput = (props) => {
+    const {fieldName, formHook, labelKey, accept} = props;
+    let iconSrc = emptyFileLogo;
+    if (formHook.values[fieldName].type !== undefined){
+        iconSrc = formHook.values[fieldName].type === 'application/pdf' ? 
+            isPdfFile : formHook.values[fieldName].type === 'application/msword' ?
+            isWordDoc : emptyFileLogo;
+    }   
+    return (
+        <div className={zoneLeaderStyles['input-field']}>
+            <p align='center'>
+                <img 
+                    src={iconSrc} 
+                    alt={fieldName} 
+                    className={zoneLeaderStyles['doc-thumbnail']}
+                />
+            </p>
+            <p align='center'>
+                <label 
+                    htmlFor={fieldName}
+                    className={zoneLeaderStyles['input-label']}
+                >
+                    {labelKey}
+                </label>
+            </p>
+            <input 
+                id={fieldName}
+                name={fieldName}
+                type='file'
+                accept={accept}
+                onChange={(event) => {
+                    formHook.setFieldValue(
+                        fieldName,
+                        event.currentTarget.files[0]
+                    )
+                }}
+            />
+        </div>
+    );
+}
+
+const ProfileImageInput = (props) => {
+    const {formHook, src, labelKey} = props;
+    return (
+        <div>
+            <div 
+                id='profileImage' 
+                className={zoneLeaderStyles['profile-image-card']}
+            >
+                <label
+                    className={zoneLeaderStyles['profile-image-label']}
+                    htmlFor='profileImage'
+                >
+                    {labelKey}
+                </label> 
+                <p align='center'>
+                    <img
+                        className={zoneLeaderStyles['profile-image']}
+                        src={src} 
+                        alt={labelKey} 
+                    />
+                </p>
+            </div>
+            <div className={zoneLeaderStyles['input-field']}>
+                <input 
+                    id='profileImage'
+                    name='profileImage'
+                    type='file'
+                    accept='image/*'
+                    onChange={(event) => {
+                        formHook.setFieldValue(
+                            'profileImage',
+                            event.currentTarget.files[0]
+                        )
+                    }}
+                />
+            </div>
+        </div>
+    );
+}
+
+
 const CreateZoneLeaderForm = (props) => {
-    const {defaultInitialValues, labelKeys, typeKeys} = props;
+    const {labelKeys, typeKeys, selectValues} = props;
+    let {defaultInitialValues} = props;
     const valueKeys = Object.keys(defaultInitialValues);
 
-    // Split fields according to figma
-    // view design
+    // include document properties
+    // on the initial values
+    defaultInitialValues = {
+        ...defaultInitialValues,
+        frontID : {},
+        backID : {},
+        rut : {},
+        bankData : {},
+        contract : {}, 
+        profileImage : null
+    }
+
+    // Split fields according to figma view design
     const leftFields = valueKeys.slice(0,Math.floor(valueKeys.length/2));
     const rightFields = valueKeys.slice(Math.floor(valueKeys.length/2));
 
-    // Define state for showing modal
-    const [showModal, setShowModal] = useState(false);
-    // Define state for profile
-    // picture preview input
-    const [profileImageInput, setProfileImageInput] = useState(null);
-    // Define state for profile
-    // picture preview source
-    const [profileImageSource, setProfileImageSource] = useState(blankProfile);
-
-    // use Effect hook for 
-    // generating profile image
-    // source when updating
-    // input
-    useEffect(() => {
-        if (profileImageInput) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setProfileImageSource(reader.result);
-            };
-            reader.readAsDataURL(profileImageInput);
-        } else {
-            setProfileImageSource(blankProfile);
-        }
-    }, [profileImageInput])
-
     // Get current date for validation
     const today = new Date();
+
+    // Define state for showing error modal
+    const [showErrorModal, setErrorShowModal] = useState(false);
+    // Define state for showing confirmation modal
+    const [showConfirmModal, setConfirmShowModal] = useState(false);
+    // Define state for profile picture preview source
+    const [profileImageSource, setProfileImageSource] = useState(blankProfile);
 
     // Instantiate formik hook
     // for data management
@@ -127,17 +250,27 @@ const CreateZoneLeaderForm = (props) => {
         }),
         /*set up submit callback*/
         onSubmit : (values) => {
-            const leaderData = {
-                ...values,
-                profileImage : profileImageSource
-            }
-            console.log(leaderData)
+            setConfirmShowModal(true);
         }
     });
 
+    // use Effect hook for generating profile image
+    // source when updating input
+    useEffect(() => {
+        if (formik.values['profileImage']) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setProfileImageSource(reader.result);
+            };
+            reader.readAsDataURL(formik.values['profileImage']);
+        } else {
+            setProfileImageSource(blankProfile);
+        }
+    }, [formik])
+
     // Click handler for showing
     // alert modal
-    const handleClick = () => {
+    const handleErrorClick = () => {
         // See if there are any errors
         const numErrors = Object.keys(formik.errors).length
         // see if the fields are empty
@@ -148,96 +281,168 @@ const CreateZoneLeaderForm = (props) => {
                 break;
             }
         }
-        setShowModal(numErrors > 0 || emptyField)
+        const formIsNotRight =numErrors > 0 || emptyField 
+        setErrorShowModal(formIsNotRight);
+        setConfirmShowModal(!formIsNotRight);
     }
 
-    // Handler for input
-    // profile image
-    const handleInputProfileImage = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            setProfileImageInput(file)
-        }
+    /*
+    HERE IS WHERE THE SUBMIT
+    ACTION IT TO HANDLED WITH
+    THE BACKEND
+    */
+    const handleSubmitDataFromModal = () => {
+
+        /*
+        CONNECT WITH BACKEND HERE
+        */
+
+        console.log(formik.values)
+
+        // reset form and hide modal
+        formik.resetForm();
+        setConfirmShowModal(false);
     }
 
     return (
         <form onSubmit = {formik.handleSubmit}>
             <div className={zoneLeaderStyles['column-wrapper']}>
                 <div className={zoneLeaderStyles['col2']}>
-                    <div>
-                        <div className={zoneLeaderStyles['profile-image-card']}>
-                            <div className={zoneLeaderStyles['profile-image-label']}>
-                                <label
-                                    htmlFor='profileImage'
-                                >
-                                    Foto líder de zona
-                                </label>
-                            </div>
-                            <p align='center'>
-                                <img
-                                    className={zoneLeaderStyles['profile-image']}
-                                    src={profileImageSource} 
-                                    alt='Foto líder de zona' 
-                                />
-                            </p>
-                        </div>
-                        <div className={zoneLeaderStyles['input-field']}>
-                            <input 
-                                id='profileImage'
-                                name='profileImage'
-                                type='file'
-                                accept='image/*'
-                                onChange={handleInputProfileImage}
-                            />
-                        </div>
-                    </div>
-                    <div className={zoneLeaderStyles['form-container']}>
-                        {
-                            leftFields.map((field) => {
-                                    return (
-                                        <FieldInput 
-                                            key={field} 
+                    <ProfileImageInput 
+                        src={profileImageSource}
+                        labelKey='Foto líder de zona'
+                        formHook={formik}
+                    />
+                    {
+                        leftFields.map((field) => {
+                            if (typeKeys[field] === 'select'){
+                                return (
+                                    <SelectInput
+                                        key={field}
+                                        fieldName={field}
+                                        formHook={formik}
+                                        labelKey={labelKeys[field]}
+                                        optionVals={selectValues[field]}
+                                    />
+                                );
+                            }
+                            return (
+                                <FieldInput 
+                                    key={field} 
                                             fieldName={field} 
                                             formHook={formik}
-                                            labelKeys={labelKeys}
-                                            typeKeys={typeKeys} 
+                                            labelKey={labelKeys[field]}
+                                    typeKey={typeKeys[field]} 
+                                />
+                            );
+                        })
+                    }
+                </div>
+                <div className={`${zoneLeaderStyles['col2']}`}>
+                    {
+                        rightFields.map((field) => {
+                                if (typeKeys[field] === 'select'){
+                                    return (
+                                        <SelectInput
+                                            key={field}
+                                            fieldName={field}
+                                            formHook={formik}
+                                            labelKey={labelKeys[field]}
+                                            optionVals={selectValues[field]}
                                         />
                                     );
                                 }
-                            )
-                        }
-                    </div> 
-                </div>
-                <div className={`${zoneLeaderStyles['col2']} ${zoneLeaderStyles['form-container']}`}>
-                    {
-                        rightFields.map((field) => {
                                 return (
                                     <FieldInput 
                                         key={field} 
                                         fieldName={field} 
                                         formHook={formik}
-                                        labelKeys={labelKeys}
-                                        typeKeys={typeKeys}
+                                        labelKey={labelKeys[field]}
+                                        typeKey={typeKeys[field]}
                                     />
                                 );
-                            }
-                        )
+                        })
                     }
+                    
+                    <h2> Documentos </h2>
+
+                    <h3> Documento de identidad </h3>
+                    <div>
+                        <FileInput
+                            fieldName='frontID'
+                            formHook={formik}
+                            labelKey='Cara frontal'
+                            accept='.pdf, image/*'
+                        />
+                        <FileInput 
+                            fieldName='backID'
+                            formHook={formik}
+                            labelKey='Cara trasera'
+                            accept='.pdf, image/*'
+                        />
+                    </div>
+
+                    <h3> RUT </h3>
+                    <FileInput 
+                        fieldName='rut'
+                        formHook={formik}
+                        labelKey='Ingrese documento'
+                        accept='.pdf, .doc, .docx'
+                    />
+
+                    <h3> Certificación bancaria </h3>
+                    <FileInput
+                        fieldName='bankData'
+                        formHook={formik}
+                        labelKey='Ingrese documento'
+                        accept='.pdf, .doc, .docx'
+                    />
+
+                    <h3> Contrato </h3>
+                    <FileInput 
+                        fieldName='contract'
+                        formHook={formik}
+                        labelKey='Ingrese documento'
+                        accept='.pdf, .doc, .docx'
+                    />
+
                 </div>
                 <div className={zoneLeaderStyles['submit-button-div']}>
-                    <button 
-                        type='submit' 
-                        onClick={handleClick}
+                    <button
+                        type='submit'
+                        onClick={handleErrorClick}
                         className={zoneLeaderStyles['submit-info-button']}    
                     >
                         Crear líder
                     </button>
+                    
                 </div>
             </div>
             <Modal 
-                isOpen={showModal}
+                isOpen={showConfirmModal}
                 className={zoneLeaderStyles['Modal']}
                 overlayClassName={zoneLeaderStyles['Overlay']}
+                onRequestClose={() => {setConfirmShowModal(false)}}
+            >
+                <p align='center'>
+                    Confirme creación de líder
+                </p>
+                <div
+                    style={{textAlign : 'center'}}
+                >
+                    <button
+                        onClick={handleSubmitDataFromModal}
+                        className={zoneLeaderStyles['submit-info-button']}
+                    >
+                        Confirmar
+                    </button>
+                </div>
+            </Modal>
+            <Modal 
+                isOpen={showErrorModal}
+                className={zoneLeaderStyles['Modal']}
+                overlayClassName={zoneLeaderStyles['Overlay']}
+                onRequestClose={() => setErrorShowModal(false)}
             >
                 <p align='center'>
                     Hay un error en algunos campos del
@@ -247,7 +452,7 @@ const CreateZoneLeaderForm = (props) => {
                     style={{textAlign : 'center'}}
                 >
                     <button 
-                        onClick={() => {setShowModal(false)}}
+                        onClick={() => {setErrorShowModal(false)}}
                         className={zoneLeaderStyles['modal-close-button']}
                     >
                         Cerrar
