@@ -1,0 +1,37 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap");
+
+.profile-image-card {
+  width: 80vw;
+  margin: 1rem 1rem 1rem 1rem;
+  padding: 0.2rem 0.2rem 0.2rem 0.2rem;
+
+  border-radius: 7px;
+
+  background-color: #ffffff;
+
+  text-align: center;
+}
+
+.profile-image {
+  width: 75vw;
+  height: 75vw;
+
+  border-radius: 50%;
+}
+
+.profile-image-label {
+  margin: auto;
+  padding: 5px 1px 1px 1px;
+}
+
+input {
+  width: 80vw;
+  height: 9vw;
+  border-radius: 7px;
+  border: none;
+}
+
+.input-field {
+  margin: 1rem 1rem 1rem 1rem;
+  padding: 0.2rem 0.2rem 0.2rem 0.2rem;
+}

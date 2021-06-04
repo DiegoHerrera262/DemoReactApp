@@ -8,7 +8,7 @@ Description: This component is to be used for creating
        Date: 01/06/21 
 */
 
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 
 // Third party imports
 import {useFormik} from 'formik';
@@ -16,171 +16,24 @@ import Modal from 'react-modal';
 import * as Yup from 'yup';
 
 // Form components
-//import FieldInput from './components/FieldInput/FieldInput';
+import FieldInput from './FieldInput';
+import SelectInput from './SelectInput';
+import FileInput from './FileInput';
+import ProfileImageInput from './ProfileImageInput';
 
-import blankProfile from './assets/blankProfilePicture.png';
-import emptyFileLogo from '.assets/emptyFileLogo.png';
-import isPdfFile from './assets/isPdfFile.png';
-import isWordDoc from './assets/isWordDoc.png';
+import blankProfile from './ProfileImageInput/assets/blankProfilePicture.png';
 
 import zoneLeaderStyles from './CreateZoneLeaderForm.module.css';
 
 // DO NOT DELETE THIS
 Modal.setAppElement('body');
 
-
-const FieldInput = (props) => {
-    const {fieldName, formHook, labelKey, typeKey} = props;
-    return (
-        <div className={zoneLeaderStyles['input-field']}>
-            <label 
-                htmlFor={fieldName}
-                className={zoneLeaderStyles['input-label']}
-            >
-                {labelKey}
-            </label>
-            <input
-                id={fieldName}
-                name={fieldName}
-                type={typeKey}
-                onChange={formHook.handleChange}
-                onBlur={formHook.handleBlur}
-                value={formHook.values[fieldName]}
-            />
-            { formHook.touched[fieldName] && formHook.errors[fieldName] && (
-                <div className={zoneLeaderStyles['input-error-message']}>
-                    {formHook.errors[fieldName]}
-                </div>
-            )}
-        </div>
-    );
-}
-
-
-const SelectInput = (props) => {
-    const {fieldName, formHook, labelKey, optionVals} = props;
-    return (
-        <div className={zoneLeaderStyles['input-field']}>
-            <label 
-                htmlFor={fieldName}
-                className={zoneLeaderStyles['input-label']}
-            >
-                {labelKey}
-            </label>
-            <select
-                id={fieldName}
-                onChange={formHook.handleChange}
-                value={formHook.values[fieldName]}
-            >
-                {
-                    optionVals.map((optn,index) => (
-                        <option
-                            key={`${labelKey}${index}`}
-                            value={optn}
-                        >
-                            {optn}
-                        </option>
-                    ))
-                }
-            </select>
-            { formHook.touched[fieldName] && formHook.errors[fieldName] && (
-                <div className={zoneLeaderStyles['input-error-message']}>
-                    {formHook.errors[fieldName]}
-                </div>
-            )}
-        </div>
-    );
-}
-
-const FileInput = (props) => {
-    const {fieldName, formHook, labelKey, accept} = props;
-    let iconSrc = emptyFileLogo;
-    if (formHook.values[fieldName].type !== undefined){
-        iconSrc = formHook.values[fieldName].type === 'application/pdf' ? 
-            isPdfFile : formHook.values[fieldName].type === 'application/msword' ?
-            isWordDoc : emptyFileLogo;
-    }   
-    return (
-        <div className={zoneLeaderStyles['input-field']}>
-            <p align='center'>
-                <img 
-                    src={iconSrc} 
-                    alt={fieldName} 
-                    className={zoneLeaderStyles['doc-thumbnail']}
-                />
-            </p>
-            <p align='center'>
-                <label 
-                    htmlFor={fieldName}
-                    className={zoneLeaderStyles['input-label']}
-                >
-                    {labelKey}
-                </label>
-            </p>
-            <input 
-                id={fieldName}
-                name={fieldName}
-                type='file'
-                accept={accept}
-                onChange={(event) => {
-                    formHook.setFieldValue(
-                        fieldName,
-                        event.currentTarget.files[0]
-                    )
-                }}
-            />
-        </div>
-    );
-}
-
-const ProfileImageInput = (props) => {
-    const {formHook, src, labelKey} = props;
-    return (
-        <div>
-            <div 
-                id='profileImage' 
-                className={zoneLeaderStyles['profile-image-card']}
-            >
-                <label
-                    className={zoneLeaderStyles['profile-image-label']}
-                    htmlFor='profileImage'
-                >
-                    {labelKey}
-                </label> 
-                <p align='center'>
-                    <img
-                        className={zoneLeaderStyles['profile-image']}
-                        src={src} 
-                        alt={labelKey} 
-                    />
-                </p>
-            </div>
-            <div className={zoneLeaderStyles['input-field']}>
-                <input 
-                    id='profileImage'
-                    name='profileImage'
-                    type='file'
-                    accept='image/*'
-                    onChange={(event) => {
-                        formHook.setFieldValue(
-                            'profileImage',
-                            event.currentTarget.files[0]
-                        )
-                    }}
-                />
-            </div>
-        </div>
-    );
-}
-
-
 const CreateZoneLeaderForm = (props) => {
     const {labelKeys, typeKeys, selectValues} = props;
     let {defaultInitialValues} = props;
     const valueKeys = Object.keys(defaultInitialValues);
 
-    // include document properties
-    // on the initial values
+    // include document properties on the initial values
     defaultInitialValues = {
         ...defaultInitialValues,
         frontID : {},
@@ -197,6 +50,15 @@ const CreateZoneLeaderForm = (props) => {
 
     // Get current date for validation
     const today = new Date();
+
+    // Ref for resetting profile image
+    const profileImageRef = useRef();
+    // Ref for resetting files
+    const frontIdRef = useRef();
+    const backIdRef = useRef();
+    const rutRef = useRef();
+    const bankDataRef = useRef();
+    const contractRef = useRef();
 
     // Define state for showing error modal
     const [showErrorModal, setErrorShowModal] = useState(false);
@@ -242,7 +104,7 @@ const CreateZoneLeaderForm = (props) => {
                 .moreThan(999999999, 'Ingrese un número de celular válido en Colombia')
                 .required('Campo requerido'),
             zone : Yup.string()
-                .matches(/^[a-zA-Z]{3,15}$/, 'Ingrese máximo 10 letras')
+                .matches(/^[a-zA-Z]{3,15}$/, 'Por favor seleccione una zona')
                 .required('Campo requerido'),
             endContractDate : Yup.date()
                 .min(today, 'Ingrese una fecha en el futuro')
@@ -297,10 +159,19 @@ const CreateZoneLeaderForm = (props) => {
         CONNECT WITH BACKEND HERE
         */
 
-        console.log(formik.values)
+        console.log(formik.values);
 
         // reset form and hide modal
         formik.resetForm();
+        formik.values = defaultInitialValues;
+        // Reset file inputs
+        profileImageRef.current.value = "";
+        frontIdRef.current.value = "";
+        backIdRef.current.value = "";
+        rutRef.current.value = "";
+        bankDataRef.current.value = "";
+        contractRef.current.value = "";
+        
         setConfirmShowModal(false);
     }
 
@@ -310,6 +181,7 @@ const CreateZoneLeaderForm = (props) => {
                 <div className={zoneLeaderStyles['col2']}>
                     <ProfileImageInput 
                         src={profileImageSource}
+                        parentRef={profileImageRef}
                         labelKey='Foto líder de zona'
                         formHook={formik}
                     />
@@ -371,12 +243,14 @@ const CreateZoneLeaderForm = (props) => {
                         <FileInput
                             fieldName='frontID'
                             formHook={formik}
+                            parentRef={frontIdRef}
                             labelKey='Cara frontal'
                             accept='.pdf, image/*'
                         />
                         <FileInput 
                             fieldName='backID'
                             formHook={formik}
+                            parentRef={backIdRef}
                             labelKey='Cara trasera'
                             accept='.pdf, image/*'
                         />
@@ -386,6 +260,7 @@ const CreateZoneLeaderForm = (props) => {
                     <FileInput 
                         fieldName='rut'
                         formHook={formik}
+                        parentRef={rutRef}
                         labelKey='Ingrese documento'
                         accept='.pdf, .doc, .docx'
                     />
@@ -394,6 +269,7 @@ const CreateZoneLeaderForm = (props) => {
                     <FileInput
                         fieldName='bankData'
                         formHook={formik}
+                        parentRef={bankDataRef}
                         labelKey='Ingrese documento'
                         accept='.pdf, .doc, .docx'
                     />
@@ -402,6 +278,7 @@ const CreateZoneLeaderForm = (props) => {
                     <FileInput 
                         fieldName='contract'
                         formHook={formik}
+                        parentRef={contractRef}
                         labelKey='Ingrese documento'
                         accept='.pdf, .doc, .docx'
                     />
