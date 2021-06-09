@@ -4,13 +4,14 @@ import selectInputStyles from './SelectInput.module.css';
 const SelectInput = (props) => {
     const {fieldName, formHook, labelKey, optionVals} = props;
     return (
-        <div className={selectInputStyles['input-field']}>
+        <>
             <label 
                 htmlFor={fieldName}
                 className={selectInputStyles['input-label']}
             >
                 {labelKey}
             </label>
+            <br />
             <select
                 id={fieldName}
                 onChange={formHook.handleChange}
@@ -27,12 +28,15 @@ const SelectInput = (props) => {
                     ))
                 }
             </select>
+            <br />
             { formHook.touched[fieldName] && formHook.errors[fieldName] && (
-                <div className={selectInputStyles['input-error-message']}>
+                <div
+                    className={selectInputStyles['error-message']}
+                >
                     {formHook.errors[fieldName]}
                 </div>
             )}
-        </div>
+        </>
     );
 }
 

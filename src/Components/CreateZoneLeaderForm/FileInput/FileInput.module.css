@@ -1,19 +1,78 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap");
 
-.input-field {
-  margin: 1rem 1rem 1rem 1rem;
-  padding: 0.2rem 0.2rem 0.2rem 0.2rem;
+.file-icon {
+  padding-left: 2ch;
+  width: 5ch;
+  height: 5.5ch;
 }
 
-.input-label {
-  padding: 0rem 0rem 0rem 0.1rem;
+.file-input-card {
+  max-width: 100%;
+  margin: 1ch;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
-.input-error-message {
-  color: red;
+.icon-container {
+  text-align: right;
+  padding-top: 0.3em;
+  padding-left: 1ch;
+  flex: 30%;
 }
 
-.doc-thumbnail {
-  width: 60px;
-  height: 80px;
+.info-container {
+  text-align: center;
+  padding-left: 2em;
+  flex: 70%;
+}
+
+.file-input-label {
+  margin-bottom: 10px;
+  font-size: 0.9em;
+  color: #1e81b0;
+}
+
+.edit-button {
+  font-size: 0.9em;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-right: 1ch;
+  padding-left: 1ch;
+  border-radius: 8px;
+  border: 1px solid #f1eae4;
+  background-color: #eeeee4;
+  color: #e28743;
+}
+
+.edit-button:hover {
+  border: 1px solid #063970;
+  color: #063970;
+  cursor: pointer;
+}
+
+/*
+ADAPTING TO MEDIUM - XL SCREENS
+*/
+
+@media all and (min-width: 768px) {
+  .file-input-card {
+    max-width: 150px;
+    margin: 0ch 0 4ch 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .icon-container {
+    text-align: center;
+    padding-top: 0.3em;
+    padding-left: 1ch;
+    flex: 100%;
+  }
+
+  .info-container {
+    padding-left: 2em;
+    flex: 100%;
+  }
 }

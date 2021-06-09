@@ -8,12 +8,13 @@ Description: This component is to be used for creating
        Date: 01/06/21 
 */
 
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useCallback} from 'react';
 
 // Third party imports
 import {useFormik} from 'formik';
 import Modal from 'react-modal';
 import * as Yup from 'yup';
+import MapGL, {Marker} from 'react-map-gl';
 
 // Form components
 import FieldInput from './FieldInput';
@@ -22,11 +23,15 @@ import FileInput from './FileInput';
 import ProfileImageInput from './ProfileImageInput';
 
 import blankProfile from './ProfileImageInput/assets/blankProfilePicture.png';
+import mapPin from './assets/zoneLeaderPin.png'
 
 import zoneLeaderStyles from './CreateZoneLeaderForm.module.css';
 
 // DO NOT DELETE THIS
 Modal.setAppElement('body');
+
+// Change map display style here
+const mapStyle = 'mapbox://styles/diegoherrera262/ckpossqqj09fy17npwfhqkadq'
 
 const CreateZoneLeaderForm = (props) => {
     const {labelKeys, typeKeys, selectValues} = props;
@@ -66,6 +71,19 @@ const CreateZoneLeaderForm = (props) => {
     const [showConfirmModal, setConfirmShowModal] = useState(false);
     // Define state for profile picture preview source
     const [profileImageSource, setProfileImageSource] = useState(blankProfile);
+    // Define state for map zone identification
+    const [zoneMarkerCoords, setZoneMarkerCoords] = useState({
+        latitude : 4.68357,
+        longitude : -74.14443
+    });
+    // Viewport state for map sone identification
+    const [viewport, setViewport] = useState({
+        width : 700,
+        height : 300,
+        latitude : 4.637764262457622,
+        longitude : -74.08897789014473,
+        zoom : 9
+    });
 
     // Instantiate formik hook
     // for data management
@@ -104,7 +122,7 @@ const CreateZoneLeaderForm = (props) => {
                 .moreThan(999999999, 'Ingrese un número de celular válido en Colombia')
                 .required('Campo requerido'),
             zone : Yup.string()
-                .matches(/^[a-zA-Z]{3,15}$/, 'Por favor seleccione una zona')
+                .matches(/^[a-zA-Z]{3,15}$/, 'Escoja una zona')
                 .required('Campo requerido'),
             endContractDate : Yup.date()
                 .min(today, 'Ingrese una fecha en el futuro')
@@ -148,9 +166,16 @@ const CreateZoneLeaderForm = (props) => {
         setConfirmShowModal(!formIsNotRight);
     }
 
+    const handleDragEnd = useCallback((event) => {
+        setZoneMarkerCoords({
+            longitude : event.lngLat[0],
+            latitude : event.lngLat[1]
+        });
+    }, []);
+
     /*
     HERE IS WHERE THE SUBMIT
-    ACTION IT TO HANDLED WITH
+    ACTION IT TO BE HANDLED WITH
     THE BACKEND
     */
     const handleSubmitDataFromModal = () => {
@@ -177,7 +202,9 @@ const CreateZoneLeaderForm = (props) => {
 
     return (
         <form onSubmit = {formik.handleSubmit}>
-            <div className={zoneLeaderStyles['column-wrapper']}>
+            <div
+                className={zoneLeaderStyles['column-wrapper']}
+            >
                 <div className={zoneLeaderStyles['col2']}>
                     <ProfileImageInput 
                         src={profileImageSource}
@@ -209,8 +236,33 @@ const CreateZoneLeaderForm = (props) => {
                             );
                         })
                     }
+                    <div
+                        className={zoneLeaderStyles['map-container']}
+                    >
+                        <MapGL
+                            {...viewport}
+                            onViewportChange={
+                                (viewport) => setViewport(viewport)
+                            }
+                            mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
+                            mapStyle={mapStyle}
+                        >
+                            <Marker
+                                latitude={zoneMarkerCoords.latitude}
+                                longitude={zoneMarkerCoords.longitude}
+                                draggable
+                                onDragEnd={handleDragEnd}
+                            >
+                                <img 
+                                    width='5%'
+                                    src={mapPin}
+                                    alt=''
+                                />
+                            </Marker>
+                        </MapGL>
+                    </div>
                 </div>
-                <div className={`${zoneLeaderStyles['col2']}`}>
+                <div className={zoneLeaderStyles['col2']}>
                     {
                         rightFields.map((field) => {
                                 if (typeKeys[field] === 'select'){
@@ -239,21 +291,25 @@ const CreateZoneLeaderForm = (props) => {
                     <h2> Documentos </h2>
 
                     <h3> Documento de identidad </h3>
-                    <div>
-                        <FileInput
-                            fieldName='frontID'
-                            formHook={formik}
-                            parentRef={frontIdRef}
-                            labelKey='Cara frontal'
-                            accept='.pdf, image/*'
-                        />
-                        <FileInput 
-                            fieldName='backID'
-                            formHook={formik}
-                            parentRef={backIdRef}
-                            labelKey='Cara trasera'
-                            accept='.pdf, image/*'
-                        />
+                    <div className={zoneLeaderStyles['id-doc-wrapper']}>
+                        <div className={zoneLeaderStyles['id-doc-col2']}>
+                            <FileInput
+                                fieldName='frontID'
+                                formHook={formik}
+                                parentRef={frontIdRef}
+                                labelKey='Cara frontal'
+                                accept='.pdf, image/*'
+                            />
+                        </div>
+                        <div className={zoneLeaderStyles['id-doc-col2']}>
+                            <FileInput 
+                                fieldName='backID'
+                                formHook={formik}
+                                parentRef={backIdRef}
+                                labelKey='Cara trasera'
+                                accept='.pdf, image/*'
+                            />
+                        </div>
                     </div>
 
                     <h3> RUT </h3>
@@ -282,24 +338,21 @@ const CreateZoneLeaderForm = (props) => {
                         labelKey='Ingrese documento'
                         accept='.pdf, .doc, .docx'
                     />
-
-                </div>
-                <div className={zoneLeaderStyles['submit-button-div']}>
-                    <button
-                        type='submit'
-                        onClick={handleErrorClick}
-                        className={zoneLeaderStyles['submit-info-button']}    
-                    >
-                        Crear líder
-                    </button>
-                    
                 </div>
             </div>
+            
+            <button
+                type='submit'
+                onClick={handleErrorClick}
+                className={zoneLeaderStyles['submit-button']}    
+            >
+                 Crear líder
+            </button>
             <Modal 
                 isOpen={showConfirmModal}
+                onRequestClose={() => {setConfirmShowModal(false)}}
                 className={zoneLeaderStyles['Modal']}
                 overlayClassName={zoneLeaderStyles['Overlay']}
-                onRequestClose={() => {setConfirmShowModal(false)}}
             >
                 <p align='center'>
                     Confirme creación de líder
@@ -309,7 +362,7 @@ const CreateZoneLeaderForm = (props) => {
                 >
                     <button
                         onClick={handleSubmitDataFromModal}
-                        className={zoneLeaderStyles['submit-info-button']}
+                        className={zoneLeaderStyles['submit-button']}
                     >
                         Confirmar
                     </button>
@@ -317,9 +370,9 @@ const CreateZoneLeaderForm = (props) => {
             </Modal>
             <Modal 
                 isOpen={showErrorModal}
+                onRequestClose={() => setErrorShowModal(false)}
                 className={zoneLeaderStyles['Modal']}
                 overlayClassName={zoneLeaderStyles['Overlay']}
-                onRequestClose={() => setErrorShowModal(false)}
             >
                 <p align='center'>
                     Hay un error en algunos campos del
@@ -330,7 +383,7 @@ const CreateZoneLeaderForm = (props) => {
                 >
                     <button 
                         onClick={() => {setErrorShowModal(false)}}
-                        className={zoneLeaderStyles['modal-close-button']}
+                        className={zoneLeaderStyles['error-button']}
                     >
                         Cerrar
                     </button>

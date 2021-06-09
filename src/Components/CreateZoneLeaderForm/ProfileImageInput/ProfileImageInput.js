@@ -2,32 +2,40 @@ import React from 'react';
 import profileImageInputStyles from './ProfileImageInput.module.css';
 
 const ProfileImageInput = (props) => {
+    const inputID = 'profileImage';
     const {formHook, src, labelKey, parentRef} = props;
     return (
-        <div>
-            <div 
-                id='profileImage' 
-                className={profileImageInputStyles['profile-image-card']}
+        <div
+            className={profileImageInputStyles['profile-image-card']}
+        >
+            <div
+                className={profileImageInputStyles['image-container']}
             >
-                <label
-                    className={profileImageInputStyles['profile-image-label']}
-                    htmlFor='profileImage'
-                >
-                    {labelKey}
-                </label> 
-                <p align='center'>
-                    <img
-                        className={profileImageInputStyles['profile-image']}
-                        src={src} 
-                        alt={labelKey} 
-                    />
-                </p>
+                <img
+                    src={src} 
+                    alt={labelKey}
+                    className={profileImageInputStyles['profile-photo']}
+                />
             </div>
-            <div className={profileImageInputStyles['input-field']}>
+            <div
+                className={profileImageInputStyles['info-container']}
+            >
+                <div className={profileImageInputStyles['profile-image-label']}>
+                    <label>
+                        {labelKey}
+                    </label>
+                </div>
+                <label
+                    htmlFor={inputID}
+                    className={profileImageInputStyles['edit-button']}
+                >
+                    Cargue foto
+                </label>
                 <input 
-                    id='profileImage'
-                    name='profileImage'
+                    id={inputID}
+                    name={inputID}
                     type='file'
+                    placeholder='Ingrese foto de perfil'
                     accept='image/*'
                     ref={parentRef}
                     onChange={(event) => {

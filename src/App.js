@@ -7,11 +7,11 @@ const defaultInitialValues = {
     name : '',
     lastName : '',
     documentId : '',
+    zone : '',
     address : '',
     leaderCode : '',
     email : '',
     cellphone : '',
-    zone : '',
     endContractDate : '',
 }
 
@@ -20,11 +20,11 @@ const labelKeys = {
     name : 'Nombre',
     lastName : 'Apellido',
     documentId : 'Documento de identidad',
+    zone : 'Zona',
     address : 'Dirección',
     leaderCode : 'Código de líder',
     email : 'Email',
     cellphone : 'Número celular',
-    zone : 'Zona',
     endContractDate : 'Fecha fin de contrato',
 }
 
@@ -32,11 +32,11 @@ const typeKeys = {
     name : 'text',
     lastName : 'text',
     documentId : 'number',
+    zone : 'select',
     address : 'text',
     leaderCode : 'number',
     email : 'email',
     cellphone : 'number',
-    zone : 'select',
     endContractDate : 'date',
 }
 
@@ -48,15 +48,23 @@ const selectValues = {
     ]
 }
 
+/*
+// Map center coordinates
+const superVeci = {
+  lat : '4.68357', 
+  lng : '-74.14443'
+}
+*/
+
 function App() {
   return (
     <div>
-     <CreateZoneLeaderForm
-      defaultInitialValues={defaultInitialValues}
-      labelKeys={labelKeys}
-      typeKeys={typeKeys}
-      selectValues={selectValues}
-     />
+      <CreateZoneLeaderForm
+        defaultInitialValues={defaultInitialValues}
+        labelKeys={labelKeys}
+        typeKeys={typeKeys}
+        selectValues={selectValues}
+      />
     </div>
   );
 }

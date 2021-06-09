@@ -1,37 +1,122 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap");
 
 .profile-image-card {
-  width: 80vw;
-  margin: 1rem 1rem 1rem 1rem;
-  padding: 0.2rem 0.2rem 0.2rem 0.2rem;
-
-  border-radius: 7px;
-
-  background-color: #ffffff;
-
-  text-align: center;
+  max-width: 100%;
+  margin: 1ch;
+  border-radius: 9px;
+  border: 1px solid #f8e1c5;
+  box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.17);
+  background-color: #f0e0cd;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
-.profile-image {
-  width: 75vw;
-  height: 75vw;
+.image-container {
+  text-align: center;
+  padding-top: 0.3em;
+  padding-left: 1ch;
+  flex: 20%;
+}
 
+.info-container {
+  padding-left: 2em;
+  flex: 80%;
+}
+
+.profile-photo {
+  width: 6em;
+  height: 6em;
   border-radius: 50%;
 }
 
 .profile-image-label {
-  margin: auto;
-  padding: 5px 1px 1px 1px;
+  margin-bottom: 10px;
+  font-size: 1.4em;
+  color: #063970;
 }
 
-input {
-  width: 80vw;
-  height: 9vw;
-  border-radius: 7px;
-  border: none;
+.edit-button {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-right: 5ch;
+  padding-left: 5ch;
+  border-radius: 8px;
+  border: 1px solid #f1eae4;
+  background-color: #eeeee4;
+  color: #e28743;
 }
 
-.input-field {
-  margin: 1rem 1rem 1rem 1rem;
-  padding: 0.2rem 0.2rem 0.2rem 0.2rem;
+.edit-button:hover {
+  border: 1px solid #063970;
+  color: #063970;
+  cursor: pointer;
+}
+
+/*
+ADAPTING TO SMALL - MEDIUM SCREENS
+*/
+@media all and (min-width: 768px) {
+  .profile-image-card {
+    max-width: 70%;
+    margin: 1ch;
+    padding-bottom: 0.8em;
+    border-radius: 7px;
+    border: 1px solid #f8e1c5;
+    box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.17);
+    background-color: #f0e0cd;
+    display: flex;
+    flex-direction: column;
+    /*align-items: center;*/
+  }
+
+  .image-container {
+    padding-left: 3.5ch;
+    text-align: center;
+    flex: 100%;
+  }
+
+  .info-container {
+    flex: 100%;
+  }
+
+  .profile-photo {
+    width: 8em;
+    height: 8em;
+    border-radius: 50%;
+  }
+}
+
+/*
+ADAPTING TO LARGE - XL SCREENS
+*/
+
+@media all and (min-width: 993px) {
+  .profile-image-card {
+    width: 60%;
+    margin: 1ch;
+    padding: auto auto 0.8em auto;
+    border: 1px solid;
+    border-radius: 7px;
+    border: 1px solid #f8e1c5;
+    box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.17);
+    background-color: #f0e0cd;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .image-container {
+    padding-left: 3.5ch;
+    flex: 100%;
+  }
+
+  .info-container {
+    flex: 100%;
+  }
+
+  .profile-photo {
+    width: 12em;
+    height: 12em;
+    border-radius: 50%;
+  }
 }

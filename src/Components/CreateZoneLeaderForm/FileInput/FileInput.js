@@ -14,35 +14,46 @@ const FileInput = (props) => {
             isWordDoc : emptyFileLogo;
     }   
     return (
-        <div className={fileInputStyles['input-field']}>
-            <p align='center'>
+        <div
+            className={fileInputStyles['file-input-card']}
+        >
+            <div 
+                className={fileInputStyles['icon-container']}
+            >
                 <img 
                     src={iconSrc} 
-                    alt={fieldName} 
-                    className={fileInputStyles['doc-thumbnail']}
+                    alt={fieldName}
+                    className={fileInputStyles['file-icon']}
                 />
-            </p>
-            <p align='center'>
+            </div>
+            <div
+                className={fileInputStyles['info-container']}
+            >
+                <div className={fileInputStyles['file-input-label']}>
+                    <label>
+                        {labelKey}
+                    </label>
+                </div>
                 <label 
                     htmlFor={fieldName}
-                    className={fileInputStyles['input-label']}
+                    className={fileInputStyles['edit-button']}
                 >
-                    {labelKey}
+                    Cargue archivo
                 </label>
-            </p>
-            <input 
-                id={fieldName}
-                name={fieldName}
-                type='file'
-                accept={accept}
-                ref={parentRef}
-                onChange={(event) => {
-                    formHook.setFieldValue(
-                        fieldName,
-                        event.currentTarget.files[0]
-                    )
-                }}
-            />
+                <input 
+                    id={fieldName}
+                    name={fieldName}
+                    type='file'
+                    accept={accept}
+                    ref={parentRef}
+                    onChange={(event) => {
+                        formHook.setFieldValue(
+                            fieldName,
+                            event.currentTarget.files[0]
+                        )
+                    }}
+                />
+            </div>
         </div>
     );
 }

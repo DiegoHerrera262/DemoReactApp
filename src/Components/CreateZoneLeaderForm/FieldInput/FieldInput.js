@@ -13,18 +13,19 @@ Description: This component is to be used for creating
 */
 
 import React from 'react';
-import FieldInputStyles from './FieldInput.module.css';
+import fieldInputStyles from './FieldInput.module.css';
 
 const FieldInput = (props) => {
     const {fieldName, formHook, labelKey, typeKey} = props;
     return (
-        <div className={FieldInputStyles['input-field']}>
+        <>
             <label 
                 htmlFor={fieldName}
-                className={FieldInputStyles['input-label']}
+                className={fieldInputStyles['input-label']}
             >
                 {labelKey}
             </label>
+            <br />
             <input
                 id={fieldName}
                 name={fieldName}
@@ -33,12 +34,15 @@ const FieldInput = (props) => {
                 onBlur={formHook.handleBlur}
                 value={formHook.values[fieldName]}
             />
+            <br />
             { formHook.touched[fieldName] && formHook.errors[fieldName] && (
-                <div className={FieldInputStyles['input-error-message']}>
+                <div 
+                    className={fieldInputStyles['error-message']}
+                >
                     {formHook.errors[fieldName]}
                 </div>
             )}
-        </div>
+        </>
     );
 }
 

@@ -1,27 +1,25 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap");
-
-/*
-Input field styles
-*/
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap");
 
 select {
+  width: 30ch;
+  height: 1.5em;
+  margin: 1ch;
+  border-radius: 6px;
   font-family: "Roboto", sans-serif;
-  font-size: 4vw;
-  width: 80vw;
-  height: 9vw;
-  border-radius: 7px;
-  border: none;
-}
-
-.input-field {
-  margin: 1rem 1rem 1rem 1rem;
-  padding: 0.2rem 0.2rem 0.2rem 0.2rem;
+  font-size: 1.1em;
 }
 
 .input-label {
-  padding: 0rem 0rem 0rem 0.1rem;
+  color: #1e81b0;
+  margin: 1ch;
 }
 
-.input-error-message {
+.input-label:hover {
+  color: #154c79;
+}
+
+.error-message {
+  padding: 0 7px 10px 7px;
+  font-size: 0.9em;
   color: red;
 }
