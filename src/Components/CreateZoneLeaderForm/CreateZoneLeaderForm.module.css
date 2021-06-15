@@ -9,8 +9,8 @@ form {
   font-family: "Roboto", sans-serif;
   padding: 1ch;
   border-radius: 8px;
-  border: 1px solid #f8ecdc;
-  background-color: #f0e6de;
+  border: 1px solid #f5f4f4;
+  background-color: #f5f4f4;
   box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.17);
   width: 100%;
 }
@@ -27,9 +27,12 @@ MAP STYLING
 .map-container {
   overflow: hidden;
   border-radius: 7px;
-  max-width: 35ch;
-  margin: 1ch;
-  border: 1px solid #f8e1c5;
+  max-width: 400px;
+  max-height: 400px;
+  margin-top: 1ch;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid #f5f4f4;
   box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.17);
 }
 
@@ -132,18 +135,21 @@ COLUMN STYLES
     padding: 1ch;
     max-width: 100%;
     border-radius: 8px;
-    border: 1px solid #f8ecdc;
-    background-color: #f0e6de;
+    border: 1px solid #f5f4f4;
+    background-color: #f5f4f4;
     box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.17);
-    background-color: #f0e6de;
+    background-color: #f5f4f4;
     width: 100%;
   }
 
   .map-container {
     overflow: hidden;
     border-radius: 7px;
-    max-width: 45ch;
-    margin: 1ch;
+    max-width: 400px;
+    max-height: 400px;
+    margin-top: 6em;
+    margin-left: auto;
+    margin-right: auto;
     border: 1px solid #f8e1c5;
     box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.17);
   }
@@ -172,5 +178,59 @@ COLUMN STYLES
 
   .id-doc-col2 {
     flex: 50%;
+  }
+}
+
+@media all and (min-width: 1246px) {
+  form {
+    font-family: "Roboto", sans-serif;
+    padding: 1ch;
+    max-width: 100%;
+    border-radius: 8px;
+    border: 1px solid #f5f4f4;
+    background-color: #f5f4f4;
+    box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.17);
+    background-color: #f5f4f4;
+    width: 100%;
+  }
+
+  .map-container {
+    overflow: hidden;
+    border-radius: 7px;
+    max-width: 400px;
+    max-height: 400px;
+    margin-top: 6em;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid #f8e1c5;
+    box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.17);
+  }
+
+  .column-wrapper {
+    max-width: 100%;
+    padding: 0ch;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+
+  .col2 {
+    padding: 1ch;
+    margin-left: auto;
+    margin-right: auto;
+    flex: 50%;
+    max-width: 40%;
+  }
+
+  .id-doc-wrapper {
+    max-width: 100%;
+    padding: 0ch;
+    display: flex;
+    flex-direction: row;
+  }
+
+  .id-doc-col2 {
+    flex: 50%;
+    max-width: 30%;
   }
 }

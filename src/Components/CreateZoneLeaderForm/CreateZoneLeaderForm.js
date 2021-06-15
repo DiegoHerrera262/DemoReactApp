@@ -15,6 +15,7 @@ import {useFormik} from 'formik';
 import Modal from 'react-modal';
 import * as Yup from 'yup';
 import MapGL, {Marker} from 'react-map-gl';
+import axios from 'axios';
 
 // Form components
 import FieldInput from './FieldInput';
@@ -23,7 +24,7 @@ import FileInput from './FileInput';
 import ProfileImageInput from './ProfileImageInput';
 
 import blankProfile from './ProfileImageInput/assets/blankProfilePicture.png';
-import mapPin from './assets/zoneLeaderPin.png'
+import mapPin from './assets/pin.png'
 
 import zoneLeaderStyles from './CreateZoneLeaderForm.module.css';
 
@@ -32,6 +33,8 @@ Modal.setAppElement('body');
 
 // Change map display style here
 const mapStyle = 'mapbox://styles/diegoherrera262/ckpossqqj09fy17npwfhqkadq'
+// url for user posting
+const postingUrl = 'http://localhost:8080/lideres'; 
 
 const CreateZoneLeaderForm = (props) => {
     const {labelKeys, typeKeys, selectValues} = props;
@@ -78,11 +81,9 @@ const CreateZoneLeaderForm = (props) => {
     });
     // Viewport state for map sone identification
     const [viewport, setViewport] = useState({
-        width : 700,
-        height : 300,
         latitude : 4.637764262457622,
-        longitude : -74.08897789014473,
-        zoom : 9
+        longitude : -74.14443,
+        zoom : 11
     });
 
     // Instantiate formik hook
@@ -178,12 +179,34 @@ const CreateZoneLeaderForm = (props) => {
     ACTION IT TO BE HANDLED WITH
     THE BACKEND
     */
-    const handleSubmitDataFromModal = () => {
+    const handleSubmitDataFromModal = async () => {
 
+        const postData = {
+            name : formik.values['name'],
+            last_name: formik.values['lastName'],
+            documentId: formik.values['documentId'],
+            address: formik.values['address'],
+            leader_code: formik.values['leaderCode'],
+            email: formik.values['email'],
+            cellphone: formik.values['cellphone'],
+            zone: formik.values['zone'],
+            endContractDate: formik.values['endContractDate'],
+            documentPhoto: "https://AmazonWEB.com/Some/Random/url",
+            rutDocument: "https://AmazonWEB.com/Some/Random/url",
+            contractDocument: "https://AmazonWEB.com/Some/Random/url",
+            profileImage: "https://AmazonWEB.com/Some/Random/url",
+            bankCertification: "https://AmazonWEB.com/Some/Random/url"
+        };
+
+        console.log(postData)
         /*
         CONNECT WITH BACKEND HERE
         */
-
+        const request = await axios.post(postingUrl, postData);
+        console.log(request);
+        /*
+        DO SOME POST PROCESSING ON THE VIEW HERE
+        */
         console.log(formik.values);
 
         // reset form and hide modal
@@ -240,6 +263,8 @@ const CreateZoneLeaderForm = (props) => {
                         className={zoneLeaderStyles['map-container']}
                     >
                         <MapGL
+                            width='400px'
+                            height='400px'
                             {...viewport}
                             onViewportChange={
                                 (viewport) => setViewport(viewport)
@@ -253,11 +278,26 @@ const CreateZoneLeaderForm = (props) => {
                                 draggable
                                 onDragEnd={handleDragEnd}
                             >
-                                <img 
-                                    width='5%'
-                                    src={mapPin}
-                                    alt=''
-                                />
+                                <div
+                                    style={{
+                                        width : "60px",
+                                        height : "60px",
+                                        borderRadius : "50%",
+                                        backgroundColor : "rgba(255, 99, 71, 0.2)",
+                                        position : "absolute"
+                                    }}
+                                >
+                                    <img 
+                                        width='30px'
+                                        src={mapPin}
+                                        alt=''
+                                        style={{
+                                            margin : "auto",
+                                            marginTop: "9px",
+                                            display : "block"
+                                        }}
+                                    />
+                                </div>
                             </Marker>
                         </MapGL>
                     </div>

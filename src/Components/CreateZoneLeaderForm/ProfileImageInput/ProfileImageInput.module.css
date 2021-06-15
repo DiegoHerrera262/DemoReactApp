@@ -4,9 +4,9 @@
   max-width: 100%;
   margin: 1ch;
   border-radius: 9px;
-  border: 1px solid #f8e1c5;
+  border: 1px solid #ffffff;
   box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.17);
-  background-color: #f0e0cd;
+  background-color: #ffffff;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -20,7 +20,7 @@
 }
 
 .info-container {
-  padding-left: 2em;
+  padding-left: 2ch;
   flex: 80%;
 }
 
@@ -28,15 +28,17 @@
   width: 6em;
   height: 6em;
   border-radius: 50%;
+  border: 1px solid #d79d68;
 }
 
 .profile-image-label {
-  margin-bottom: 10px;
+  padding-bottom: 8px;
   font-size: 1.4em;
   color: #063970;
 }
 
 .edit-button {
+  font-size: 0.9em;
   padding-top: 5px;
   padding-bottom: 5px;
   padding-right: 5ch;
@@ -58,21 +60,19 @@ ADAPTING TO SMALL - MEDIUM SCREENS
 */
 @media all and (min-width: 768px) {
   .profile-image-card {
-    max-width: 70%;
+    max-width: 100%;
     margin: 1ch;
     padding-bottom: 0.8em;
     border-radius: 7px;
-    border: 1px solid #f8e1c5;
+    border: 1px solid #ffffff;
     box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.17);
-    background-color: #f0e0cd;
+    background-color: #ffffff;
     display: flex;
     flex-direction: column;
-    /*align-items: center;*/
   }
 
   .image-container {
-    padding-left: 3.5ch;
-    text-align: center;
+    padding-right: 1ch;
     flex: 100%;
   }
 
@@ -80,10 +80,33 @@ ADAPTING TO SMALL - MEDIUM SCREENS
     flex: 100%;
   }
 
+  .profile-image-label {
+    margin-left: 0.5ch;
+    padding-top: 7px;
+    padding-bottom: 5px;
+    padding-right: 2ch;
+    font-size: 1.2em;
+    color: #063970;
+  }
+
   .profile-photo {
     width: 8em;
     height: 8em;
     border-radius: 50%;
+    border: 1px solid #d79d68;
+  }
+
+  .edit-button {
+    font-size: 0.7em;
+    margin-left: 3ch;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 5ch;
+    padding-left: 5ch;
+    border-radius: 8px;
+    border: 1px solid #f1eae4;
+    background-color: #eeeee4;
+    color: #e28743;
   }
 }
 
@@ -93,24 +116,33 @@ ADAPTING TO LARGE - XL SCREENS
 
 @media all and (min-width: 993px) {
   .profile-image-card {
-    width: 60%;
+    max-width: 94%;
     margin: 1ch;
     padding: auto auto 0.8em auto;
     border: 1px solid;
     border-radius: 7px;
-    border: 1px solid #f8e1c5;
+    border: 1px solid #ffffff;
     box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.17);
-    background-color: #f0e0cd;
+    background-color: #ffffff;
     display: flex;
     flex-direction: column;
   }
 
+  .profile-image-label {
+    padding-top: 7px;
+    padding-bottom: 5px;
+    padding-right: 2ch;
+    font-size: 1.1em;
+    color: #063970;
+  }
+
   .image-container {
-    padding-left: 3.5ch;
+    padding-left: 1ch;
     flex: 100%;
   }
 
   .info-container {
+    padding-left: 2ch;
     flex: 100%;
   }
 
@@ -118,5 +150,19 @@ ADAPTING TO LARGE - XL SCREENS
     width: 12em;
     height: 12em;
     border-radius: 50%;
+    border: 1px solid #d79d68;
+  }
+
+  .edit-button {
+    font-size: 0.7em;
+    margin-left: 1.5ch;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 5ch;
+    padding-left: 5ch;
+    border-radius: 8px;
+    border: 1px solid #f1eae4;
+    background-color: #eeeee4;
+    color: #e28743;
   }
 }

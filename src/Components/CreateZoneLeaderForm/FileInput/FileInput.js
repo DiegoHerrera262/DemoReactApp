@@ -30,9 +30,7 @@ const FileInput = (props) => {
                 className={fileInputStyles['info-container']}
             >
                 <div className={fileInputStyles['file-input-label']}>
-                    <label>
-                        {labelKey}
-                    </label>
+                    {labelKey}
                 </div>
                 <label 
                     htmlFor={fieldName}

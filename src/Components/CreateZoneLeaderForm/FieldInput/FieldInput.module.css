@@ -1,18 +1,30 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
 
 input {
-  width: 30ch;
+  width: 94%;
   height: 1.5em;
-  margin: 1ch;
+  margin-left: 1ch;
+  margin-top: 0.4em;
+  margin-bottom: 0.3em;
+  margin-right: 1ch;
   border-radius: 6px;
   border: burlywood;
   font-family: "Roboto", sans-serif;
-  font-size: 1.1em;
+  font-size: 0.9em;
+  color: #154c79;
+}
+
+input:focus {
+  border: 2px solid #e28743;
+  background-color: #f5e1d2;
+  outline: none;
 }
 
 .input-label {
-  color: #1e81b0;
-  margin: 1ch;
+  font-size: 1em;
+  color: #161422;
+  margin-top: 1ch;
+  margin-left: 1ch;
 }
 
 .input-label:hover {
@@ -20,7 +32,8 @@ input {
 }
 
 .error-message {
-  padding: 0 7px 10px 7px;
-  font-size: 0.8em;
+  margin-left: 1ch;
+  margin-bottom: 1em;
+  font-size: 0.7em;
   color: red;
 }

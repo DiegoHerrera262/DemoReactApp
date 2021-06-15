@@ -21,9 +21,7 @@ const ProfileImageInput = (props) => {
                 className={profileImageInputStyles['info-container']}
             >
                 <div className={profileImageInputStyles['profile-image-label']}>
-                    <label>
-                        {labelKey}
-                    </label>
+                    {labelKey}
                 </div>
                 <label
                     htmlFor={inputID}

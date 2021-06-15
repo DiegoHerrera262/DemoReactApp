@@ -45,17 +45,25 @@
   color: #e28743;
 }
 
-.edit-button:hover {
+.edit-button:hover,
+.edit-button:focus {
   border: 1px solid #063970;
   color: #063970;
   cursor: pointer;
+}
+
+label:focus {
+  border: 1px solid #063970;
+  color: #063970;
+  cursor: pointer;
+  outline: none;
 }
 
 /*
 ADAPTING TO MEDIUM - XL SCREENS
 */
 
-@media all and (min-width: 768px) {
+@media all and (min-width: 882px) {
   .file-input-card {
     max-width: 150px;
     margin: 0ch 0 4ch 0;
