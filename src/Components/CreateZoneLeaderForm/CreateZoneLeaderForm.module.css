@@ -70,15 +70,15 @@ BUTTON STYLES
   padding-left: 1ch;
   padding-right: 1ch;
   border-radius: 8px;
-  border: 1px solid green;
+  border: 1px solid #53c149;
   background-color: rgb(203, 223, 203);
-  color: green;
+  color: #53c149;
   margin: 1ch;
 }
 
 .submit-button:hover {
   color: white;
-  background-color: green;
+  background-color: #53c149;
   cursor: pointer;
   margin: 1ch;
 }
@@ -127,6 +127,29 @@ COLUMN STYLES
 .id-doc-col2 {
   padding: 1ch;
   flex: 100%;
+}
+
+/*
+SUBMIT MESSAGE STYLES
+*/
+.error-div {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 85%;
+  padding: 2ch;
+  color: red;
+  background-color: rgb(255, 193, 190);
+  border: 1px solid rgb(247, 148, 148);
+}
+
+.confirm-div {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 85%;
+  padding: 2ch;
+  color: green;
+  background-color: rgb(201, 253, 201);
+  border: 1px solid rgb(140, 218, 140);
 }
 
 @media all and (min-width: 882px) {

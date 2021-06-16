@@ -28,7 +28,7 @@
   width: 6em;
   height: 6em;
   border-radius: 50%;
-  border: 1px solid #d79d68;
+  border: 1px solid #a8df92;
 }
 
 .profile-image-label {
@@ -38,7 +38,7 @@
 }
 
 .edit-button {
-  font-size: 0.9em;
+  font-size: 1em;
   padding-top: 5px;
   padding-bottom: 5px;
   padding-right: 5ch;
@@ -46,7 +46,7 @@
   border-radius: 8px;
   border: 1px solid #f1eae4;
   background-color: #eeeee4;
-  color: #e28743;
+  color: #29790a;
 }
 
 .edit-button:hover {
@@ -93,7 +93,7 @@ ADAPTING TO SMALL - MEDIUM SCREENS
     width: 8em;
     height: 8em;
     border-radius: 50%;
-    border: 1px solid #d79d68;
+    border: 1px solid #a8df92;
   }
 
   .edit-button {
@@ -106,7 +106,7 @@ ADAPTING TO SMALL - MEDIUM SCREENS
     border-radius: 8px;
     border: 1px solid #f1eae4;
     background-color: #eeeee4;
-    color: #e28743;
+    color: #29790a;
   }
 }
 
@@ -150,7 +150,7 @@ ADAPTING TO LARGE - XL SCREENS
     width: 12em;
     height: 12em;
     border-radius: 50%;
-    border: 1px solid #d79d68;
+    border: 1px solid #a8df92;
   }
 
   .edit-button {
@@ -163,6 +163,6 @@ ADAPTING TO LARGE - XL SCREENS
     border-radius: 8px;
     border: 1px solid #f1eae4;
     background-color: #eeeee4;
-    color: #e28743;
+    color: #29790a;
   }
 }

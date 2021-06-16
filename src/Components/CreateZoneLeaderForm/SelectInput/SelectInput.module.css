@@ -2,7 +2,7 @@
 
 select {
   width: 95%;
-  height: 1.5em;
+  height: 2.5em;
   margin-left: 1ch;
   margin-top: 0.4em;
   margin-bottom: 0.3em;
@@ -10,13 +10,13 @@ select {
   border-radius: 6px;
   border: burlywood;
   font-family: "Roboto", sans-serif;
-  font-size: 0.9em;
+  font-size: 1em;
   color: #154c79;
 }
 
 select:focus {
-  border: 2px solid #e28743;
-  background-color: #f5e1d2;
+  border: 2px solid #154c79;
+  background-color: #fffdfa;
   outline: none;
 }
 

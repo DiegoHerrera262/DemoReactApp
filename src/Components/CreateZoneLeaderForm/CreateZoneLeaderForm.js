@@ -10,12 +10,15 @@ Description: This component is to be used for creating
 
 import React, {useState, useEffect, useRef, useCallback} from 'react';
 
+// HTTP connection to backend
+import {postLeader} from '../../endpoint/zoneLeaders.methods';
+
 // Third party imports
 import {useFormik} from 'formik';
 import Modal from 'react-modal';
 import * as Yup from 'yup';
 import MapGL, {Marker} from 'react-map-gl';
-import axios from 'axios';
+// import axios from 'axios';
 
 // Form components
 import FieldInput from './FieldInput';
@@ -33,8 +36,6 @@ Modal.setAppElement('body');
 
 // Change map display style here
 const mapStyle = 'mapbox://styles/diegoherrera262/ckpossqqj09fy17npwfhqkadq'
-// url for user posting
-const postingUrl = 'http://localhost:8080/lideres'; 
 
 const CreateZoneLeaderForm = (props) => {
     const {labelKeys, typeKeys, selectValues} = props;
@@ -63,7 +64,6 @@ const CreateZoneLeaderForm = (props) => {
     const profileImageRef = useRef();
     // Ref for resetting files
     const frontIdRef = useRef();
-    const backIdRef = useRef();
     const rutRef = useRef();
     const bankDataRef = useRef();
     const contractRef = useRef();
@@ -85,6 +85,10 @@ const CreateZoneLeaderForm = (props) => {
         longitude : -74.14443,
         zoom : 11
     });
+    // confirmation message after submit
+    const [showCreatingLeaderMessage, setShowCreatingLeaderMessage] = useState(false);
+    const [serverMessage, setServerMessage] = useState('');
+    const [serverMessageStyle, setServerMessageStyle] = useState({});
 
     // Instantiate formik hook
     // for data management
@@ -199,32 +203,47 @@ const CreateZoneLeaderForm = (props) => {
         };
 
         console.log(postData)
-        /*
-        CONNECT WITH BACKEND HERE
-        */
-        const request = await axios.post(postingUrl, postData);
-        console.log(request);
-        /*
-        DO SOME POST PROCESSING ON THE VIEW HERE
-        */
-        console.log(formik.values);
 
-        // reset form and hide modal
-        formik.resetForm();
-        formik.values = defaultInitialValues;
-        // Reset file inputs
-        profileImageRef.current.value = "";
-        frontIdRef.current.value = "";
-        backIdRef.current.value = "";
-        rutRef.current.value = "";
-        bankDataRef.current.value = "";
-        contractRef.current.value = "";
-        
-        setConfirmShowModal(false);
+        try {
+            const {message, correct} = await postLeader(postData);
+            console.log(formik.values);
+            console.log(message);
+
+            setServerMessage(message);
+            setConfirmShowModal(false);
+
+            // reset form and hide modal
+            if (correct) {
+                formik.resetForm();
+                formik.values = defaultInitialValues;
+                // Reset file inputs
+                profileImageRef.current.value = "";
+                frontIdRef.current.value = "";
+                rutRef.current.value = "";
+                bankDataRef.current.value = "";
+                contractRef.current.value = "";
+                setShowCreatingLeaderMessage(true);
+                return setServerMessageStyle(zoneLeaderStyles['confirm-div'])
+            }
+                        
+            setShowCreatingLeaderMessage(true);
+            setServerMessageStyle(zoneLeaderStyles['error-div']);
+
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return (
         <form onSubmit = {formik.handleSubmit}>
+            {
+                showCreatingLeaderMessage && 
+                <div
+                    className={serverMessageStyle}
+                >
+                    {serverMessage}
+                </div>
+            }
             <div
                 className={zoneLeaderStyles['column-wrapper']}
             >
@@ -235,6 +254,7 @@ const CreateZoneLeaderForm = (props) => {
                         labelKey='Foto líder de zona'
                         formHook={formik}
                     />
+                    <br />
                     {
                         leftFields.map((field) => {
                             if (typeKeys[field] === 'select'){
@@ -331,33 +351,20 @@ const CreateZoneLeaderForm = (props) => {
                     <h2> Documentos </h2>
 
                     <h3> Documento de identidad </h3>
-                    <div className={zoneLeaderStyles['id-doc-wrapper']}>
-                        <div className={zoneLeaderStyles['id-doc-col2']}>
-                            <FileInput
-                                fieldName='frontID'
-                                formHook={formik}
-                                parentRef={frontIdRef}
-                                labelKey='Cara frontal'
-                                accept='.pdf, image/*'
-                            />
-                        </div>
-                        <div className={zoneLeaderStyles['id-doc-col2']}>
-                            <FileInput 
-                                fieldName='backID'
-                                formHook={formik}
-                                parentRef={backIdRef}
-                                labelKey='Cara trasera'
-                                accept='.pdf, image/*'
-                            />
-                        </div>
-                    </div>
+                    <FileInput
+                        fieldName='frontID'
+                        formHook={formik}
+                        parentRef={frontIdRef}
+                        labelKey='Ingrese PDF'
+                        accept='.pdf, image/*'
+                    />
 
                     <h3> RUT </h3>
                     <FileInput 
                         fieldName='rut'
                         formHook={formik}
                         parentRef={rutRef}
-                        labelKey='Ingrese documento'
+                        labelKey='Ingrese PDF o Word'
                         accept='.pdf, .doc, .docx'
                     />
 
@@ -366,7 +373,7 @@ const CreateZoneLeaderForm = (props) => {
                         fieldName='bankData'
                         formHook={formik}
                         parentRef={bankDataRef}
-                        labelKey='Ingrese documento'
+                        labelKey='Ingrese PDF o Word'
                         accept='.pdf, .doc, .docx'
                     />
 
@@ -375,19 +382,31 @@ const CreateZoneLeaderForm = (props) => {
                         fieldName='contract'
                         formHook={formik}
                         parentRef={contractRef}
-                        labelKey='Ingrese documento'
+                        labelKey='Ingrese PDF o Word'
                         accept='.pdf, .doc, .docx'
                     />
                 </div>
             </div>
-            
-            <button
-                type='submit'
-                onClick={handleErrorClick}
-                className={zoneLeaderStyles['submit-button']}    
+            <div
+                className={zoneLeaderStyles['column-wrapper']}
             >
-                 Crear líder
-            </button>
+                <div
+                    className={zoneLeaderStyles['col2']}
+                >
+                    <button
+                        type='submit'
+                        onClick={handleErrorClick}
+                        className={zoneLeaderStyles['submit-button']}    
+                    >
+                        Crear líder
+                    </button>
+                </div>
+                <div
+                    className={zoneLeaderStyles['col2']}
+                ></div>
+            </div>
+
+            
             <Modal 
                 isOpen={showConfirmModal}
                 onRequestClose={() => {setConfirmShowModal(false)}}

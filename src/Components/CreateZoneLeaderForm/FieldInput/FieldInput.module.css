@@ -2,7 +2,7 @@
 
 input {
   width: 94%;
-  height: 1.5em;
+  height: 3em;
   margin-left: 1ch;
   margin-top: 0.4em;
   margin-bottom: 0.3em;
@@ -10,18 +10,18 @@ input {
   border-radius: 6px;
   border: burlywood;
   font-family: "Roboto", sans-serif;
-  font-size: 0.9em;
+  font-size: 1em;
   color: #154c79;
 }
 
 input:focus {
-  border: 2px solid #e28743;
-  background-color: #f5e1d2;
+  border: 2px solid #154c79;
+  background-color: #fffdfa;
   outline: none;
 }
 
 .input-label {
-  font-size: 1em;
+  font-size: 1.1em;
   color: #161422;
   margin-top: 1ch;
   margin-left: 1ch;
