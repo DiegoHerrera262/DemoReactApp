@@ -1,6 +1,7 @@
 
 import './App.css';
 import CreateZoneLeaderForm from './components/CreateZoneLeaderForm';
+import UpdateZoneLeaderForm from './components/UpdateZoneLeaderForm';
 
 // Default initial values for the form
 const defaultInitialValues = {

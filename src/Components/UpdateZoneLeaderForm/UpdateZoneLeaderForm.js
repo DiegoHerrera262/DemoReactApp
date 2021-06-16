@@ -18,6 +18,7 @@ import {useFormik} from 'formik';
 import Modal from 'react-modal';
 import * as Yup from 'yup';
 import MapGL, {Marker} from 'react-map-gl';
+// import axios from 'axios';
 
 // Form components
 import FieldInput from '../FieldInput';
@@ -28,7 +29,7 @@ import ProfileImageInput from '../ProfileImageInput';
 import blankProfile from '../ProfileImageInput/assets/blankProfilePicture.png';
 import mapPin from '../assets/pin.png'
 
-import zoneLeaderStyles from './CreateZoneLeaderForm.module.css';
+import zoneLeaderStyles from './UpdateZoneLeaderForm.module.css';
 
 // DO NOT DELETE THIS
 Modal.setAppElement('body');
@@ -36,7 +37,7 @@ Modal.setAppElement('body');
 // Change map display style here
 const mapStyle = 'mapbox://styles/diegoherrera262/ckpossqqj09fy17npwfhqkadq'
 
-const UpdateZoneLeaderForm = (props) => {
+const CreateZoneLeaderForm = (props) => {
     const {labelKeys, typeKeys, selectValues} = props;
     let {defaultInitialValues} = props;
     const valueKeys = Object.keys(defaultInitialValues);
@@ -451,4 +452,4 @@ const UpdateZoneLeaderForm = (props) => {
     );
 }
 
-export default UpdateZoneLeaderForm;
+export default CreateZoneLeaderForm;
