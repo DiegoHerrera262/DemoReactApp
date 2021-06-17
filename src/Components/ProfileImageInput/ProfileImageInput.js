@@ -4,6 +4,8 @@ import profileImageInputStyles from './ProfileImageInput.module.css';
 const ProfileImageInput = (props) => {
     const inputID = 'profileImage';
     const {formHook, src, labelKey, parentRef} = props;
+    const formButtonStyle = props.edit ? profileImageInputStyles['edit-button-edit'] : profileImageInputStyles['edit-button'];
+    const imageStyle = props.edit ? profileImageInputStyles['profile-photo-edit'] : profileImageInputStyles['profile-photo'];
     return (
         <div
             className={profileImageInputStyles['profile-image-card']}
@@ -14,7 +16,7 @@ const ProfileImageInput = (props) => {
                 <img
                     src={src} 
                     alt={labelKey}
-                    className={profileImageInputStyles['profile-photo']}
+                    className={imageStyle}
                 />
             </div>
             <div
@@ -25,7 +27,7 @@ const ProfileImageInput = (props) => {
                 </div>
                 <label
                     htmlFor={inputID}
-                    className={profileImageInputStyles['edit-button']}
+                    className={formButtonStyle}
                 >
                     Cargue foto
                 </label>

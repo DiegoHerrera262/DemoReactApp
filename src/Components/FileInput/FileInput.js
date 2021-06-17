@@ -12,7 +12,8 @@ const FileInput = (props) => {
         iconSrc = formHook.values[fieldName].type === 'application/pdf' ? 
             isPdfFile : formHook.values[fieldName].type === 'application/msword' ?
             isWordDoc : emptyFileLogo;
-    }   
+    }
+    const formButtonStyle = props.edit ? fileInputStyles['edit-button-edit'] : fileInputStyles['edit-button'];
     return (
         <div
             className={fileInputStyles['file-input-card']}
@@ -34,7 +35,7 @@ const FileInput = (props) => {
                 </div>
                 <label 
                     htmlFor={fieldName}
-                    className={fileInputStyles['edit-button']}
+                    className={formButtonStyle}
                 >
                     Cargue archivo
                 </label>

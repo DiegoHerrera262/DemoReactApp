@@ -1,0 +1,24 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap");
+
+.main-page-container {
+  padding: 2ch;
+  font-family: "Robot", sans-serif;
+  background-color: #f5f4f4;
+  max-width: 99%;
+}
+
+.info-title {
+  font-size: 1.5em;
+  margin-top: 1em;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1.3em;
+  padding: 1ch;
+  padding-left: 2ch;
+  max-width: 91%;
+  border: 1px solid #272741;
+  color: white;
+  background-color: #272741;
+  border-radius: 8px;
+  /*box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.17);*/
+}

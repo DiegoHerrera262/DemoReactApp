@@ -18,8 +18,29 @@ const updateLeader = async (leaderId, newData) => {
         await axios.put(putURL, newData);
         return {message : 'Líder actualizado correctamente', correct : true};
     } catch (error) {
+        console.log(error);
         return {message : 'Datos previamente registrados. Actualización Incorrecta', correct : false};
     }
 }
 
-export {postLeader, updateLeader};
+const getLeaderById = async (leaderId) => {
+    const getURL = `http://localhost:8080/lideres/${leaderId}`;
+    try {
+        const leaderData = await axios.get(getURL);
+        return leaderData.data;
+    } catch (error) {
+        return {
+            name : '',
+            lastName : '',
+            documentId : '',
+            zone : '',
+            address : '',
+            leaderCode : '',
+            email : '',
+            cellphone : '',
+            endContractDate : '',
+        }
+    }
+}
+
+export {postLeader, updateLeader, getLeaderById};

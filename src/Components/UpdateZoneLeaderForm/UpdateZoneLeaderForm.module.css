@@ -9,10 +9,8 @@ form {
   font-family: "Roboto", sans-serif;
   padding: 1ch;
   border-radius: 8px;
-  border: 1px solid #f5f4f4;
   background-color: #f5f4f4;
-  box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.17);
-  width: 100%;
+  /*width: 100%;*/
 }
 
 [type="file"] {
@@ -153,18 +151,6 @@ SUBMIT MESSAGE STYLES
 }
 
 @media all and (min-width: 882px) {
-  form {
-    font-family: "Roboto", sans-serif;
-    padding: 1ch;
-    max-width: 100%;
-    border-radius: 8px;
-    border: 1px solid #f5f4f4;
-    background-color: #f5f4f4;
-    box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.17);
-    background-color: #f5f4f4;
-    width: 100%;
-  }
-
   .map-container {
     overflow: hidden;
     border-radius: 7px;
@@ -205,18 +191,6 @@ SUBMIT MESSAGE STYLES
 }
 
 @media all and (min-width: 1246px) {
-  form {
-    font-family: "Roboto", sans-serif;
-    padding: 1ch;
-    max-width: 100%;
-    border-radius: 8px;
-    border: 1px solid #f5f4f4;
-    background-color: #f5f4f4;
-    box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.17);
-    background-color: #f5f4f4;
-    width: 100%;
-  }
-
   .map-container {
     overflow: hidden;
     border-radius: 7px;

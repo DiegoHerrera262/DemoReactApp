@@ -31,6 +31,13 @@
   border: 1px solid #a8df92;
 }
 
+.profile-photo-edit {
+  width: 6em;
+  height: 6em;
+  border-radius: 50%;
+  border: 1px solid #ee9714;
+}
+
 .profile-image-label {
   padding-bottom: 8px;
   font-size: 1.4em;
@@ -49,7 +56,22 @@
   color: #29790a;
 }
 
-.edit-button:hover {
+.edit-button-edit {
+  font-size: 1em;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-right: 5ch;
+  padding-left: 5ch;
+  border-radius: 8px;
+  border: 1px solid #f1eae4;
+  background-color: #eeeee4;
+  color: #f39033;
+}
+
+.edit-button:hover,
+.edit-button-edit:hover,
+.edit-button:focus,
+.edit-button-edit:focus {
   border: 1px solid #063970;
   color: #063970;
   cursor: pointer;
@@ -81,10 +103,8 @@ ADAPTING TO SMALL - MEDIUM SCREENS
   }
 
   .profile-image-label {
-    margin-left: 0.5ch;
     padding-top: 7px;
     padding-bottom: 5px;
-    padding-right: 2ch;
     font-size: 1.2em;
     color: #063970;
   }
@@ -96,9 +116,17 @@ ADAPTING TO SMALL - MEDIUM SCREENS
     border: 1px solid #a8df92;
   }
 
+  .profile-photo-edit {
+    width: 8em;
+    height: 8em;
+    border-radius: 50%;
+    border: 1px solid #ee9714;
+  }
+
   .edit-button {
     font-size: 0.7em;
-    margin-left: 3ch;
+    margin-left: 1.4ch;
+    margin-right: auto;
     padding-top: 5px;
     padding-bottom: 5px;
     padding-right: 5ch;
@@ -107,6 +135,20 @@ ADAPTING TO SMALL - MEDIUM SCREENS
     border: 1px solid #f1eae4;
     background-color: #eeeee4;
     color: #29790a;
+  }
+
+  .edit-button-edit {
+    font-size: 0.7em;
+    margin-left: 1.4ch;
+    margin-right: auto;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 5ch;
+    padding-left: 5ch;
+    border-radius: 8px;
+    border: 1px solid #f1eae4;
+    background-color: #eeeee4;
+    color: #f39033;
   }
 }
 
@@ -153,6 +195,13 @@ ADAPTING TO LARGE - XL SCREENS
     border: 1px solid #a8df92;
   }
 
+  .profile-photo-edit {
+    width: 12em;
+    height: 12em;
+    border-radius: 50%;
+    border: 1px solid #ee9714;
+  }
+
   .edit-button {
     font-size: 0.7em;
     margin-left: 1.5ch;
@@ -164,5 +213,18 @@ ADAPTING TO LARGE - XL SCREENS
     border: 1px solid #f1eae4;
     background-color: #eeeee4;
     color: #29790a;
+  }
+
+  .edit-button-edit {
+    font-size: 0.7em;
+    margin-left: 1.5ch;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 5ch;
+    padding-left: 5ch;
+    border-radius: 8px;
+    border: 1px solid #f1eae4;
+    background-color: #eeeee4;
+    color: #f39033;
   }
 }

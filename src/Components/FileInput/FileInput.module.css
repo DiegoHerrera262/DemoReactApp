@@ -45,8 +45,22 @@
   color: #29790a;
 }
 
+.edit-button-edit {
+  font-size: 0.9em;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-right: 1ch;
+  padding-left: 1ch;
+  border-radius: 8px;
+  border: 1px solid #f1eae4;
+  background-color: #eeeee4;
+  color: #f39033;
+}
+
 .edit-button:hover,
-.edit-button:focus {
+.edit-button:focus,
+.edit-button-edit:focus,
+.edit-button-edit:hover {
   border: 1px solid #063970;
   color: #063970;
   cursor: pointer;

@@ -11,7 +11,7 @@ Description: This component is to be used for creating
 import React, {useState, useEffect, useRef, useCallback} from 'react';
 
 // HTTP connection to backend
-import {postLeader} from '../../endpoint/zoneLeaders.methods';
+import {updateLeader} from '../../endpoint/zoneLeaders.methods';
 
 // Third party imports
 import {useFormik} from 'formik';
@@ -37,20 +37,20 @@ Modal.setAppElement('body');
 // Change map display style here
 const mapStyle = 'mapbox://styles/diegoherrera262/ckpossqqj09fy17npwfhqkadq'
 
-const CreateZoneLeaderForm = (props) => {
+const UpdateZoneLeaderForm = (props) => {
     const {labelKeys, typeKeys, selectValues} = props;
     let {defaultInitialValues} = props;
+
     const valueKeys = Object.keys(defaultInitialValues);
 
     // include document properties on the initial values
     defaultInitialValues = {
-        ...defaultInitialValues,
         frontID : {},
-        backID : {},
         rut : {},
         bankData : {},
         contract : {}, 
-        profileImage : null
+        profileImage : null,
+        ...defaultInitialValues
     }
 
     // Split fields according to figma view design
@@ -205,7 +205,7 @@ const CreateZoneLeaderForm = (props) => {
         console.log(postData)
 
         try {
-            const {message, correct} = await postLeader(postData);
+            const {message, correct} = await updateLeader(parseInt(props.leaderId), postData);
             console.log(formik.values);
             console.log(message);
 
@@ -214,14 +214,6 @@ const CreateZoneLeaderForm = (props) => {
 
             // reset form and hide modal
             if (correct) {
-                formik.resetForm();
-                formik.values = defaultInitialValues;
-                // Reset file inputs
-                profileImageRef.current.value = "";
-                frontIdRef.current.value = "";
-                rutRef.current.value = "";
-                bankDataRef.current.value = "";
-                contractRef.current.value = "";
                 setShowCreatingLeaderMessage(true);
                 return setServerMessageStyle(zoneLeaderStyles['confirm-div'])
             }
@@ -248,7 +240,8 @@ const CreateZoneLeaderForm = (props) => {
                 className={zoneLeaderStyles['column-wrapper']}
             >
                 <div className={zoneLeaderStyles['col2']}>
-                    <ProfileImageInput 
+                    <ProfileImageInput
+                        edit
                         src={profileImageSource}
                         parentRef={profileImageRef}
                         labelKey='Foto líder de zona'
@@ -348,10 +341,11 @@ const CreateZoneLeaderForm = (props) => {
                         })
                     }
                     
-                    <h2> Documentos </h2>
+                    <h2 style={{paddingLeft : '0.8ch'}}> Documentos </h2>
 
-                    <h3> Documento de identidad </h3>
+                    <h3 style={{paddingLeft : '1ch'}}> Documento de identidad </h3>
                     <FileInput
+                        edit
                         fieldName='frontID'
                         formHook={formik}
                         parentRef={frontIdRef}
@@ -359,8 +353,9 @@ const CreateZoneLeaderForm = (props) => {
                         accept='.pdf, image/*'
                     />
 
-                    <h3> RUT </h3>
-                    <FileInput 
+                    <h3 style={{paddingLeft : '1ch'}}> RUT </h3>
+                    <FileInput
+                        edit
                         fieldName='rut'
                         formHook={formik}
                         parentRef={rutRef}
@@ -368,8 +363,9 @@ const CreateZoneLeaderForm = (props) => {
                         accept='.pdf, .doc, .docx'
                     />
 
-                    <h3> Certificación bancaria </h3>
+                    <h3 style={{paddingLeft : '1ch'}}> Certificación bancaria </h3>
                     <FileInput
+                        edit
                         fieldName='bankData'
                         formHook={formik}
                         parentRef={bankDataRef}
@@ -377,8 +373,9 @@ const CreateZoneLeaderForm = (props) => {
                         accept='.pdf, .doc, .docx'
                     />
 
-                    <h3> Contrato </h3>
-                    <FileInput 
+                    <h3 style={{paddingLeft : '1ch'}}> Contrato </h3>
+                    <FileInput
+                        edit
                         fieldName='contract'
                         formHook={formik}
                         parentRef={contractRef}
@@ -398,7 +395,7 @@ const CreateZoneLeaderForm = (props) => {
                         onClick={handleErrorClick}
                         className={zoneLeaderStyles['submit-button']}    
                     >
-                        Crear líder
+                        Actualizar
                     </button>
                 </div>
                 <div
@@ -414,7 +411,7 @@ const CreateZoneLeaderForm = (props) => {
                 overlayClassName={zoneLeaderStyles['Overlay']}
             >
                 <p align='center'>
-                    Confirme creación de líder
+                    Confirme actualización de líder
                 </p>
                 <div
                     style={{textAlign : 'center'}}
@@ -452,4 +449,4 @@ const CreateZoneLeaderForm = (props) => {
     );
 }
 
-export default CreateZoneLeaderForm;
+export default UpdateZoneLeaderForm;
