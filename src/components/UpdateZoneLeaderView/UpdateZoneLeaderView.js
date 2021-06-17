@@ -28,14 +28,6 @@ const typeKeys = {
     endContractDate : 'date',
 }
 
-const selectValues = {
-    zone : [
-      '--Elija una zona--',
-      'Norte',
-      'Sur'
-    ]
-}
-
 const UpdateZoneLeaderView = (props) => {
     const { leaderId } = props;
     const [defaultInitialValues, setDefaultInitialValues] = useState({
@@ -55,6 +47,14 @@ const UpdateZoneLeaderView = (props) => {
         profileImage : ''
     })
     const [loadingData, setLoadingData] = useState(true);
+    const [zoneIds, setZoneIds] = useState({});
+    const [selectValues, setSelectValues] = useState({
+        zone : [
+        '--Elija una zona--',
+        'Norte',
+        'Sur'
+        ]
+    });
 
     
     useEffect(() =>{
@@ -62,14 +62,32 @@ const UpdateZoneLeaderView = (props) => {
             const result = await getLeaderById(id);
             const resData = result[0];
             console.log(resData);
+
+            /* 
+            THIS SHOULD BE FETCHED FROM ZONE TABLE
+            ON THE DATABASE
+            */
+            const zoneKeys = {
+                Norte : 2,
+                Sur : 1
+            };
+
+            setSelectValues({
+                zone : [
+                    '--Elija una zona--',
+                    ...Object.keys(zoneKeys)
+                ]
+            })
+
+            setZoneIds(zoneKeys);
             setDefaultInitialValues({
                 name: resData['name'],
                 lastName: resData['last_name'],
                 documentId : parseInt(resData['document']),
-                zone : '',
+                zone : Object.keys(zoneKeys).find(key => zoneKeys[key] === parseInt(resData['zone_id']))/*parseInt(resData['zone_id']) === 1 ? 'Sur' : 'Norte']*/,
                 address : resData['address'],
                 leaderCode : parseInt(resData['seller_code']),
-                email : '',
+                email : resData['email'],
                 cellphone : parseInt(resData['cellphone']),
                 endContractDate : new Date(Date.parse(resData['contract_expires'])).toISOString().substring(0,10)
             });
@@ -109,6 +127,7 @@ const UpdateZoneLeaderView = (props) => {
                         leaderId={props.leaderId}
                         labelKeys={labelKeys}
                         typeKeys={typeKeys}
+                        zoneKeys={zoneIds}
                         selectValues={selectValues}
                     />
                 </div>

@@ -38,7 +38,7 @@ Modal.setAppElement('body');
 const mapStyle = 'mapbox://styles/diegoherrera262/ckpossqqj09fy17npwfhqkadq'
 
 const UpdateZoneLeaderForm = (props) => {
-    const {labelKeys, typeKeys, selectValues} = props;
+    const {labelKeys, typeKeys, selectValues, zoneKeys} = props;
     let {defaultInitialValues} = props;
 
     const valueKeys = Object.keys(defaultInitialValues);
@@ -193,7 +193,7 @@ const UpdateZoneLeaderForm = (props) => {
             leader_code: formik.values['leaderCode'],
             email: formik.values['email'],
             cellphone: formik.values['cellphone'],
-            zone: formik.values['zone'],
+            zone_id: zoneKeys[formik.values['zone']],
             endContractDate: formik.values['endContractDate'],
             documentPhoto: "https://AmazonWEB.com/Some/Random/url",
             rutDocument: "https://AmazonWEB.com/Some/Random/url",

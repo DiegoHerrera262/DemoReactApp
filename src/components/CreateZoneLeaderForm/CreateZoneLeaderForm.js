@@ -36,8 +36,8 @@ Modal.setAppElement('body');
 // Change map display style here
 const mapStyle = 'mapbox://styles/diegoherrera262/ckpossqqj09fy17npwfhqkadq'
 
-const UpdateZoneLeaderForm = (props) => {
-    const {labelKeys, typeKeys, selectValues} = props;
+const CreateZoneLeaderForm = (props) => {
+    const {labelKeys, typeKeys, selectValues, zoneKeys} = props;
     let {defaultInitialValues} = props;
     const valueKeys = Object.keys(defaultInitialValues);
 
@@ -192,7 +192,7 @@ const UpdateZoneLeaderForm = (props) => {
             leader_code: formik.values['leaderCode'],
             email: formik.values['email'],
             cellphone: formik.values['cellphone'],
-            zone: formik.values['zone'],
+            zone_id: zoneKeys[formik.values['zone']],
             endContractDate: formik.values['endContractDate'],
             documentPhoto: "https://AmazonWEB.com/Some/Random/url",
             rutDocument: "https://AmazonWEB.com/Some/Random/url",
@@ -347,9 +347,9 @@ const UpdateZoneLeaderForm = (props) => {
                         })
                     }
                     
-                    <h2> Documentos </h2>
+                    <h2 style={{paddingLeft : '0.8ch'}}> Documentos </h2>
 
-                    <h3> Documento de identidad </h3>
+                    <h3 style={{paddingLeft : '1ch'}}> Documento de identidad </h3>
                     <FileInput
                         fieldName='frontID'
                         formHook={formik}
@@ -358,7 +358,7 @@ const UpdateZoneLeaderForm = (props) => {
                         accept='.pdf, image/*'
                     />
 
-                    <h3> RUT </h3>
+                    <h3 style={{paddingLeft : '1ch'}}> RUT </h3>
                     <FileInput 
                         fieldName='rut'
                         formHook={formik}
@@ -367,7 +367,7 @@ const UpdateZoneLeaderForm = (props) => {
                         accept='.pdf, .doc, .docx'
                     />
 
-                    <h3> Certificación bancaria </h3>
+                    <h3 style={{paddingLeft : '1ch'}}> Certificación bancaria </h3>
                     <FileInput
                         fieldName='bankData'
                         formHook={formik}
@@ -376,7 +376,7 @@ const UpdateZoneLeaderForm = (props) => {
                         accept='.pdf, .doc, .docx'
                     />
 
-                    <h3> Contrato </h3>
+                    <h3 style={{paddingLeft : '1ch'}}> Contrato </h3>
                     <FileInput 
                         fieldName='contract'
                         formHook={formik}
@@ -451,4 +451,4 @@ const UpdateZoneLeaderForm = (props) => {
     );
 }
 
-export default UpdateZoneLeaderForm;
+export default CreateZoneLeaderForm;

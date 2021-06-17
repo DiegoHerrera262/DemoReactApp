@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import CreateZoneLeaderForm from '../CreateZoneLeaderForm';
 import createStyles from './CreateZoneLeaderView.module.css';
 
@@ -40,6 +40,7 @@ const typeKeys = {
     endContractDate : 'date',
 }
 
+/*
 const selectValues = {
     zone : [
       '--Elija una zona--',
@@ -47,35 +48,80 @@ const selectValues = {
       'Sur'
     ]
 }
+*/
 
 const CreateZoneLeaderView = (props) => {
-    
+    const [zoneIds, setZoneIds] = useState({});
+    const [loadingData, setLoadingData] = useState(true);
+    const [selectValues, setSelectValues] = useState({
+        zone : [
+        '--Elija una zona--',
+        'Norte',
+        'Sur'
+        ]
+    });
+
+    useEffect(() =>{
+        const fetchData = () =>  {
+
+            /*
+            THIS MUST BE FETCHED FROM ZONE
+            TABLE ON DATABASE
+            */
+            const zoneKeys = {
+                Norte : 2,
+                Sur : 1
+            };
+
+            setZoneIds(zoneKeys);
+            setSelectValues({
+                zone : [
+                    '--Elija una zona--',
+                    ...Object.keys(zoneKeys)
+                ]
+            })
+
+            setLoadingData(false);
+        }
+        fetchData();
+    }, []);
+
     return (
         
-            <div className={createStyles['main-page-container']}>
-                <div
-                    style={{
-                        maxWidth : '91%',
-                        marginTop : '1.9em',
-                        marginBottom : '2.1em',
-                        marginLeft : 'auto',
-                        marginRight : 'auto',
-                        fontSize : '1.5em',
-                        fontWeight : '600'
-                    }}
-                >
-                    Crear líder de zona
+            <>
+            {
+                loadingData && 
+                <div className={createStyles['loader']}></div>
+            }
+            {
+                !loadingData && 
+                <div className={createStyles['main-page-container']}>
+                    <div
+                        style={{
+                            maxWidth : '91%',
+                            marginTop : '1.9em',
+                            marginBottom : '2.1em',
+                            marginLeft : 'auto',
+                            marginRight : 'auto',
+                            fontSize : '1.5em',
+                            fontWeight : '600'
+                        }}
+                    >
+                        Crear líder de zona
+                    </div>
+                    <div className={createStyles['info-title']}>
+                        Información general
+                    </div>
+                    <CreateZoneLeaderForm
+                        defaultInitialValues={defaultInitialValues}
+                        labelKeys={labelKeys}
+                        typeKeys={typeKeys}
+                        zoneKeys={zoneIds}
+                        selectValues={selectValues}
+                    />
                 </div>
-                <div className={createStyles['info-title']}>
-                    Información general
-                </div>
-                <CreateZoneLeaderForm
-                    defaultInitialValues={defaultInitialValues}
-                    labelKeys={labelKeys}
-                    typeKeys={typeKeys}
-                    selectValues={selectValues}
-                />
-            </div>
+            }
+        </>
 
     );
 }
