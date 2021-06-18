@@ -1,0 +1,22 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap");
+
+.create-button {
+  font-family: inherit;
+  font-size: 0.9em;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 1ch;
+  padding-right: 1ch;
+  border-radius: 8px;
+  border: 1px solid #53c149;
+  background-color: rgb(203, 223, 203);
+  color: #53c149;
+  font-weight: 900;
+}
+
+.create-button:hover {
+  border: 1px solid #53c149;
+  background-color: #53c149;
+  color: white;
+  font-weight: 900;
+}

@@ -1,0 +1,23 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap");
+
+.delete-button {
+  font-family: inherit;
+  font-size: 0.9em;
+  padding-top: 5px;
+  margin-top: 4px;
+  padding-bottom: 5px;
+  padding-left: 1ch;
+  padding-right: 1ch;
+  border-radius: 8px;
+  border: 1px solid red;
+  background-color: rgb(238, 192, 190);
+  color: red;
+  font-weight: 900;
+}
+
+.delete-button:hover {
+  border: 1px solid red;
+  background-color: rgb(235, 67, 61);
+  color: white;
+  font-weight: 900;
+}

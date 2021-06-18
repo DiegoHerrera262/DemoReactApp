@@ -23,6 +23,17 @@ const updateLeader = async (leaderId, newData) => {
     }
 }
 
+const getLeaders = async () => {
+    const getURL = `http://localhost:8080/lideres`;
+    try {
+        const leaderList = await axios.get(getURL);
+        return leaderList.data;
+    } catch (error) {
+        console.log(error);
+        return []
+    }
+}
+
 const getLeaderById = async (leaderId) => {
     const getURL = `http://localhost:8080/lideres/${leaderId}`;
     try {
@@ -43,4 +54,15 @@ const getLeaderById = async (leaderId) => {
     }
 }
 
-export {postLeader, updateLeader, getLeaderById};
+const deleteLeaderById = async (leaderId) => {
+    const deleteURL = `http://localhost:8080/lideres/${leaderId}`;
+    try {
+        await axios.delete(deleteURL);
+        return {message : 'Líder eliminado correctamente.', correct : true};
+    } catch (error) {
+        console.log(error);
+        return {message : 'Eliminación incorrecta.', correct : false};
+    }
+}
+
+export {postLeader, updateLeader, getLeaderById, getLeaders, deleteLeaderById};
