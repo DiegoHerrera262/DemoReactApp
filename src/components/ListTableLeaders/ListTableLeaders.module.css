@@ -16,6 +16,11 @@
   /*box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.17);*/
 }
 
+.table-container {
+  width: 100%;
+  overflow: scroll;
+}
+
 table {
   margin-left: auto;
   margin-right: auto;
@@ -28,6 +33,7 @@ table {
   font-family: "Roboto", sans-serif;
   font-size: 0.9em;
   background-color: #f5f4f4;
+  overflow: scroll;
 }
 
 thead {
@@ -43,6 +49,7 @@ tbody {
 th,
 td {
   padding: 1em 1ch 1em 1ch;
+  min-width: 12ch;
 }
 
 .next {
@@ -132,7 +139,7 @@ td {
 }
 
 .search-input {
-  width: 30ch;
+  width: 25ch;
   height: 2em;
   margin-left: 1ch;
   padding-left: 2ch;
@@ -190,6 +197,7 @@ td {
     font-family: "Roboto", sans-serif;
     font-size: 1em;
     background-color: #f5f4f4;
+    overflow: scroll;
   }
 
   .table-footer {

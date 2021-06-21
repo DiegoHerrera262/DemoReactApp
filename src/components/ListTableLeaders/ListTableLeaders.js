@@ -75,7 +75,9 @@ const ListTableLeaders = (props) => {
             >
                 Líderes de zona
             </div>
-            
+            <div
+                className={tableStyles['table-container']}
+            >
             <table 
                 {...getTableProps()}
             >
@@ -87,7 +89,7 @@ const ListTableLeaders = (props) => {
                                     headerGroup.headers.map(column => {
                                         const hideStyle = hidingColumns.includes(column.Header) ? tableStyles['hide-col'] : '';
                                         return(
-                                                <th {...column.getHeaderProps(column.getSortByToggleProps())} className={hideStyle}>
+                                                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                                                     {/*console.log(column)*/}
                                                     {column.render('Header')}
                                                     <span>
@@ -144,6 +146,7 @@ const ListTableLeaders = (props) => {
                     }
                 </tbody>
             </table>
+            </div>
             <div className={tableStyles['table-footer']}>
                 <div className={tableStyles['table-footer-col1']}>
                     Página <span>{pageIndex + 1}</span> de <span>{pageOptions.length}</span>
