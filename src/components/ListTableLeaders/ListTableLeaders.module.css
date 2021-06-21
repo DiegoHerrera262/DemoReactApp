@@ -51,9 +51,33 @@ td {
   font-weight: 900;
 }
 
+.last {
+  margin-left: 2ch;
+  color: #cccccc;
+  font-weight: 900;
+}
+
+.last:hover {
+  margin-left: 2ch;
+  color: #b3b3b3;
+  font-weight: 900;
+}
+
 .prev {
   margin-right: 2ch;
   color: red;
+  font-weight: 900;
+}
+
+.first {
+  margin-right: 2ch;
+  color: #cccccc;
+  font-weight: 900;
+}
+
+.first:hover {
+  margin-right: 2ch;
+  color: #b3b3b3;
   font-weight: 900;
 }
 

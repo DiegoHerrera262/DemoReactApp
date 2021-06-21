@@ -22,6 +22,7 @@ select:focus {
 
 .input-label {
   font-size: 1em;
+  font-weight: bold;
   color: #161422;
   margin-top: 1ch;
   margin-left: 1ch;

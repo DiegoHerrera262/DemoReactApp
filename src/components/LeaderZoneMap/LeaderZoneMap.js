@@ -1,32 +1,20 @@
 import * as React from 'react';
-import ReactMapGL, {Marker} from 'react-map-gl';
-import mapPin from '../assets/pin.png';
+import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps";
+// import mapPin from '../assets/pin.png';
 
-const mapStyle = 'mapbox://styles/diegoherrera262/ckpossqqj09fy17npwfhqkadq'
+// const mapStyle = 'mapbox://styles/diegoherrera262/ckpossqqj09fy17npwfhqkadq'
 
-function Map() {
-    const [viewport, setViewport] = React.useState({
-    longitude: -122.45,
-    latitude: 37.78,
-    zoom: 14
-    });
-
+const SuperVeciMap = (props) => {
     return (
-        <ReactMapGL 
-            {...viewport} 
-            width="100%" 
-            height="400px" 
-            onViewportChange={setViewport} 
-            mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN} 
+        <GoogleMap
+            defaultZoom={11}
+            defaultCenter={{ lat: 4.637764262457622, lng: -74.14443 }}
         >
-            <Marker draggable latitude={37.78} longitude={-122.45}>
-                <div>
-                    Hola
-                </div>
-            </Marker>
-        </ReactMapGL>
-    );    
+            {props.isMarkerShown && <Marker position={{ lat: 4.637764262457622, lng: -74.14443 }} />}
+        </GoogleMap>
+    );
 }
 
+const Map =  withScriptjs(withGoogleMap(SuperVeciMap));
 
 export default Map;

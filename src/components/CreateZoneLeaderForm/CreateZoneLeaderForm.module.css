@@ -194,10 +194,10 @@ SUBMIT MESSAGE STYLES
   .map-container {
     overflow: hidden;
     border-radius: 7px;
-    width: 99%;
+    width: 95%;
     height: 500px;
     margin-top: 3em;
-    margin-left: auto;
+    margin-left: 1ch;
     margin-right: auto;
     border: 1px solid #f8e1c5;
     box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.17);

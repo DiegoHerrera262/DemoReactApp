@@ -17,16 +17,17 @@ import {postLeader} from '../../endpoint/zoneLeaders.methods';
 import {useFormik} from 'formik';
 import Modal from 'react-modal';
 import * as Yup from 'yup';
-import ReactMapGL, {Marker} from 'react-map-gl';
+// import ReactMapGL, {Marker} from 'react-map-gl';
 
 // Form components
 import FieldInput from '../FieldInput';
 import SelectInput from '../SelectInput';
 import FileInput from '../FileInput';
 import ProfileImageInput from '../ProfileImageInput';
+import LeaderZoneMap from '../LeaderZoneMap';
 
 import blankProfile from '../ProfileImageInput/assets/blankProfilePicture.png';
-import mapPin from '../assets/pin.png'
+// import mapPin from '../assets/pin.png'
 
 import zoneLeaderStyles from './CreateZoneLeaderForm.module.css';
 
@@ -34,7 +35,7 @@ import zoneLeaderStyles from './CreateZoneLeaderForm.module.css';
 Modal.setAppElement('body');
 
 // Change map display style here
-const mapStyle = 'mapbox://styles/diegoherrera262/ckpossqqj09fy17npwfhqkadq'
+// const mapStyle = 'mapbox://styles/diegoherrera262/ckpossqqj09fy17npwfhqkadq'
 
 const CreateZoneLeaderForm = (props) => {
     const {labelKeys, typeKeys, selectValues, zoneKeys} = props;
@@ -283,6 +284,7 @@ const CreateZoneLeaderForm = (props) => {
                     <div
                         className={zoneLeaderStyles['map-container']}
                     >
+                        {/*
                         <ReactMapGL
                             {...viewport}
                             onViewportChange={
@@ -319,6 +321,14 @@ const CreateZoneLeaderForm = (props) => {
                                 </div>
                             </Marker>
                         </ReactMapGL>
+                        */}
+                        <LeaderZoneMap
+                            isMarkerShown
+                            googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
+                            loadingElement={<div style={{ height: `100%` }} />}
+                            containerElement={<div style={{ height: `100%` }} />}
+                            mapElement={<div style={{ height: `100%` }} />}
+                        />
                     </div>
                 </div>
                 <div className={zoneLeaderStyles['col2']}>

@@ -27,6 +27,7 @@ function App() {
   return (
     <BrowserRouter>
       <div>
+        {/*
         <ul>
           <Link to='/'>
             <button type="button">
@@ -39,6 +40,7 @@ function App() {
             </button>
           </Link>
         </ul>
+        */}
         <Switch>
           <Route 
             exact path='/' 

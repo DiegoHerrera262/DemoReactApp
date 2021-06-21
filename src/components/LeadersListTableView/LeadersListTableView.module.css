@@ -1,9 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap");
 
 .container {
+  min-height: 100vh;
+  width: 99%;
   font-family: "Roboto", sans-serif;
   background-color: #f5f4f4;
-  padding: 1em 1ch 6em 1ch;
+  padding: 1em 1ch 0em 1ch;
 }
 
 .loader {

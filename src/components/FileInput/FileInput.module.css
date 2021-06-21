@@ -43,10 +43,12 @@
   border: 1px solid #f1eae4;
   background-color: #eeeee4;
   color: #29790a;
+  font-weight: bold;
 }
 
 .edit-button-edit {
   font-size: 0.9em;
+  font-weight: bold;
   padding-top: 5px;
   padding-bottom: 5px;
   padding-right: 1ch;

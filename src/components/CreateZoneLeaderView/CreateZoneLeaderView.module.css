@@ -1,10 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap");
 
 .main-page-container {
+  min-height: 100vh;
   padding: 2ch;
   font-family: "Robot", sans-serif;
   background-color: #f5f4f4;
-  max-width: 99%;
+  margin: 0;
 }
 
 .info-title {

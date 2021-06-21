@@ -128,16 +128,16 @@ const ListTableLeaders = (props) => {
                     <label
                         onClick={() => gotoPage(0)}
                         disabled={!canPreviousPage}
-                        className={tableStyles['prev']}
+                        className={tableStyles['first']}
                     >
-                        Comienzo
+                        {'<<'}
                     </label>
                     <label
                         onClick={() => previousPage()}
                         disabled={!canPreviousPage}
                         className={tableStyles['prev']}
                     >
-                        Anterior
+                        Siguiente
                     </label>
 
                     {
@@ -159,14 +159,14 @@ const ListTableLeaders = (props) => {
                         disabled={!canNextPage}
                         className={tableStyles['next']}
                     >
-                        Siguiente
+                        Anterior
                     </label>
                     <label
                         onClick={() => gotoPage(pageCount - 1)}
                         disabled={!canNextPage}
-                        className={tableStyles['next']}
+                        className={tableStyles['last']}
                     >
-                        Fin
+                        {'>>'}
                     </label>
                 </div>
             </div>

@@ -46,6 +46,7 @@
 
 .edit-button {
   font-size: 1em;
+  font-weight: bold;
   padding-top: 5px;
   padding-bottom: 5px;
   padding-right: 5ch;
@@ -58,6 +59,7 @@
 
 .edit-button-edit {
   font-size: 1em;
+  font-weight: bold;
   padding-top: 5px;
   padding-bottom: 5px;
   padding-right: 5ch;
