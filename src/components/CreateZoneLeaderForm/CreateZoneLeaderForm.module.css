@@ -62,23 +62,25 @@ MODAL STYLES
 BUTTON STYLES
 */
 .submit-button {
+  width: 50%;
+  text-align: center;
   font-size: 1.2em;
   padding-top: 5px;
   padding-bottom: 5px;
   padding-left: 1ch;
   padding-right: 1ch;
+  margin-left: auto;
+  margin-right: auto;
   border-radius: 8px;
   border: 1px solid #53c149;
   background-color: rgb(203, 223, 203);
   color: #53c149;
-  margin: 1ch;
 }
 
 .submit-button:hover {
   color: white;
   background-color: #53c149;
   cursor: pointer;
-  margin: 1ch;
 }
 
 .error-button {

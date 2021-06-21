@@ -341,22 +341,18 @@ const UpdateZoneLeaderForm = (props) => {
                 </div>
             </div>
             <div
-                className={zoneLeaderStyles['column-wrapper']}
+                style={{
+                    width : '100%',
+                    textAlign :'center'
+                }}
             >
-                <div
-                    className={zoneLeaderStyles['col2']}
-                >
                     <button
                         type='submit'
                         onClick={handleErrorClick}
                         className={zoneLeaderStyles['submit-button']}    
                     >
-                        Actualizar
+                        Crear líder
                     </button>
-                </div>
-                <div
-                    className={zoneLeaderStyles['col2']}
-                ></div>
             </div>
 
             

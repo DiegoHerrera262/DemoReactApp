@@ -348,11 +348,11 @@ const CreateZoneLeaderForm = (props) => {
                 </div>
             </div>
             <div
-                className={zoneLeaderStyles['column-wrapper']}
+                style={{
+                    width : '100%',
+                    textAlign :'center'
+                }}
             >
-                <div
-                    className={zoneLeaderStyles['col2']}
-                >
                     <button
                         type='submit'
                         onClick={handleErrorClick}
@@ -360,12 +360,7 @@ const CreateZoneLeaderForm = (props) => {
                     >
                         Crear líder
                     </button>
-                </div>
-                <div
-                    className={zoneLeaderStyles['col2']}
-                ></div>
             </div>
-
             
             <Modal 
                 isOpen={showConfirmModal}

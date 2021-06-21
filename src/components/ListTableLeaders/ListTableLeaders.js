@@ -5,6 +5,12 @@ import UpdateLeaderButton from '../UpdateLeaderButton';
 import CreateLeaderButton from '../CreateLeaderButton';
 import tableStyles from './ListTableLeaders.module.css';
 
+/*
+TO SET UP PAGINATION, SORT AND
+MULTISEARCH, USE COMPONENT
+ReactTable
+*/
+
 const hidingColumns = [
     'Celular',
     'Dirección'
@@ -82,7 +88,7 @@ const ListTableLeaders = (props) => {
                                         const hideStyle = hidingColumns.includes(column.Header) ? tableStyles['hide-col'] : '';
                                         return(
                                                 <th {...column.getHeaderProps()} className={hideStyle}>
-                                                    {console.log(column)}
+                                                    {/*console.log(column)*/}
                                                     {column.render('Header')}
                                                 </th>
                                             );
