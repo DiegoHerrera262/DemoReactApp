@@ -45,12 +45,12 @@
 }
 
 .edit-button {
-  font-size: 1em;
+  font-size: 0.9em;
   font-weight: bold;
   padding-top: 5px;
   padding-bottom: 5px;
-  padding-right: 5ch;
-  padding-left: 5ch;
+  padding-right: 2ch;
+  padding-left: 2ch;
   border-radius: 8px;
   border: 1px solid #f1eae4;
   background-color: #eeeee4;
@@ -58,12 +58,12 @@
 }
 
 .edit-button-edit {
-  font-size: 1em;
+  font-size: 0.9em;
   font-weight: bold;
   padding-top: 5px;
   padding-bottom: 5px;
-  padding-right: 5ch;
-  padding-left: 5ch;
+  padding-right: 2ch;
+  padding-left: 2ch;
   border-radius: 8px;
   border: 1px solid #f1eae4;
   background-color: #eeeee4;

@@ -87,7 +87,6 @@ const ListTableLeaders = (props) => {
                             <tr {...headerGroup.getHeaderGroupProps()}>
                                 {
                                     headerGroup.headers.map(column => {
-                                        const hideStyle = hidingColumns.includes(column.Header) ? tableStyles['hide-col'] : '';
                                         return(
                                                 <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                                                     {/*console.log(column)*/}
@@ -121,9 +120,8 @@ const ListTableLeaders = (props) => {
                                 <tr {...row.getRowProps()}>
                                     {
                                         row.cells.map(cell => {
-                                            const hideStyle = hidingColumns.includes(cell.column.Header) ? tableStyles['hide-col'] : '';
                                             return (
-                                                <td {...cell.getCellProps()} className={hideStyle}>
+                                                <td {...cell.getCellProps()} >
                                                     {/*console.log(cell.column.Header)*/}
                                                     {cell.render('Cell')}
                                                 </td>
