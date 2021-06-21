@@ -5,6 +5,11 @@ import UpdateLeaderButton from '../UpdateLeaderButton';
 import CreateLeaderButton from '../CreateLeaderButton';
 import tableStyles from './ListTableLeaders.module.css';
 
+const hidingColumns = [
+    'Celular',
+    'Dirección'
+]
+
 const ListTableLeaders = (props) => {
     const { leaderData, tableColumns, handleElimination } = props;
     const {
@@ -73,11 +78,15 @@ const ListTableLeaders = (props) => {
                         headerGroups.map(headerGroup => (
                             <tr {...headerGroup.getHeaderGroupProps()}>
                                 {
-                                    headerGroup.headers.map(column => (
-                                        <th {...column.getHeaderProps()}>
-                                            {column.render('Header')}
-                                        </th>
-                                        )
+                                    headerGroup.headers.map(column => {
+                                        const hideStyle = hidingColumns.includes(column.Header) ? tableStyles['hide-col'] : '';
+                                        return(
+                                                <th {...column.getHeaderProps()} className={hideStyle}>
+                                                    {console.log(column)}
+                                                    {column.render('Header')}
+                                                </th>
+                                            );
+                                        }
                                     )
                                 }
                                 <th>
@@ -97,8 +106,10 @@ const ListTableLeaders = (props) => {
                                 <tr {...row.getRowProps()}>
                                     {
                                         row.cells.map(cell => {
+                                            const hideStyle = hidingColumns.includes(cell.column.Header) ? tableStyles['hide-col'] : '';
                                             return (
-                                                <td {...cell.getCellProps()}>
+                                                <td {...cell.getCellProps()} className={hideStyle}>
+                                                    {/*console.log(cell.column.Header)*/}
                                                     {cell.render('Cell')}
                                                 </td>
                                             );

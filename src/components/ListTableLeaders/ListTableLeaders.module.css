@@ -156,6 +156,12 @@ td {
   width: 0px;
 }
 
+@media all and (max-width: 467px) {
+  .hide-col {
+    display: none;
+  }
+}
+
 @media all and (min-width: 882px) {
   .search-input {
     width: 30ch;

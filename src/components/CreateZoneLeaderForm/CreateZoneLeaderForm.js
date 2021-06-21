@@ -8,7 +8,7 @@ Description: This component is to be used for creating
        Date: 01/06/21 
 */
 
-import React, {useState, useEffect, useRef, useCallback} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 
 // HTTP connection to backend
 import {postLeader} from '../../endpoint/zoneLeaders.methods';
@@ -33,6 +33,8 @@ import zoneLeaderStyles from './CreateZoneLeaderForm.module.css';
 
 // DO NOT DELETE THIS
 Modal.setAppElement('body');
+
+const GoogleMapsAPI = `https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${process.env.REACT_APP_GOOGLE_MAPS_TOKEN}`;
 
 // Change map display style here
 // const mapStyle = 'mapbox://styles/diegoherrera262/ckpossqqj09fy17npwfhqkadq'
@@ -78,14 +80,6 @@ const CreateZoneLeaderForm = (props) => {
     const [zoneMarkerCoords, setZoneMarkerCoords] = useState({
         latitude : 4.68357,
         longitude : -74.14443
-    });
-    // Viewport state for map sone identification
-    const [viewport, setViewport] = useState({
-        width : '100%',
-        height : '100%',
-        latitude : 4.637764262457622,
-        longitude : -74.14443,
-        zoom : 11
     });
     // confirmation message after submit
     const [showCreatingLeaderMessage, setShowCreatingLeaderMessage] = useState(false);
@@ -173,12 +167,7 @@ const CreateZoneLeaderForm = (props) => {
         setConfirmShowModal(!formIsNotRight);
     }
 
-    const handleDragEnd = useCallback((event) => {
-        setZoneMarkerCoords({
-            longitude : event.lngLat[0],
-            latitude : event.lngLat[1]
-        });
-    }, []);
+    console.log(zoneMarkerCoords);
 
     /*
     HERE IS WHERE THE SUBMIT
@@ -186,7 +175,6 @@ const CreateZoneLeaderForm = (props) => {
     THE BACKEND
     */
     const handleSubmitDataFromModal = async () => {
-
         const postData = {
             name : formik.values['name'],
             last_name: formik.values['lastName'],
@@ -284,50 +272,13 @@ const CreateZoneLeaderForm = (props) => {
                     <div
                         className={zoneLeaderStyles['map-container']}
                     >
-                        {/*
-                        <ReactMapGL
-                            {...viewport}
-                            onViewportChange={
-                                (viewport) => setViewport(viewport)
-                            }
-                            mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
-                            mapStyle={mapStyle}
-                        >
-                            <Marker
-                                latitude={zoneMarkerCoords.latitude}
-                                longitude={zoneMarkerCoords.longitude}
-                                draggable
-                                onDragEnd={handleDragEnd}
-                            >
-                                <div
-                                    style={{
-                                        width : "60px",
-                                        height : "60px",
-                                        borderRadius : "50%",
-                                        backgroundColor : "rgba(255, 99, 71, 0.2)",
-                                        position : "absolute"
-                                    }}
-                                >
-                                    <img 
-                                        width='30px'
-                                        src={mapPin}
-                                        alt=''
-                                        style={{
-                                            margin : "auto",
-                                            marginTop: "9px",
-                                            display : "block"
-                                        }}
-                                    />
-                                </div>
-                            </Marker>
-                        </ReactMapGL>
-                        */}
                         <LeaderZoneMap
-                            isMarkerShown
-                            googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
+                            googleMapURL={GoogleMapsAPI}
                             loadingElement={<div style={{ height: `100%` }} />}
                             containerElement={<div style={{ height: `100%` }} />}
                             mapElement={<div style={{ height: `100%` }} />}
+                            markerCoords={zoneMarkerCoords}
+                            setCoords={setZoneMarkerCoords}
                         />
                     </div>
                 </div>

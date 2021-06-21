@@ -8,7 +8,7 @@ Description: This component is to be used for creating
        Date: 01/06/21 
 */
 
-import React, {useState, useEffect, useRef, useCallback} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 
 // HTTP connection to backend
 import {updateLeader} from '../../endpoint/zoneLeaders.methods';
@@ -17,7 +17,6 @@ import {updateLeader} from '../../endpoint/zoneLeaders.methods';
 import {useFormik} from 'formik';
 import Modal from 'react-modal';
 import * as Yup from 'yup';
-import MapGL, {Marker} from 'react-map-gl';
 // import axios from 'axios';
 
 // Form components
@@ -25,9 +24,9 @@ import FieldInput from '../FieldInput';
 import SelectInput from '../SelectInput';
 import FileInput from '../FileInput';
 import ProfileImageInput from '../ProfileImageInput';
+import LeaderZoneMap from '../LeaderZoneMap';
 
 import blankProfile from '../ProfileImageInput/assets/blankProfilePicture.png';
-import mapPin from '../assets/pin.png'
 
 import zoneLeaderStyles from './UpdateZoneLeaderForm.module.css';
 
@@ -35,7 +34,7 @@ import zoneLeaderStyles from './UpdateZoneLeaderForm.module.css';
 Modal.setAppElement('body');
 
 // Change map display style here
-const mapStyle = 'mapbox://styles/diegoherrera262/ckpossqqj09fy17npwfhqkadq'
+const GoogleMapsAPI = `https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${process.env.REACT_APP_GOOGLE_MAPS_TOKEN}`;
 
 const UpdateZoneLeaderForm = (props) => {
     const {labelKeys, typeKeys, selectValues, zoneKeys} = props;
@@ -78,12 +77,6 @@ const UpdateZoneLeaderForm = (props) => {
     const [zoneMarkerCoords, setZoneMarkerCoords] = useState({
         latitude : 4.68357,
         longitude : -74.14443
-    });
-    // Viewport state for map sone identification
-    const [viewport, setViewport] = useState({
-        latitude : 4.637764262457622,
-        longitude : -74.14443,
-        zoom : 11
     });
     // confirmation message after submit
     const [showCreatingLeaderMessage, setShowCreatingLeaderMessage] = useState(false);
@@ -170,13 +163,6 @@ const UpdateZoneLeaderForm = (props) => {
         setErrorShowModal(formIsNotRight);
         setConfirmShowModal(!formIsNotRight);
     }
-
-    const handleDragEnd = useCallback((event) => {
-        setZoneMarkerCoords({
-            longitude : event.lngLat[0],
-            latitude : event.lngLat[1]
-        });
-    }, []);
 
     /*
     HERE IS WHERE THE SUBMIT
@@ -275,44 +261,14 @@ const UpdateZoneLeaderForm = (props) => {
                     <div
                         className={zoneLeaderStyles['map-container']}
                     >
-                        <MapGL
-                            width='400px'
-                            height='400px'
-                            {...viewport}
-                            onViewportChange={
-                                (viewport) => setViewport(viewport)
-                            }
-                            mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
-                            mapStyle={mapStyle}
-                        >
-                            <Marker
-                                latitude={zoneMarkerCoords.latitude}
-                                longitude={zoneMarkerCoords.longitude}
-                                draggable
-                                onDragEnd={handleDragEnd}
-                            >
-                                <div
-                                    style={{
-                                        width : "60px",
-                                        height : "60px",
-                                        borderRadius : "50%",
-                                        backgroundColor : "rgba(255, 99, 71, 0.2)",
-                                        position : "absolute"
-                                    }}
-                                >
-                                    <img 
-                                        width='30px'
-                                        src={mapPin}
-                                        alt=''
-                                        style={{
-                                            margin : "auto",
-                                            marginTop: "9px",
-                                            display : "block"
-                                        }}
-                                    />
-                                </div>
-                            </Marker>
-                        </MapGL>
+                        <LeaderZoneMap
+                            googleMapURL={GoogleMapsAPI}
+                            loadingElement={<div style={{ height: `100%` }} />}
+                            containerElement={<div style={{ height: `100%` }} />}
+                            mapElement={<div style={{ height: `100%` }} />}
+                            markerCoords={zoneMarkerCoords}
+                            setCoords={setZoneMarkerCoords}
+                        />
                     </div>
                 </div>
                 <div className={zoneLeaderStyles['col2']}>
