@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTable, usePagination, useGlobalFilter } from 'react-table';
+import { useTable, usePagination, useGlobalFilter, useSortBy } from 'react-table';
 import DeleteLeaderButton from '../DeleteLeaderButton';
 import UpdateLeaderButton from '../UpdateLeaderButton';
 import CreateLeaderButton from '../CreateLeaderButton';
@@ -41,7 +41,7 @@ const ListTableLeaders = (props) => {
         data : leaderData, 
         columns : tableColumns,
         initialState : {pageIndex : 0, pageSize : 10}
-    }, useGlobalFilter, usePagination);
+    }, useGlobalFilter, useSortBy, usePagination );
 
     const GenPageNumberButtonArray = () => {
         let a = [];
@@ -87,9 +87,16 @@ const ListTableLeaders = (props) => {
                                     headerGroup.headers.map(column => {
                                         const hideStyle = hidingColumns.includes(column.Header) ? tableStyles['hide-col'] : '';
                                         return(
-                                                <th {...column.getHeaderProps()} className={hideStyle}>
+                                                <th {...column.getHeaderProps(column.getSortByToggleProps())} className={hideStyle}>
                                                     {/*console.log(column)*/}
                                                     {column.render('Header')}
+                                                    <span>
+                                                        {column.isSorted
+                                                        ? column.isSortedDesc
+                                                            ? ' 🔽'
+                                                            : ' 🔼'
+                                                        : ''}
+                                                    </span>
                                                 </th>
                                             );
                                         }
