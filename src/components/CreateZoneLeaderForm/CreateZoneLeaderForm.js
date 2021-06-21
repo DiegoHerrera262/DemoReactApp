@@ -17,7 +17,7 @@ import {postLeader} from '../../endpoint/zoneLeaders.methods';
 import {useFormik} from 'formik';
 import Modal from 'react-modal';
 import * as Yup from 'yup';
-import MapGL, {Marker} from 'react-map-gl';
+import ReactMapGL, {Marker} from 'react-map-gl';
 
 // Form components
 import FieldInput from '../FieldInput';
@@ -80,6 +80,8 @@ const CreateZoneLeaderForm = (props) => {
     });
     // Viewport state for map sone identification
     const [viewport, setViewport] = useState({
+        width : '100%',
+        height : '100%',
         latitude : 4.637764262457622,
         longitude : -74.14443,
         zoom : 11
@@ -281,9 +283,7 @@ const CreateZoneLeaderForm = (props) => {
                     <div
                         className={zoneLeaderStyles['map-container']}
                     >
-                        <MapGL
-                            width='400px'
-                            height='400px'
+                        <ReactMapGL
                             {...viewport}
                             onViewportChange={
                                 (viewport) => setViewport(viewport)
@@ -318,7 +318,7 @@ const CreateZoneLeaderForm = (props) => {
                                     />
                                 </div>
                             </Marker>
-                        </MapGL>
+                        </ReactMapGL>
                     </div>
                 </div>
                 <div className={zoneLeaderStyles['col2']}>

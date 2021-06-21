@@ -25,8 +25,8 @@ MAP STYLING
 .map-container {
   overflow: hidden;
   border-radius: 7px;
-  max-width: 400px;
-  max-height: 400px;
+  width: 90%;
+  height: 400px;
   margin-top: 1ch;
   margin-left: auto;
   margin-right: auto;
@@ -154,8 +154,8 @@ SUBMIT MESSAGE STYLES
   .map-container {
     overflow: hidden;
     border-radius: 7px;
-    max-width: 400px;
-    max-height: 400px;
+    width: 95%;
+    height: 400px;
     margin-top: 6em;
     margin-left: auto;
     margin-right: auto;
@@ -194,9 +194,9 @@ SUBMIT MESSAGE STYLES
   .map-container {
     overflow: hidden;
     border-radius: 7px;
-    max-width: 400px;
-    max-height: 400px;
-    margin-top: 6em;
+    width: 99%;
+    height: 500px;
+    margin-top: 3em;
     margin-left: auto;
     margin-right: auto;
     border: 1px solid #f8e1c5;

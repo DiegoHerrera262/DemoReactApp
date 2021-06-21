@@ -121,14 +121,19 @@ const LeadersListTableView = () => {
                 <div
                     className={listStyles['container']}
                 >
-                    {/*
-                    <LeadersListTable 
-                        leadersArray={leadersArray}
-                        headerNames={headerNames}
-                        headerKeys={headerKeys}
-                        handleUpdate={handleLeaderListUpdate}
-                    />
-                    */}
+                    <div
+                        style={{
+                            maxWidth : '91%',
+                            marginTop : '1.9em',
+                            marginBottom : '1.5em',
+                            marginLeft : '1ch',
+                            marginRight : 'auto',
+                            fontSize : '1.5em',
+                            fontWeight : '600'
+                        }}
+                    >
+                        Líderes de zona
+                    </div>
                     <ListTableLeaders 
                         leaderData={memoLeadersData}
                         tableColumns={headerNames}

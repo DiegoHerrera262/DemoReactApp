@@ -29,7 +29,7 @@ const ListTableLeaders = (props) => {
     } = useTable({
         data : leaderData, 
         columns : tableColumns,
-        initialState : {pageIndex : 0}
+        initialState : {pageIndex : 0, pageSize : 10}
     }, useGlobalFilter, usePagination);
 
     const GenPageNumberButtonArray = () => {
@@ -44,12 +44,13 @@ const ListTableLeaders = (props) => {
 
     return (
         <>
-            <div class={tableStyles['search-line']}>
-                <div class={tableStyles['search-line-col1']}>
+            <div className={tableStyles['search-line']}>
+                <div className={tableStyles['search-line-col1']}>
                     <input
                         type='text'
                         placeholder='Buscar'
                         value={globalFilter || ''}
+                        className={tableStyles['search-input']}
                         onChange={event => setGlobalFilter(event.target.value)}
                     />
                 </div>

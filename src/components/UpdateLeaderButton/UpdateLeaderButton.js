@@ -1,23 +1,28 @@
-import React from 'react';
-import buttonStyle from './UpdateLeaderButton.module.css'
+import React, {useState} from 'react';
+import buttonStyle from './UpdateLeaderButton.module.css';
+import { Redirect } from 'react-router-dom';
 
 const UpdateLeaderButton = (props) => {
     const { id } = props;
+    const [redirect, setRedirect] = useState(false);
 
     const handleClick = () => {
-        alert('Editar lider')
-        /*
-        HERE CALL THE ROUTE
-        */
+        setRedirect(true);
     }
 
     return (
-        <button
-            onClick={handleClick}
-            className={buttonStyle['update-button']}
-        >
-            Editar
-        </button>
+        <>
+            <button
+                onClick={handleClick}
+                className={buttonStyle['update-button']}
+            >
+                Editar
+            </button>
+            {
+                redirect && id &&
+                <Redirect to={`/leaders/update/${id}`} />
+            }
+        </>
     );
 }
 

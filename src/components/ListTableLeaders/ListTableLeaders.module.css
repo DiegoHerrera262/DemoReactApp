@@ -92,6 +92,7 @@ td {
 }
 
 .search-line {
+  margin-bottom: 2.5em;
   min-width: 95%;
   display: flex;
   flex-direction: row;
@@ -106,7 +107,7 @@ td {
   flex: 20%;
 }
 
-input {
+.search-input {
   width: 30ch;
   height: 2em;
   margin-left: 1ch;
@@ -121,7 +122,7 @@ input {
   color: #154c79;
 }
 
-input:focus {
+.search-input:focus {
   border: 2px solid #154c79;
   background-color: #fffdfa;
   outline: none;
@@ -132,7 +133,7 @@ input:focus {
 }
 
 @media all and (min-width: 882px) {
-  input {
+  .search-input {
     width: 30ch;
     height: 2em;
     margin-left: 5ch;

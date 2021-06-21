@@ -1,5 +1,26 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap");
 
+.Modal {
+  font-family: "Roboto", sans-serif;
+  position: absolute;
+  top: 40vh;
+  left: 35vw;
+  width: 30vw;
+  background-color: #ffefd5;
+  border-radius: 8px;
+  border: 1px solid black;
+  padding: 5px 2ch 20px 2ch;
+}
+
+.Overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
 .delete-button {
   font-family: inherit;
   font-size: 0.9em;
