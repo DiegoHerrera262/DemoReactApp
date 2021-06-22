@@ -3,6 +3,7 @@ import { useTable, usePagination, useGlobalFilter, useSortBy } from 'react-table
 import DeleteLeaderButton from '../DeleteLeaderButton';
 import UpdateLeaderButton from '../UpdateLeaderButton';
 import CreateLeaderButton from '../CreateLeaderButton';
+import ExportToExcelButton from '../ExportToExcelButton';
 import tableStyles from './ListTableLeaders.module.css';
 
 /*
@@ -10,11 +11,6 @@ TO SET UP PAGINATION, SORT AND
 MULTISEARCH, USE COMPONENT
 ReactTable
 */
-
-const hidingColumns = [
-    'Celular',
-    'Dirección'
-]
 
 const ListTableLeaders = (props) => {
     const { leaderData, tableColumns, handleElimination } = props;
@@ -67,6 +63,16 @@ const ListTableLeaders = (props) => {
                 </div>
                 <div className={tableStyles['search-line-col2']}>
                     <CreateLeaderButton />
+                    <div 
+                        style={{
+                            height : '10px'
+                        }}
+                    />
+                    <ExportToExcelButton 
+                        dataset={leaderData}
+                        filename={'LideresDeZona'}
+                        fileType={'xls'}
+                    />
                 </div>
             </div>
 

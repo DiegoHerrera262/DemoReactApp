@@ -5,7 +5,7 @@
   margin-top: 1em;
   margin-left: 1ch;
   margin-right: auto;
-  margin-bottom: 1.3em;
+  margin-bottom: 0.9em;
   padding: 1ch;
   padding-left: 2ch;
   max-width: 85%;
@@ -18,8 +18,8 @@
 
 .table-container {
   margin: 0;
-  padding: 0;
-  width: 100%;
+  margin-left: 2ch;
+  margin-right: 2ch;
   overflow: scroll;
 }
 
@@ -133,15 +133,16 @@ td {
 }
 
 .search-line-col1 {
-  flex: 80%;
+  flex: 70%;
 }
 
 .search-line-col2 {
-  flex: 20%;
+  text-align: center;
+  flex: 30%;
 }
 
 .search-input {
-  width: 25ch;
+  width: 28ch;
   height: 2em;
   margin-left: 1ch;
   padding-left: 2ch;
@@ -165,15 +166,26 @@ td {
   width: 0px;
 }
 
-@media all and (max-width: 467px) {
-  .hide-col {
-    display: none;
+@media all and (min-width: 600px) {
+  .search-input {
+    width: 40ch;
+    height: 2em;
+    margin-left: 5ch;
+    padding-left: 2ch;
+    margin-top: 0.4em;
+    margin-bottom: 0.3em;
+    margin-right: 1ch;
+    border-radius: 6px;
+    border: burlywood;
+    font-family: "Roboto", sans-serif;
+    font-size: 1em;
+    color: #154c79;
   }
 }
 
 @media all and (min-width: 882px) {
   .search-input {
-    width: 30ch;
+    width: 50ch;
     height: 2em;
     margin-left: 5ch;
     padding-left: 2ch;
@@ -200,6 +212,11 @@ td {
     font-size: 1em;
     background-color: #f5f4f4;
     overflow: scroll;
+  }
+
+  th,
+  td {
+    padding: 1em 1ch 1em 1ch;
   }
 
   .table-footer {

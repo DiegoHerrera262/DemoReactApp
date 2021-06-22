@@ -1,0 +1,22 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap");
+
+.export-button {
+  font-family: inherit;
+  font-size: 0.9em;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 1ch;
+  padding-right: 1ch;
+  border-radius: 8px;
+  border: 1px solid #272741;
+  background-color: #dedef0;
+  color: #272741;
+  font-weight: 900;
+}
+
+.export-button:hover {
+  border: 1px solid #272741;
+  background-color: #272741;
+  color: white;
+  font-weight: 900;
+}

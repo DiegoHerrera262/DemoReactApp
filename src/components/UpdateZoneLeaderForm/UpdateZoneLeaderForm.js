@@ -351,7 +351,7 @@ const UpdateZoneLeaderForm = (props) => {
                         onClick={handleErrorClick}
                         className={zoneLeaderStyles['submit-button']}    
                     >
-                        Crear líder
+                        Actualizar líder
                     </button>
             </div>
 
