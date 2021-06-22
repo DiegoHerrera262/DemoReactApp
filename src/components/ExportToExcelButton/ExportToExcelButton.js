@@ -3,10 +3,14 @@ import buttonStyle from './ExportToExcelButton.module.css';
 import exportFromJSON from 'export-from-json';
 
 const ExportToExcelButton = (props) => {
-    const { dataset, fileName, fileType } = props;
+    const { dataset, fileName} = props;
 
     const handleClick = () => {
-        exportFromJSON({ dataset, fileName, fileType });
+        if (dataset) {
+            const exportType = exportFromJSON.types.xls;
+            exportFromJSON({ dataset, fileName, exportType });
+        }
+        
     }
 
 

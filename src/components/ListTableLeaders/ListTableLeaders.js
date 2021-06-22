@@ -70,8 +70,7 @@ const ListTableLeaders = (props) => {
                     />
                     <ExportToExcelButton 
                         dataset={leaderData}
-                        filename={'LideresDeZona'}
-                        fileType={'xls'}
+                        fileName={'LideresDeZona'}
                     />
                 </div>
             </div>
