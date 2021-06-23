@@ -8,52 +8,63 @@ import isWordDoc from './assets/isWordDoc.png';
 const FileInput = (props) => {
     const {fieldName, formHook, labelKey, accept, parentRef} = props;
     let iconSrc = emptyFileLogo;
-    if (formHook.values[fieldName] !== undefined){
+    if (formHook.values[fieldName]){
         iconSrc = formHook.values[fieldName].type === 'application/pdf' ? 
             isPdfFile : formHook.values[fieldName].type === 'application/msword' ?
             isWordDoc : emptyFileLogo;
     }
     const formButtonStyle = props.edit ? fileInputStyles['edit-button-edit'] : fileInputStyles['edit-button'];
     return (
-        <div
-            className={fileInputStyles['file-input-card']}
-        >
-            <div 
-                className={fileInputStyles['icon-container']}
-            >
-                <img 
-                    src={iconSrc} 
-                    alt={fieldName}
-                    className={fileInputStyles['file-icon']}
-                />
-            </div>
+        <>
             <div
-                className={fileInputStyles['info-container']}
+                className={fileInputStyles['file-input-card']}
             >
-                <div className={fileInputStyles['file-input-label']}>
-                    {labelKey}
-                </div>
-                <label 
-                    htmlFor={fieldName}
-                    className={formButtonStyle}
+                <div 
+                    className={fileInputStyles['icon-container']}
                 >
-                    Cargue archivo
-                </label>
-                <input 
-                    id={fieldName}
-                    name={fieldName}
-                    type='file'
-                    accept={accept}
-                    ref={parentRef}
-                    onChange={(event) => {
-                        formHook.setFieldValue(
-                            fieldName,
-                            event.currentTarget.files[0]
-                        )
-                    }}
-                />
+                    <img 
+                        src={iconSrc} 
+                        alt={fieldName}
+                        className={fileInputStyles['file-icon']}
+                    />
+                </div>
+                <div
+                    className={fileInputStyles['info-container']}
+                >
+                    <div className={fileInputStyles['file-input-label']}>
+                        {labelKey.length < 19 ? 
+                            labelKey : 
+                            `${labelKey.substring(0,8)}...${labelKey.substring(labelKey.length-8,labelKey.length)}`}
+                    </div>
+                    <label 
+                        htmlFor={fieldName}
+                        className={formButtonStyle}
+                    >
+                        Cargue archivo
+                    </label>
+                    <input 
+                        id={fieldName}
+                        name={fieldName}
+                        type='file'
+                        accept={accept}
+                        ref={parentRef}
+                        onChange={(event) => {
+                            formHook.setFieldValue(
+                                fieldName,
+                                event.currentTarget.files[0]
+                            )
+                        }}
+                    />
+                </div>
             </div>
-        </div>
+            { formHook.errors[fieldName] && (
+                    <div 
+                        className={fileInputStyles['error-message']}
+                    >
+                        {formHook.errors[fieldName]}
+                    </div>
+            )}
+        </>
     );
 }
 

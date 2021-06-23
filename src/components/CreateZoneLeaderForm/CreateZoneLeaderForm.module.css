@@ -83,6 +83,24 @@ BUTTON STYLES
   cursor: pointer;
 }
 
+.confirm-button {
+  font-size: 1.2em;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 1ch;
+  padding-right: 1ch;
+  border-radius: 8px;
+  border: 1px solid #53c149;
+  background-color: rgb(203, 223, 203);
+  color: #53c149;
+}
+
+.confirm-button:hover {
+  color: white;
+  background-color: #53c149;
+  cursor: pointer;
+}
+
 .error-button {
   font-size: 1.2em;
   padding-top: 5px;

@@ -7,46 +7,56 @@ const ProfileImageInput = (props) => {
     const formButtonStyle = props.edit ? profileImageInputStyles['edit-button-edit'] : profileImageInputStyles['edit-button'];
     const imageStyle = props.edit ? profileImageInputStyles['profile-photo-edit'] : profileImageInputStyles['profile-photo'];
     return (
-        <div
-            className={profileImageInputStyles['profile-image-card']}
-        >
+        <>
             <div
-                className={profileImageInputStyles['image-container']}
+                className={profileImageInputStyles['profile-image-card']}
             >
-                <img
-                    src={src} 
-                    alt={labelKey}
-                    className={imageStyle}
-                />
-            </div>
-            <div
-                className={profileImageInputStyles['info-container']}
-            >
-                <div className={profileImageInputStyles['profile-image-label']}>
-                    {labelKey}
-                </div>
-                <label
-                    htmlFor={inputID}
-                    className={formButtonStyle}
+                <div
+                    className={profileImageInputStyles['image-container']}
                 >
-                    Cargue foto
-                </label>
-                <input 
-                    id={inputID}
-                    name={inputID}
-                    type='file'
-                    placeholder='Ingrese foto de perfil'
-                    accept='image/*'
-                    ref={parentRef}
-                    onChange={(event) => {
-                        formHook.setFieldValue(
-                            'profileImage',
-                            event.currentTarget.files[0]
-                        )
-                    }}
-                />
+                    <img
+                        src={src} 
+                        alt={labelKey}
+                        className={imageStyle}
+                    />
+                </div>
+                <div
+                    className={profileImageInputStyles['info-container']}
+                >
+                    <div className={profileImageInputStyles['profile-image-label']}>
+                        {labelKey}
+                    </div>
+                    <label
+                        htmlFor={inputID}
+                        className={formButtonStyle}
+                    >
+                        Cargue foto
+                    </label>
+                    <input 
+                        id={inputID}
+                        name={inputID}
+                        type='file'
+                        placeholder='Ingrese foto de perfil'
+                        accept='image/*'
+                        ref={parentRef}
+                        onChange={(event) => {
+                            formHook.setFieldValue(
+                                'profileImage',
+                                event.currentTarget.files[0]
+                            )
+                        }}
+                    />
+                </div>
+                
             </div>
-        </div>
+            { formHook.errors['profileImage'] && (
+                    <div 
+                        className={profileImageInputStyles['error-message']}
+                    >
+                        {formHook.errors['profileImage']}
+                    </div>
+            )}
+        </>
     );
 }
 

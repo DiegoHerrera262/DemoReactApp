@@ -75,6 +75,14 @@ label:focus {
   outline: none;
 }
 
+.error-message {
+  text-align: center;
+  margin-left: 1ch;
+  margin-bottom: 1em;
+  font-size: 0.7em;
+  color: red;
+}
+
 /*
 ADAPTING TO MEDIUM - XL SCREENS
 */
@@ -98,5 +106,13 @@ ADAPTING TO MEDIUM - XL SCREENS
   .info-container {
     padding-left: 2em;
     flex: 100%;
+  }
+
+  .error-message {
+    text-align: left;
+    margin-left: 1ch;
+    margin-bottom: 1em;
+    font-size: 0.7em;
+    color: red;
   }
 }

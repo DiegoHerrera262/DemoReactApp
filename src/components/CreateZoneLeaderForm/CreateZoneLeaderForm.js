@@ -1,13 +1,3 @@
-/*
-ZONE LEADER FORM COMPONENT
-Description: This component is to be used for creating
-             a zone leader via a formik form. The fields
-             to be included are on figma file.
-
-     Author: Diego Alejandro Herrera Rojas
-       Date: 01/06/21 
-*/
-
 import React, {useState, useEffect, useRef} from 'react';
 
 // HTTP connection to backend
@@ -35,6 +25,7 @@ import zoneLeaderStyles from './CreateZoneLeaderForm.module.css';
 Modal.setAppElement('body');
 
 const GoogleMapsAPI = `https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${process.env.REACT_APP_GOOGLE_MAPS_TOKEN}`;
+const MAX_SIZE = 5 * 1024 * 1024;
 
 // Change map display style here
 // const mapStyle = 'mapbox://styles/diegoherrera262/ckpossqqj09fy17npwfhqkadq'
@@ -47,11 +38,10 @@ const CreateZoneLeaderForm = (props) => {
     // include document properties on the initial values
     defaultInitialValues = {
         ...defaultInitialValues,
-        frontID : {},
-        backID : {},
-        rut : {},
-        bankData : {},
-        contract : {}, 
+        frontID : null,
+        rut : null,
+        bankData : null,
+        contract : null, 
         profileImage : null
     }
 
@@ -127,7 +117,52 @@ const CreateZoneLeaderForm = (props) => {
                 .required('Campo requerido'),
             endContractDate : Yup.date()
                 .min(today, 'Ingrese una fecha en el futuro')
-                .required('Campo requerido')
+                .required('Campo requerido'),
+            profileImage : Yup.mixed()
+                .test('fileSize', 'Ingrese archivo de máx. 5MB', value => {
+                    if(value){
+                        if(value.size){
+                            return value.size < MAX_SIZE;
+                        }
+                    }   
+                    return false;
+                }),
+            frontID : Yup.mixed()
+                .test('fileSize', 'Ingrese archivo de máx. 5MB', value => {
+                    if(value){
+                        if(value.size){
+                            return value.size < MAX_SIZE;
+                        }
+                    }   
+                    return false;
+                }),
+            rut : Yup.mixed()
+                .test('fileSize', 'Ingrese archivo de máx. 5MB', value => {
+                    if(value){
+                        if(value.size){
+                            return value.size < MAX_SIZE;
+                        }
+                    }   
+                    return false;
+                }),
+            bankData : Yup.mixed()
+                .test('fileSize', 'Ingrese archivo de máx. 5MB', value => {
+                    if(value){
+                        if(value.size){
+                            return value.size < MAX_SIZE;
+                        }
+                    }   
+                    return false;
+                }),
+            contract : Yup.mixed()
+                .test('fileSize', 'Ingrese archivo de máx. 5MB', value => {
+                    if(value){
+                        if(value.size){
+                            return value.size < MAX_SIZE;
+                        }
+                    }   
+                    return false;
+                }),
         }),
         /*set up submit callback*/
         onSubmit : (values) => {
@@ -152,6 +187,7 @@ const CreateZoneLeaderForm = (props) => {
     // Click handler for showing
     // alert modal
     const handleErrorClick = () => {
+        console.log(formik.errors)
         // See if there are any errors
         const numErrors = Object.keys(formik.errors).length
         // see if the fields are empty
@@ -167,35 +203,30 @@ const CreateZoneLeaderForm = (props) => {
         setConfirmShowModal(!formIsNotRight);
     }
 
-    console.log(zoneMarkerCoords);
-
     /*
     HERE IS WHERE THE SUBMIT
     ACTION IT TO BE HANDLED WITH
     THE BACKEND
     */
     const handleSubmitDataFromModal = async () => {
-        const postData = {
-            name : formik.values['name'],
-            last_name: formik.values['lastName'],
-            documentId: formik.values['documentId'],
-            address: formik.values['address'],
-            leader_code: formik.values['leaderCode'],
-            email: formik.values['email'],
-            cellphone: formik.values['cellphone'],
-            zone_id: zoneKeys[formik.values['zone']],
-            endContractDate: formik.values['endContractDate'],
-            documentPhoto: "https://AmazonWEB.com/Some/Random/url",
-            rutDocument: "https://AmazonWEB.com/Some/Random/url",
-            contractDocument: "https://AmazonWEB.com/Some/Random/url",
-            profileImage: "https://AmazonWEB.com/Some/Random/url",
-            bankCertification: "https://AmazonWEB.com/Some/Random/url"
-        };
-
-        console.log(postData)
+        const data = new FormData();
+        data.append('name', formik.values['name']);
+        data.append('last_name', formik.values['lastName']);
+        data.append('documentId', formik.values['documentId']);
+        data.append('address', formik.values['address']);
+        data.append('leader_code', formik.values['leaderCode']);
+        data.append('email', formik.values['email']);
+        data.append('cellphone', formik.values['cellphone']);
+        data.append('zone_id', zoneKeys[formik.values['zone']]);
+        data.append('endContractDate', formik.values['endContractDate']);
+        data.append('contractDocument', formik.values['contract']);
+        data.append('documentPhoto', formik.values['frontID']);
+        data.append('rutDocument', formik.values['rut']);
+        data.append('profileImage', formik.values['profileImage']);
+        data.append('bankCertification', formik.values['bankData']);
 
         try {
-            const {message, correct} = await postLeader(postData);
+            const {message, correct} = await postLeader(data);
             console.log(formik.values);
             console.log(message);
 
@@ -204,6 +235,7 @@ const CreateZoneLeaderForm = (props) => {
 
             // reset form and hide modal
             if (correct) {
+                
                 formik.resetForm();
                 formik.values = defaultInitialValues;
                 // Reset file inputs
@@ -212,8 +244,9 @@ const CreateZoneLeaderForm = (props) => {
                 rutRef.current.value = "";
                 bankDataRef.current.value = "";
                 contractRef.current.value = "";
+                
                 setShowCreatingLeaderMessage(true);
-                return setServerMessageStyle(zoneLeaderStyles['confirm-div'])
+                return setServerMessageStyle(zoneLeaderStyles['confirm-div']);
             }
                         
             setShowCreatingLeaderMessage(true);
@@ -222,6 +255,7 @@ const CreateZoneLeaderForm = (props) => {
         } catch (error) {
             console.log(error);
         }
+        
     }
 
     return (
@@ -230,6 +264,7 @@ const CreateZoneLeaderForm = (props) => {
                 showCreatingLeaderMessage && 
                 <div
                     className={serverMessageStyle}
+                    onClick={() => setShowCreatingLeaderMessage(false)}
                 >
                     {serverMessage}
                 </div>
@@ -315,7 +350,7 @@ const CreateZoneLeaderForm = (props) => {
                         fieldName='frontID'
                         formHook={formik}
                         parentRef={frontIdRef}
-                        labelKey='Ingrese PDF'
+                        labelKey={formik.values['frontID'] ? `${formik.values['frontID'].name}` : 'Ingrese PDF'}
                         accept='.pdf, image/*'
                     />
 
@@ -324,7 +359,7 @@ const CreateZoneLeaderForm = (props) => {
                         fieldName='rut'
                         formHook={formik}
                         parentRef={rutRef}
-                        labelKey='Ingrese PDF o Word'
+                        labelKey={formik.values['rut'] ? `${formik.values['rut'].name}` : 'Ingrese PDF o Word'}
                         accept='.pdf, .doc, .docx'
                     />
 
@@ -333,7 +368,7 @@ const CreateZoneLeaderForm = (props) => {
                         fieldName='bankData'
                         formHook={formik}
                         parentRef={bankDataRef}
-                        labelKey='Ingrese PDF o Word'
+                        labelKey={formik.values['bankData'] ? `${formik.values['bankData'].name}` : 'Ingrese PDF o Word'}
                         accept='.pdf, .doc, .docx'
                     />
 
@@ -342,7 +377,7 @@ const CreateZoneLeaderForm = (props) => {
                         fieldName='contract'
                         formHook={formik}
                         parentRef={contractRef}
-                        labelKey='Ingrese PDF o Word'
+                        labelKey={formik.values['contract'] ? `${formik.values['contract'].name}` : 'Ingrese PDF o Word'}
                         accept='.pdf, .doc, .docx'
                     />
                 </div>
@@ -376,7 +411,7 @@ const CreateZoneLeaderForm = (props) => {
                 >
                     <button
                         onClick={handleSubmitDataFromModal}
-                        className={zoneLeaderStyles['submit-button']}
+                        className={zoneLeaderStyles['confirm-button']}
                     >
                         Confirmar
                     </button>

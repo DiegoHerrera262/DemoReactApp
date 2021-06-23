@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const defaultURl = 'http://localhost:8080/lideres';
+const defaultURl = 'http://localhost:8000/lideres';
 
 // setting up get method
 const postLeader = async (leaderData) => {
@@ -24,7 +24,7 @@ const updateLeader = async (leaderId, newData) => {
 }
 
 const getLeaders = async () => {
-    const getURL = `http://localhost:8080/lideres`;
+    const getURL = `http://localhost:8000/lideres`;
     try {
         const leaderList = await axios.get(getURL);
         return leaderList.data;
@@ -35,7 +35,7 @@ const getLeaders = async () => {
 }
 
 const getLeaderById = async (leaderId) => {
-    const getURL = `http://localhost:8080/lideres/${leaderId}`;
+    const getURL = `http://localhost:8000/lideres/${leaderId}`;
     try {
         const leaderData = await axios.get(getURL);
         return leaderData.data;
