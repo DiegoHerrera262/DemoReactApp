@@ -3,7 +3,6 @@ import GenericToExcelButton from '../GenericToExcelButton';
 
 const ClientsTable = (props) => {
     let { dataset, Headers, pageSize } = props;
-    console.log(dataset)
 
     const [ displayDataset, setDisplayDataset ] = useState(dataset);
     const [ pageIndex, setPageIndex ] = useState(0);
