@@ -1,25 +1,85 @@
 
 import './App.css';
-import React from 'react';
-import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import axios from 'axios';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 // import CreateZoneLeaderForm from './components/CreateZoneLeaderForm';
 // import UpdateZoneLeaderForm from './components/UpdateZoneLeaderForm';
 import UpdateZoneLeaderView from './components/UpdateZoneLeaderView';
 import CreateZoneLeaderView from './components/CreateZoneLeaderView';
 import LeadersListTableView from './components/LeadersListTableView';
-import LeaderZoneMap from './components/LeaderZoneMap';
+import ClientsTable from './components/ClientsTable';
 
 // const leaderId = 29;
+const mockEntry1 = {
+  name : 'Foo',
+  lastName : 'Bar',
+  age : 31,
+  job : 'Developer'
+}
+const mockEntry2 = {
+  name : 'Foo2',
+  lastName : 'Bar2',
+  age : 31,
+  job : 'Developer2'
+}
+const mockData = [];
+for (let i = 0; i < 10; i++) {
+  mockData.push(mockEntry1)
+}
+for (let i = 0; i < 10; i++) {
+  mockData.push(mockEntry2)
+}
+
+const Headers = [
+  {
+    accessor : 'userId',
+    header : 'Id Usuario'
+  },
+  {
+    accessor : 'id',
+    header : 'Id'
+  },
+  {
+    accessor : 'title',
+    header : 'Título'
+  },
+  {
+    accessor : 'completed',
+    header : 'Completado'
+  }
+];
 
 function HomePage() {
+  const [dataset, setDataset] = useState([]);
+
+  useEffect(() => {
+    const fetchFakeData = async () => {
+      const res = await axios.get('https://jsonplaceholder.typicode.com/todos');
+      setDataset(res.data);
+    }
+    fetchFakeData();
+  }, [])
+
   return (
-    <LeaderZoneMap
-      isMarkerShown
-      googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
-      loadingElement={<div style={{ height: `100%` }} />}
-      containerElement={<div style={{ height: `400px` }} />}
-      mapElement={<div style={{ height: `100%` }} />}
-    />
+    <>
+    {
+      dataset.length === 0 && (
+        <div>
+          Cargando...
+        </div>
+      )
+    }
+    {
+      dataset.length > 0 && (
+        <ClientsTable 
+          dataset={dataset}
+          Headers={Headers}
+          pageSize={10}
+        />
+      )
+    }
+    </>
   );
 }
 
