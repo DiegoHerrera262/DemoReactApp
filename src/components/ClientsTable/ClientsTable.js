@@ -9,22 +9,47 @@ const ClientsTable = (props) => {
     const numPages = Math.ceil(displayDataset.length / pageSize);
     const [ canNextPage, setCanNextPage ] = useState(true);
     const [ canPrevPage, setCanPrevPage ] = useState(false);
+    const [ sortSmallToLarge, setSortSmallToLarge ] = useState(true);
+    const [ sortingField, setSortingField ] = useState(null);
 
     useEffect(() => {
         if (pageIndex === 0) {
             setCanPrevPage(false);
+            if (pageIndex === numPages - 1) {
+                setCanNextPage(false);
+                return;
+            }
+            setCanNextPage(true);
             return;
         }
-        if (pageIndex === numPages -1) {
+        if (pageIndex === numPages - 1) {
             setCanNextPage(false);
+            setCanPrevPage(true);
             return;
         }
         setCanPrevPage(true);
         setCanNextPage(true);
     }, [numPages, pageIndex]);
 
+    console.log(canPrevPage);
+    console.log(canNextPage);
+
+    const sortData = (field) => {
+        setSortingField(field);
+        setSortSmallToLarge(!sortSmallToLarge);
+        setDisplayDataset(displayDataset
+            .sort((obj1, obj2) => {
+                if (obj1[field] < obj2[field]) {
+                    return sortSmallToLarge ? -1 : 1;
+                }
+                if (obj1[field] > obj2[field]) {
+                    return sortSmallToLarge ? 1 : -1;
+                }
+                return 0;
+            }));
+    }
+
     const fieldNames = Headers.map(col => col.accessor);
-    const headers = Headers.map(col => col.header);
     const genPageArray = () => {
         let a = []
         for (let i = 0; i < numPages && i < 10; i++) {
@@ -67,9 +92,16 @@ const ClientsTable = (props) => {
                     <tr>
                         {
                             /* Create heders */
-                            headers.map(header => (
-                                <th key={header}>
-                                    {`${header}`}
+                            Headers.map(header => (
+                                <th key={header.header} onClick={() => sortData(header.accessor)}>
+                                    {`${header.header}`}
+                                    <span>
+                                        {header.accessor === sortingField
+                                        ? !sortSmallToLarge
+                                            ? ' 🔽'
+                                            : ' 🔼'
+                                        : ''}
+                                    </span>
                                 </th>
                             ))
                         }
@@ -97,28 +129,40 @@ const ClientsTable = (props) => {
                         Página {`${pageIndex + 1}`} de {`${numPages}`}
                 </div>
                 <div>
-                    <label
+                    <button
                         onClick={() => setPageIndex(0)}
                         disabled={!canPrevPage}
                     >
                         {'<<'}
-                    </label>
+                    </button>
+                    <button
+                        onClick={() => setPageIndex(pageIndex-1)}
+                        disabled={!canPrevPage}
+                    >
+                        Anterior
+                    </button>
                     {
                         pageArray.map(pageIdx => (
-                            <label
+                            <button
                                 key={`page-button-${pageIdx}`}
                                 onClick={() => setPageIndex(pageIdx)}
                             >
                                 {`${pageIdx + 1}`}
-                            </label>
+                            </button>
                         ))
                     }
-                    <label
+                    <button
+                        onClick={() => setPageIndex(pageIndex+1)}
+                        disabled={!canNextPage}
+                    >
+                        Siguiente
+                    </button>
+                    <button
                         onClick={() => setPageIndex(numPages-1)}
                         disabled={!canNextPage}
                     >
                         {'>>'}
-                    </label>
+                    </button>
                 </div>
             </div>
         </>
