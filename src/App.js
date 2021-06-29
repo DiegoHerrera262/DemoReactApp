@@ -10,27 +10,6 @@ import CreateZoneLeaderView from './components/CreateZoneLeaderView';
 import LeadersListTableView from './components/LeadersListTableView';
 import ClientsTable from './components/ClientsTable';
 
-// const leaderId = 29;
-const mockEntry1 = {
-  name : 'Foo',
-  lastName : 'Bar',
-  age : 31,
-  job : 'Developer'
-}
-const mockEntry2 = {
-  name : 'Foo2',
-  lastName : 'Bar2',
-  age : 31,
-  job : 'Developer2'
-}
-const mockData = [];
-for (let i = 0; i < 10; i++) {
-  mockData.push(mockEntry1)
-}
-for (let i = 0; i < 10; i++) {
-  mockData.push(mockEntry2)
-}
-
 const Headers = [
   {
     accessor : 'userId',
@@ -49,6 +28,24 @@ const Headers = [
     header : 'Completado'
   }
 ];
+
+const MessageButton = (props) => {
+  const { message, id } = props
+  return (
+    <button
+     onClick={() => {alert(`${message} : ${id}`)}}
+     style={{
+       fontSize: '0.1em',
+       backgroundColor: 'white',
+       border: '1px solid #272741',
+       borderRadius: '5px',
+       color: '#272741'
+     }}
+    >
+      {`${message}`}
+    </button>
+  );
+}
 
 function HomePage() {
   const [dataset, setDataset] = useState([]);
@@ -75,7 +72,23 @@ function HomePage() {
         <ClientsTable 
           dataset={dataset}
           Headers={Headers}
+          downloadFileName={'SomeTable'}
           pageSize={10}
+          identifier={'id'}
+          actions={[
+            {
+              Component : MessageButton,
+              props : {
+                message : 'Editar',
+              }
+            },
+            {
+              Component : MessageButton,
+              props : {
+                message : 'Eliminar',
+              }
+            }
+          ]}
         />
       )
     }

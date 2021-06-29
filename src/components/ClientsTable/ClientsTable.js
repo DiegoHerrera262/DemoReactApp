@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import GenericToExcelButton from '../GenericToExcelButton';
+import tableStyles from './ClientsTable.module.css';
 
 const ClientsTable = (props) => {
-    let { dataset, Headers, pageSize } = props;
+    let { dataset, Headers, pageSize, actions, identifier, downloadFileName } = props;
 
     const [ displayDataset, setDisplayDataset ] = useState(dataset);
     const [ pageIndex, setPageIndex ] = useState(0);
@@ -31,22 +32,29 @@ const ClientsTable = (props) => {
         setCanNextPage(true);
     }, [numPages, pageIndex]);
 
-    console.log(canPrevPage);
-    console.log(canNextPage);
+    useMemo(() => {
+        if (sortingField){
+            setDisplayDataset(displayDataset
+                .sort((obj1, obj2) => {
+                    if (obj1[sortingField] < obj2[sortingField]) {
+                        return sortSmallToLarge ? -1 : 1;
+                    }
+                    if (obj1[sortingField] > obj2[sortingField]) {
+                        return sortSmallToLarge ? 1 : -1;
+                    }
+                    return 0;
+                }));
+        }
+    }, [sortingField, displayDataset, sortSmallToLarge])
 
     const sortData = (field) => {
         setSortingField(field);
-        setSortSmallToLarge(!sortSmallToLarge);
-        setDisplayDataset(displayDataset
-            .sort((obj1, obj2) => {
-                if (obj1[field] < obj2[field]) {
-                    return sortSmallToLarge ? -1 : 1;
-                }
-                if (obj1[field] > obj2[field]) {
-                    return sortSmallToLarge ? 1 : -1;
-                }
-                return 0;
-            }));
+        if (field !== sortingField) {
+            setSortSmallToLarge(true);    
+        }
+        if (field === sortingField) {
+            setSortSmallToLarge(!sortSmallToLarge);
+        }
     }
 
     const fieldNames = Headers.map(col => col.accessor);
@@ -64,6 +72,7 @@ const ClientsTable = (props) => {
         if (filterWord === '') {
             setDisplayDataset(dataset);
         }
+        setPageIndex(0);
         setDisplayDataset(dataset.filter(row => {
             const values = Object.values(row);
             for (let j = 0; j < values.length; j++) {
@@ -77,69 +86,111 @@ const ClientsTable = (props) => {
 
     return (
         <>
-            <input 
-                type='text'
-                placeholder='Buscar'
-                onChange={(event) => filterData(event.target.value.trim())}
-            />
-            <GenericToExcelButton 
-                dataset={displayDataset}
-                Headers={Headers}
-                sheetName={'Clientes'}
-            />
-            <table>
-                <thead>
-                    <tr>
-                        {
-                            /* Create heders */
-                            Headers.map(header => (
-                                <th key={header.header} onClick={() => sortData(header.accessor)}>
-                                    {`${header.header}`}
-                                    <span>
-                                        {header.accessor === sortingField
-                                        ? !sortSmallToLarge
-                                            ? ' 🔽'
-                                            : ' 🔼'
-                                        : ''}
-                                    </span>
-                                </th>
-                            ))
-                        }
-                    </tr>
-                </thead>
-                <tbody>
-                        {
-                            /* Create table data */
-                            displayDataset.slice(pageSize * pageIndex, pageSize * (pageIndex + 1)).map((row, i) => (
-                                <tr key={`${Math.floor(Math.random() * 100 + 1)}-${i}`}>
-                                    {
-                                        fieldNames.map(field => (
-                                            <td key={`${Math.floor(Math.random() * 1000 + 1)}-${field}`}>
-                                                { `${row[field]}` }
-                                            </td>
-                                        ))
-                                    }
-                                </tr>
-                            ))
-                        }
-                </tbody>
-            </table>
-            <div>
-                <div>
-                        Página {`${pageIndex + 1}`} de {`${numPages}`}
+            <div className={tableStyles['search-bar']}>
+                <div className={tableStyles['input-div']}>
+                    <input 
+                        type='text'
+                        placeholder='Buscar'
+                        onChange={(event) => filterData(event.target.value.trim())}
+                        className={tableStyles['search-input']}
+                    />
                 </div>
-                <div>
+                <div className={tableStyles['button-div']}>
+                    <GenericToExcelButton 
+                        dataset={displayDataset}
+                        Headers={Headers}
+                        sheetName={downloadFileName}
+                    />
+                </div>
+            </div>
+            <div
+                className={tableStyles['table-container']}
+            >
+                <table className={tableStyles['clients-table']}>
+                    <thead>
+                        <tr>
+                            {
+                                /* Create heders */
+                                Headers.map(header => (
+                                    <th 
+                                        key={header.header} 
+                                        onClick={() => sortData(header.accessor)}
+                                        className={tableStyles['clients-th']}
+                                    >
+                                        {`${header.header}`}
+                                        <span>
+                                            {header.accessor === sortingField
+                                            ? sortSmallToLarge
+                                                ? ' 🔽'
+                                                : ' 🔼'
+                                            : ''}
+                                        </span>
+                                    </th>
+                                ))
+                            }
+                            {
+                                actions && (
+                                    <th className={tableStyles['clients-th']}>
+                                        Acciones
+                                    </th>
+                                )
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                            {
+                                /* Create table data */
+                                displayDataset.slice(pageSize * pageIndex, pageSize * (pageIndex + 1)).map((row, i) => (
+                                    <tr key={`${Math.floor(Math.random() * 100 + 1)}-${i}`}>
+                                        {
+                                            <>
+                                                {
+                                                    fieldNames.map(field => (
+                                                        <td key={`${Math.floor(Math.random() * 1000 + 1)}-${field}`}>
+                                                            { `${row[field]}` }
+                                                        </td>
+                                                    ))
+                                                }
+                                                { actions && (
+                                                        <td>
+                                                            {
+                                                                actions.map(action => (
+                                                                    <action.Component 
+                                                                        key={`${Math.floor(Math.random() * 100000 + 1)}`} 
+                                                                        {...action.props}
+                                                                        id={row[identifier]}
+                                                                    />
+                                                                ))
+                                                            }
+                                                        </td>
+                                                    )
+                                                }
+                                            </>
+                                        }
+                                    </tr>
+                                ))
+                            }
+                    </tbody>
+                </table>
+            </div>
+            <div className={tableStyles['clients-pag']}>
+                <div className={tableStyles['page-index']}>
+                        Pág. {`${pageIndex + 1}`} de {`${numPages}`}
+                </div>
+                <div className={tableStyles['page-buttons']}>
                     <button
                         onClick={() => setPageIndex(0)}
                         disabled={!canPrevPage}
+                        className={tableStyles['prev']}
                     >
                         {'<<'}
                     </button>
                     <button
                         onClick={() => setPageIndex(pageIndex-1)}
                         disabled={!canPrevPage}
+                        className={tableStyles['prev']}
                     >
-                        Anterior
+                        ANTERIOR
                     </button>
                     {
                         pageArray.map(pageIdx => (
@@ -154,12 +205,14 @@ const ClientsTable = (props) => {
                     <button
                         onClick={() => setPageIndex(pageIndex+1)}
                         disabled={!canNextPage}
+                        className={tableStyles['next']}
                     >
-                        Siguiente
+                        SIGUIENTE
                     </button>
                     <button
                         onClick={() => setPageIndex(numPages-1)}
                         disabled={!canNextPage}
+                        className={tableStyles['next']}
                     >
                         {'>>'}
                     </button>

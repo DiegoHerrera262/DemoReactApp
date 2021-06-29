@@ -84,6 +84,7 @@ const ListTableLeaders = (props) => {
             >
             <table 
                 {...getTableProps()}
+                className={tableStyles['leaders-table']}
             >
                 <thead>
                     {

@@ -23,7 +23,7 @@
   overflow: scroll;
 }
 
-table {
+.leaders-table {
   margin-left: auto;
   margin-right: auto;
   margin-top: 1em;
@@ -38,17 +38,17 @@ table {
   overflow: scroll;
 }
 
-thead {
+.leaders-table thead {
   text-align: center;
   font-size: 1em;
   font-weight: bold;
 }
 
-tbody {
+.leaders-table tbody {
   text-align: center;
 }
 
-th,
+.leaders-table th,
 td {
   padding: 1em 1ch 1em 1ch;
   min-width: 12ch;
@@ -199,7 +199,7 @@ td {
     color: #154c79;
   }
 
-  table {
+  .leaders-table {
     width: 90%;
     margin-left: 5ch;
     margin-top: 1em;
@@ -214,8 +214,8 @@ td {
     overflow: scroll;
   }
 
-  th,
-  td {
+  .leaders-table th,
+  .leaders-table td {
     padding: 1em 1ch 1em 1ch;
   }
 

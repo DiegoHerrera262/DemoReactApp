@@ -1,0 +1,20 @@
+.export-button {
+  width: 100px;
+  height: 22px;
+  background-color: #c4c4c4;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+}
+
+.export-button:hover {
+  background-color: #272741;
+  color: white;
+}
+
+@media all and (min-width: 992px) {
+  .export-button {
+    width: 121px;
+    height: 29px;
+  }
+}
