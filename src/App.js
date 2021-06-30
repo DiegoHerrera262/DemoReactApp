@@ -8,6 +8,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import UpdateZoneLeaderView from './components/UpdateZoneLeaderView';
 import CreateZoneLeaderView from './components/CreateZoneLeaderView';
 import LeadersListTableView from './components/LeadersListTableView';
+import CreateClientView from './components/CreateClientView';
 import ClientsTable from './components/ClientsTable';
 
 const Headers = [
@@ -130,6 +131,10 @@ function App() {
           <Route
             exact path='/leaders/update/:id'
             render={(props) => <UpdateZoneLeaderView leaderId={props.match.params.id} />}
+          />
+          <Route
+            exact path='/clients/create'
+            render={() => <CreateClientView />}
           />
         </Switch>
       </div>

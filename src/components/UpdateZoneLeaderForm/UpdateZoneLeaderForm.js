@@ -213,7 +213,7 @@ const UpdateZoneLeaderForm = (props) => {
     }
 
     return (
-        <form onSubmit = {formik.handleSubmit}>
+        <form onSubmit = {formik.handleSubmit} className={zoneLeaderStyles['form']}>
             {
                 showCreatingLeaderMessage && 
                 <div
@@ -297,9 +297,9 @@ const UpdateZoneLeaderForm = (props) => {
                         })
                     }
                     
-                    <h2 style={{paddingLeft : '0.8ch'}}> Documentos </h2>
+                    <h2 className={zoneLeaderStyles['h2']} style={{paddingLeft : '0.8ch'}}> Documentos </h2>
 
-                    <h3 style={{paddingLeft : '1ch'}}> Documento de identidad </h3>
+                    <h3 className={zoneLeaderStyles['h3']} style={{paddingLeft : '1ch'}}> Documento de identidad </h3>
                     <FileInput
                         edit
                         fieldName='frontID'
@@ -309,7 +309,7 @@ const UpdateZoneLeaderForm = (props) => {
                         accept='.pdf, image/*'
                     />
 
-                    <h3 style={{paddingLeft : '1ch'}}> RUT </h3>
+                    <h3 className={zoneLeaderStyles['h3']} style={{paddingLeft : '1ch'}}> RUT </h3>
                     <FileInput
                         edit
                         fieldName='rut'
@@ -319,7 +319,7 @@ const UpdateZoneLeaderForm = (props) => {
                         accept='.pdf, .doc, .docx'
                     />
 
-                    <h3 style={{paddingLeft : '1ch'}}> Certificación bancaria </h3>
+                    <h3 className={zoneLeaderStyles['h3']} style={{paddingLeft : '1ch'}}> Certificación bancaria </h3>
                     <FileInput
                         edit
                         fieldName='bankData'
@@ -329,7 +329,7 @@ const UpdateZoneLeaderForm = (props) => {
                         accept='.pdf, .doc, .docx'
                     />
 
-                    <h3 style={{paddingLeft : '1ch'}}> Contrato </h3>
+                    <h3 className={zoneLeaderStyles['h3']} style={{paddingLeft : '1ch'}}> Contrato </h3>
                     <FileInput
                         edit
                         fieldName='contract'

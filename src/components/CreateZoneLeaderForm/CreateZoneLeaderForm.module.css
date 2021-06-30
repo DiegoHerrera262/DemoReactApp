@@ -1,11 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap");
 
-h2,
-h3 {
+.h2,
+.h3 {
   margin-top: 1ch;
 }
 
-form {
+.form {
   font-family: "Roboto", sans-serif;
   padding: 1ch;
   border-radius: 8px;

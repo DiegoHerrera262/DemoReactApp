@@ -27,6 +27,7 @@ const FieldInput = (props) => {
             </label>
             <br />
             <input
+                className={fieldInputStyles['input']}
                 id={fieldName}
                 name={fieldName}
                 type={typeKey}

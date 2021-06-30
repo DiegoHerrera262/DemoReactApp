@@ -13,6 +13,7 @@ const SelectInput = (props) => {
             </label>
             <br />
             <select
+                className={selectInputStyles['select']}
                 id={fieldName}
                 onChange={formHook.handleChange}
                 value={formHook.values[fieldName]}
