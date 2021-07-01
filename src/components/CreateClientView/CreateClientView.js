@@ -3,17 +3,35 @@ import createClientStyles from './CreateClientView.module.css';
 
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import axios from 'axios';
+import { postClient } from '../../endpoint/clients.methods';
 
 import Modal from 'react-modal';
 import errorImage from '../assets/errorImage.png';
 import confirmationImage from '../assets/confirmationImage.png'
 
-import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps";
+import { GoogleMap, useLoadScript, Marker, useJsApiLoader } from '@react-google-maps/api';
 import mapPin from '../assets/pin.png';
-const GoogleMapsAPI = `https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${process.env.REACT_APP_GOOGLE_MAPS_TOKEN}`;
+const GoogleMapsToken = process.env.REACT_APP_GOOGLE_MAPS_TOKEN;
+const GoogleMapsAPI = `https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${GoogleMapsToken}`;
 
 // DO NOT DELETE THIS
 Modal.setAppElement('body');
+
+// get address from coordinates
+const getAddress = async (addressCoords) => {
+    try {
+        const { latitude, longitude } = addressCoords
+        const GoogleGeocodeURL = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GoogleMapsToken}`
+        const result = await axios.get(GoogleGeocodeURL);
+        if (result.data.results.length > 0){
+            return result.data.results[0].formatted_address.toString().trim();
+        }
+    } catch (error) {
+        console.log(error);
+        return '';
+    }
+}
 
 const InputField = (props) => {
     const { fieldName, formHook, labelKey, fieldType } = props;
@@ -87,18 +105,110 @@ const SelectField = (props) => {
     );
 }
 
-const StoreMap = (props) => {
-    const { markerCoords, setCoords } = props;
-    const changeCoords = (event) => {
-        setCoords({
-            latitude : event.latLng.lat(),
-            longitude : event.latLng.lng(),
-        });
+const AddressInput = (props) => {
+    const { fieldName, value, labelKey, setAddress, setCoords } = props;
+    const [ temporaryAddress, setTemporaryAddress ] = useState(value);
+    const [ isFocused, setIsFocused ] = useState(false);
+
+    const handleChange = (event) => {
+        const newAddress = event.target.value.trim();
+        setTemporaryAddress(newAddress);
+    }
+
+    const handleFocus = (event) => {
+        setTemporaryAddress(value);
+        setIsFocused(true);
+    }
+
+    const handleBlur = async () => {
+        console.log('Recalculando localización...');
+        /* Here get request to google maps api to
+        set coordinates */
+        try {
+            const streetQuery = temporaryAddress.replace(' ','+')
+                                    .replace('#','%23')
+            const GoogleGeocodeURL = `https://maps.googleapis.com/maps/api/geocode/json?address=${streetQuery}}&key=${GoogleMapsToken}`;
+            const result = await axios.get(GoogleGeocodeURL);
+            if (result.data.results.length > 0) {
+                const pos = result.data.results[0].geometry.location;
+                setCoords({
+                    latitude: pos.lat,
+                    longitude: pos.lng
+                })
+            }
+            setAddress(temporaryAddress);
+            setIsFocused(false);
+        } catch(error) {
+            console.log(error);
+        }
+        
     }
     return (
+        <>
+            <label
+                htmlFor={fieldName}
+                className={createClientStyles['input-label']}
+            >
+                { labelKey }
+            </label>
+            <br />
+            <input 
+                id={fieldName}
+                name={fieldName}
+                type='text'
+                value={!isFocused ? value : temporaryAddress}
+                onBlur={handleBlur}
+                onFocus={handleFocus}
+                onChange={handleChange}
+                className={createClientStyles['input']}
+            />
+            <br />
+        </>
+    );
+}
+
+const ClientMap = (props) => {
+    const { mapContainerStyle, zoom, center, markerCoords, setCoords, setAddress } = props;
+
+    const changeCoords = async (event) => {
+        const coords = {
+            latitude : event.latLng.lat(),
+            longitude : event.latLng.lng(),
+        }
+        setAddress(await getAddress(coords));
+        setCoords(coords);
+    }
+
+    const { isLoaded, loadError } = useLoadScript({
+        googleMapsApiKey : GoogleMapsToken
+    });
+
+    if (loadError) {
+        return (
+            <p align='center'>
+                <img 
+                    src={errorImage}
+                    alt=''
+                    width='40px'
+                    height='40px'
+                />
+                <br />
+                Error al cargar el mapa.
+            </p>  
+        );
+    }
+
+    if (!isLoaded) {
+        return (
+            <div className={createClientStyles['loading-div']} />
+        );
+    }
+    
+    return (
         <GoogleMap
-            defaultZoom={10}
-            defaultCenter={{ lat: 4.637764262457622, lng: -74.14443 }}
+            mapContainerStyle={mapContainerStyle}
+            zoom={zoom}
+            center={center}
         >
             <Marker 
                 draggable 
@@ -115,8 +225,6 @@ const StoreMap = (props) => {
         </GoogleMap>
     );
 }
-
-const AddressMap = withScriptjs(withGoogleMap(StoreMap));
 
 const assessorsAPICall = () => [
     '--Seleccione un asesor--',
@@ -140,7 +248,30 @@ const CreateClientView = (props) => {
     const [ addressCoords, setAddressCoords ] = useState({
         latitude : 4.68357,
         longitude : -74.14443
-    }); 
+    });
+    const [ formattedAddress, setFormattedAddress ] = useState('Cll 22i #10344');
+    useEffect(() => {
+        const setUpLocation = async () =>{
+            const { geolocation } = navigator;
+            if (geolocation) {
+                geolocation.getCurrentPosition(async (position) => {
+                    console.log('Ubicando navegador...');
+                    setAddressCoords({
+                        latitude : position.coords.latitude,
+                        longitude : position.coords.longitude
+                    })
+                    setFormattedAddress(await getAddress({
+                        latitude : position.coords.latitude,
+                        longitude : position.coords.longitude
+                    }))
+                },
+                () => {
+                    console.log('Ubicación imposible.')
+                });
+            }
+        }
+        setUpLocation();
+    }, []);
 
     const [ showCreateMessage, setShowCreateMessage ] = useState(false);
     const [ createMessage, setCreateMessage ] = useState('');;
@@ -158,12 +289,6 @@ const CreateClientView = (props) => {
         fetchData();  
     }, []);
 
-    /* Here Google Geolocation services should 
-    be used to get store address */
-    useEffect(() => {
-        console.log(addressCoords);
-    }, [addressCoords]);
-
     const defaultInitialValues = {
         name : '',
         documentType : '',
@@ -176,8 +301,7 @@ const CreateClientView = (props) => {
         neighborhood: '',
         zone: '',
         landline: '',
-        storeAddress: '',
-        location: ''
+        storeAddress: ''
     }
 
     const formik = useFormik({
@@ -232,10 +356,6 @@ const CreateClientView = (props) => {
             storeAddress : Yup.string()
                 .matches(/^[a-zA-Z]{2,4}[\s]{0,1}[a-zA-Z]{0,20}[\s]{0,1}[0-9]{0,3}[\s]{0,1}#[\s]{0,1}[0-9]{1,3}[a-zA-Z]{0,3}[\s]{0,1}-[\s]{0,1}[0-9]{1,3}[a-zA-Z]{0,3}$/,
                     'Ingrese una diercción válida')
-                .required('Campo requerido'),
-            location : Yup.string()
-                .matches(/^[a-zA-Z]{2,4}[\s]{0,1}[a-zA-Z]{0,20}[\s]{0,1}[0-9]{0,3}[\s]{0,1}#[\s]{0,1}[0-9]{1,3}[a-zA-Z]{0,3}[\s]{0,1}-[\s]{0,1}[0-9]{1,3}[a-zA-Z]{0,3}$/,
-                    'Ingrese una diercción válida')
                 .required('Campo requerido')
             }),
         onSubmit : (values) => {
@@ -245,12 +365,47 @@ const CreateClientView = (props) => {
 
     const handleSubmitDataFromModal = () => {
         try {
+            const data = new FormData();
+            data.append('name', formik.values['name']);
+            data.append('grocer_name', formik.values['storeName']);
+            data.append('owner_name', formik.values['name']);
+            data.append('document_type', formik.values['documentType']);
+            data.append('document_id', formik.values['documentId']);
+            data.append('cellphone', formik.values['cellphone']);
+            data.append('phone', formik.values['landline']);
+            data.append('email', formik.values['email']);
+            data.append('address', formik.values['storeAddress']);
+            data.append('address_additional_info', formik.values['locality']);
+            data.append('neighborhood', formik.values['neighborhood']);
+            data.append('latitude', addressCoords.latitude);
+            data.append('longitude', addressCoords.longitude);
             /* HERE CONNECTION WITH BACKEND */
 
-            console.log(formik.values);
+            postClient(data);
             setShowConfirmModal(false);
+
             formik.resetForm();
             formik.values = defaultInitialValues;
+            const setUpLocation = async () =>{
+                const { geolocation } = navigator;
+                if (geolocation) {
+                    geolocation.getCurrentPosition(async (position) => {
+                        console.log('Reubicando navegador...');
+                        setAddressCoords({
+                            latitude : position.coords.latitude,
+                            longitude : position.coords.longitude
+                        })
+                        setFormattedAddress(await getAddress({
+                            latitude : position.coords.latitude,
+                            longitude : position.coords.longitude
+                        }))
+                    },
+                    () => {
+                        console.log('Reubicación imposible.')
+                    });
+                }
+            }
+            setUpLocation();
 
             setCreateMessage('Creacción exitosa.');
             setModalImage(confirmationImage);
@@ -382,20 +537,28 @@ const CreateClientView = (props) => {
                             <div className={createClientStyles['header-box']}>
                                 Ubicación
                             </div>
-                            <InputField 
+                            <AddressInput 
                                 fieldName='location'
-                                formHook={formik}
                                 labelKey='Dirección'
-                                fieldType='text'
+                                value={formattedAddress}
+                                setAddress={setFormattedAddress}
+                                setCoords={setAddressCoords}
                             />
                             <div className={createClientStyles['map-container']}>
-                                <AddressMap
+                                <ClientMap
                                     googleMapURL={GoogleMapsAPI}
-                                    loadingElement={<div style={{ height: `100%` }} />}
-                                    containerElement={<div style={{ height: `100%` }} />}
-                                    mapElement={<div style={{ height: `100%` }} />}
+                                    mapContainerStyle={{
+                                        width: '100%',
+                                        height: '100%'
+                                    }}
+                                    zoom={11}
+                                    center={{ 
+                                        lat: addressCoords.latitude, 
+                                        lng: addressCoords.longitude 
+                                    }}
                                     markerCoords={addressCoords}
                                     setCoords={setAddressCoords}
+                                    setAddress={setFormattedAddress}
                                 />
                             </div>
                             <button
