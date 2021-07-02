@@ -10,6 +10,7 @@ import CreateZoneLeaderView from './components/CreateZoneLeaderView';
 import LeadersListTableView from './components/LeadersListTableView';
 import CreateClientView from './components/CreateClientView';
 import ClientsTable from './components/ClientsTable';
+import UpdateClientView from './components/UpdateClientView';
 
 const Headers = [
   {
@@ -120,6 +121,7 @@ function App() {
             exact path='/' 
             render={() => <HomePage />} 
           />
+
           <Route 
             exact path='/leaders' 
             render={() => <LeadersListTableView />} 
@@ -132,9 +134,14 @@ function App() {
             exact path='/leaders/update/:id'
             render={(props) => <UpdateZoneLeaderView leaderId={props.match.params.id} />}
           />
+
           <Route
             exact path='/clients/create'
             render={() => <CreateClientView />}
+          />
+          <Route
+            exact path='/clients/update/:id'
+            render={(props) => <UpdateClientView clientId={props.match.params.id} />}
           />
         </Switch>
       </div>

@@ -141,8 +141,8 @@ const AddressInput = (props) => {
         } catch(error) {
             console.log(error);
         }
-        
     }
+
     return (
         <>
             <label
@@ -250,8 +250,16 @@ const CreateClientView = (props) => {
         longitude : -74.14443
     });
     const [ formattedAddress, setFormattedAddress ] = useState('Cll 22i #10344');
+
+    const [ showCreateMessage, setShowCreateMessage ] = useState(false);
+    const [ createMessage, setCreateMessage ] = useState('');;
+
+    const [ showConfirmModal, setShowConfirmModal ] = useState(false);
+    const [ showErrorModal, setShowErrorModal ] = useState(false);
+
+    /* Here data should be fetched from the Assessors API */
     useEffect(() => {
-        const setUpLocation = async () =>{
+        const fetchData = async () => {
             const { geolocation } = navigator;
             if (geolocation) {
                 geolocation.getCurrentPosition(async (position) => {
@@ -269,24 +277,11 @@ const CreateClientView = (props) => {
                     console.log('Ubicación imposible.')
                 });
             }
-        }
-        setUpLocation();
-    }, []);
-
-    const [ showCreateMessage, setShowCreateMessage ] = useState(false);
-    const [ createMessage, setCreateMessage ] = useState('');;
-
-    const [ showConfirmModal, setShowConfirmModal ] = useState(false);
-    const [ showErrorModal, setShowErrorModal ] = useState(false);
-
-    /* Here data should be fetched from the Assessors API */
-    useEffect(() => {
-        const fetchData = async () => {
             setAssessors(await assessorsAPICall());
             setZones(await zonesAPICall());
             setIsLoading(false);
         }
-        fetchData();  
+        fetchData();
     }, []);
 
     const defaultInitialValues = {
