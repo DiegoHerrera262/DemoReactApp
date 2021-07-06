@@ -45,4 +45,68 @@ const putClientById = (id, data) => {
     }
 }
 
-export { postClient, getClientById, putClientById };
+const getClientDetailById = (id) => {
+    /* MOCK BACKEND FOR FETCHING DETAIL INFO */
+    try {
+        return {
+            basicInfo : {
+                name : 'Test Name',
+                cellphone : parseInt(`${id}000000000`),
+                email : `mail${id}@mail.com`,
+                storeName: 'Tienda Superveci',
+                locality: 'Suba',
+                storeAddress: 'Cra. 10 #10-10, Bogotá, Colombia',
+                createdAt : '06-07-21',
+                coordinates : {
+                    latitude : 4.15,
+                    longitude : -7.15
+                }
+            },
+            sellingInfo : {
+                clientType : 'Orgánico',
+                clientLevel : 'Premium',
+                deliveredReq : {
+                    number : 5,
+                    totalValue : 5000000
+                },
+                returns : {
+                    number : 5,
+                    percent : 1
+                }
+            }
+        }
+    } catch(error) {
+        return error;
+    }
+}
+
+const getClientByIdSells = (id) => {
+    const data = [];
+    const sample = {
+        id : 11,
+        sellDate : new Date(),
+        value : 58000,
+        ticket : 123,
+        state: 'Cancelado'
+    }
+    for (let i=0; i<20; i++) {
+        data.push(sample);
+    }
+    return data;
+}
+
+const getClientByIdMostBought = (id) => {
+    const data = [];
+    const sample = {
+        id : 11,
+        name : 'Test Product',
+        category : 'Test Category',
+        quantity : 8
+    }
+    for (let i=0; i<20; i++) {
+        data.push(sample);
+    }
+    return data;
+}
+
+export { postClient, getClientById, putClientById, getClientDetailById, getClientByIdSells, getClientByIdMostBought };

@@ -11,6 +11,7 @@ import LeadersListTableView from './components/LeadersListTableView';
 import CreateClientView from './components/CreateClientView';
 import ClientsTable from './components/ClientsTable';
 import UpdateClientView from './components/UpdateClientView';
+import ClientsDetailView from './components/ClientsDetailView';
 
 const Headers = [
   {
@@ -139,10 +140,17 @@ function App() {
             exact path='/clients/create'
             render={() => <CreateClientView />}
           />
+
           <Route
             exact path='/clients/update/:id'
             render={(props) => <UpdateClientView clientId={props.match.params.id} />}
           />
+
+          <Route
+            exact path='/clients/detail/:id'
+            render={(props) => <ClientsDetailView clientId={props.match.params.id} />}
+          />
+
         </Switch>
       </div>
     </BrowserRouter>
