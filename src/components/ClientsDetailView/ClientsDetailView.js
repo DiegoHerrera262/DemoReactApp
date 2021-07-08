@@ -4,6 +4,57 @@ import ClientsTable from '../ClientsTable';
 import { Redirect } from 'react-router-dom';
 import detailStyles from './ClientsDetailView.module.css';
 import { getClientDetailById, getClientByIdSells, getClientByIdMostBought  } from '../../endpoint/clients.methods';
+import { GoogleMap, useLoadScript, Marker, useJsApiLoader } from '@react-google-maps/api';
+import mapPin from '../assets/pin.png';
+import errorImage from '../assets/errorImage.png';
+
+const GoogleMapsToken = process.env.REACT_APP_GOOGLE_MAPS_TOKEN;
+
+const StoreMap = (props) => {
+    const { mapContainerStyle, zoom, center, markerCoords } = props;
+    const { isLoaded, loadError } = useLoadScript({
+        googleMapsApiKey : GoogleMapsToken
+    });
+    
+    if (loadError) {
+	return (
+	    <p align='center'>
+                <img
+		    src={errorImage}
+                    alt=''
+                    width='40px'
+                    height='40px' 
+  		/>
+		Error al cargar el mapa.
+	    </p>
+        );
+    }
+
+    if (!isLoaded) {
+	return (
+	    <div className={detailStyles['loading-div']} />
+        );
+    }
+
+    return (
+	<GoogleMap
+	    mapContainerStyle={mapContainerStyle}
+	    zoom={zoom}
+            center={center}
+	>
+	    <Marker
+		position={{ lat: markerCoords.latitude, lng : markerCoords.longitude }}
+		icon={{
+		    url: mapPin,
+		    scaledSize : {
+		        width : 35,
+                        height : 35
+		    }
+		}}
+	    />
+	</GoogleMap>
+    );
+}
 
 const RedirectButton = (props) => {
     const { buttonLabel, buttonStyle, path } = props;
@@ -27,10 +78,11 @@ const RedirectButton = (props) => {
 }
 
 const TabPane = (props) => {
+    // const { className } = props;
     return (
-        <div className={detailStyles['tab-pane']}>
+        <>
             { props.children }
-        </div>
+        </>
     );
 }
 TabPane.propTypes = {
@@ -44,14 +96,34 @@ const CustomTabs = (props) => {
         return element.props.name;
     });
     const [ active, setActive ] = useState(headers.length > 0 ? headers[0] : '');
-    console.log(children);
+
     return (
-        <div>
-            {children}
-        </div>
+	<>
+	  <div className={className['tabs-menu']}>
+		{
+			headers.map((header, i) => (
+				<button
+				   key={`${header}-${i}`}
+				   onClick={(event) => {setActive(header)}}
+				   className={header === active ? className['active-tab'] : className['unactive-tab']}
+				>
+				    {header}
+				</button>
+			))
+		}
+	  </div>
+          <div className={className['tab-content']}>
+           	{
+			children.map((child) => {
+					if (child.props.name === active) {
+						return child;
+					}
+				})
+	    	}
+           </div>
+	</>
     );
 }
-
 CustomTabs.propTypes = {
     children : (props, propName, componentName) => {
         const prop = props[propName];
@@ -65,12 +137,55 @@ CustomTabs.propTypes = {
     }
 };
 
+
 const ClientsDetailView = (props) => {
     const { clientId } = props;
     const [ detailInfo, setDetailInfo ] = useState({});
     const [ sellsInfo, setSellsInfo ] = useState([]);
     const [ boughtInfo, setBoughtInfo ] = useState([]);
     const [ isLoading, setIsLoading ] = useState(true);
+
+    const sellsInfoHeaders = [
+      {
+        accessor : 'id',
+        header : 'Id',
+      },
+      {
+	accessor : 'sellDate',
+	header : 'Fecha'
+      },
+      {
+	accessor : 'value',
+	header : 'Valor'
+      },
+      {
+	accessor : 'ticket',
+	header : 'Factura'
+      },
+      {
+	accessor : 'state',
+        header: 'Estado'
+      }
+    ];
+
+    const boughtInfoHeaders = [
+      {
+        accessor : 'id',
+        header : 'Id',
+      },
+      {
+	accessor : 'name',
+	header : 'Nombre Prod.'
+      },
+      {
+	accessor : 'category',
+	header : 'Categoria'
+      },
+      {
+	accessor : 'quantity',
+	header : 'Cantidad'
+      }
+    ];
 
     useEffect(() => {
         const fetchData = async () => {
@@ -138,24 +253,41 @@ const ClientsDetailView = (props) => {
                     />
                 </div>
                 <div className={detailStyles['table-col']}>
-                    <CustomTabs>
+                    <CustomTabs className={detailStyles}>
                         <TabPane name='Pedidos'>
-                            Pedidos
+                            <ClientsTable
+			      dataset={sellsInfo}
+			      Headers={sellsInfoHeaders}
+			      downloadFileName={`OrdenesCliente-${clientId}`}
+			      pageSize={2}
+			      identifier={'id'}
+                            />
                         </TabPane>
                         <TabPane name='Más Comprados'>
-                            Más Comprados
+                            <ClientsTable
+			      dataset={boughtInfo}
+			      Headers={boughtInfoHeaders}
+			      downloadFileName={`MasVendidosCliente-${clientId}`}
+			      pageSize={3}
+			      identifier={'id'}
+                            />
                         </TabPane>
                         <TabPane name='Ubicación'>
-                            Ubicación
-                        </TabPane>
-                        <TabPane name='Notificación push'>
-                            Ubicación
-                        </TabPane>
-                        <TabPane name='Notificación SMS'>
-                            Notificación SMS
-                        </TabPane>
-                        <TabPane name='Contacto WhatsApp'>
-                            Contacto Whatsapp
+                            <StoreMap
+				mapContainerStyle={{
+				    width: '100%',
+				    height: '100%'
+				}}
+				zoom={11}
+				center={{
+				    latitude : detailInfo['basicInfo']['coordinates'].latitude,
+				    longitude : detailInfo['basicInfo']['coordinates'].longitude
+				}}
+				markerCoords={{
+				    latitude : detailInfo['basicInfo']['coordinates'].latitude,
+				    longitude : detailInfo['basicInfo']['coordinates'].longitude
+				}}
+			    />
                         </TabPane>
                     </CustomTabs>
                 </div>
