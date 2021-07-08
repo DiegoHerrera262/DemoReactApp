@@ -2,57 +2,60 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ClientsTable from '../ClientsTable';
 import { Redirect } from 'react-router-dom';
-import detailStyles from './ClientsDetailView.module.css';
-import { getClientDetailById, getClientByIdSells, getClientByIdMostBought  } from '../../endpoint/clients.methods';
+import detailStyles from './ClientsDetailView.module.css'; import { getClientDetailById, getClientByIdSells, getClientByIdMostBought  } from '../../endpoint/clients.methods';
 import { GoogleMap, useLoadScript, Marker, useJsApiLoader } from '@react-google-maps/api';
 import mapPin from '../assets/pin.png';
 import errorImage from '../assets/errorImage.png';
 
 const GoogleMapsToken = process.env.REACT_APP_GOOGLE_MAPS_TOKEN;
-
 const StoreMap = (props) => {
     const { mapContainerStyle, zoom, center, markerCoords } = props;
     const { isLoaded, loadError } = useLoadScript({
         googleMapsApiKey : GoogleMapsToken
     });
-    
+
     if (loadError) {
-	return (
-	    <p align='center'>
-                <img
-		    src={errorImage}
+        return (
+            <p align='center'>
+                <img src={errorImage}
                     alt=''
                     width='40px'
                     height='40px' 
-  		/>
-		Error al cargar el mapa.
-	    </p>
+                />
+                Error al cargar el mapa.
+            </p>
         );
     }
 
     if (!isLoaded) {
-	return (
-	    <div className={detailStyles['loading-div']} />
+        return (
+            <div className={detailStyles['loading-div']} />
         );
     }
 
     return (
-	<GoogleMap
-	    mapContainerStyle={mapContainerStyle}
-	    zoom={zoom}
-            center={center}
-	>
-	    <Marker
-		position={{ lat: markerCoords.latitude, lng : markerCoords.longitude }}
-		icon={{
-		    url: mapPin,
-		    scaledSize : {
-		        width : 35,
+        <GoogleMap
+            mapContainerStyle={mapContainerStyle}
+            zoom={zoom}
+            center={{
+                lat : center.latitude,
+                lng : center.longitude
+            }}
+        >
+            <Marker
+                position={{ 
+                    lat: markerCoords.latitude, 
+                    lng : markerCoords.longitude 
+                }}
+                icon={{
+                    url: mapPin,
+                    scaledSize : {
+                        width : 35,
                         height : 35
-		    }
-		}}
-	    />
-	</GoogleMap>
+                    }
+                }}
+            />
+        </GoogleMap>
     );
 }
 
@@ -68,12 +71,12 @@ const RedirectButton = (props) => {
     }
 
     return (
-            <button
-                onClick={handleClick}
-                className={buttonStyle}
-            >
-                {buttonLabel}
-            </button>
+        <button
+            onClick={handleClick}
+            className={buttonStyle}
+        >
+            {buttonLabel}
+        </button>
     );
 }
 
@@ -97,31 +100,35 @@ const CustomTabs = (props) => {
     });
     const [ active, setActive ] = useState(headers.length > 0 ? headers[0] : '');
 
+    const getActiveChild = () => {
+        for (const child of children){
+            if (child.props.name === active) {
+                return child;
+            }
+        }
+        return children[0];
+    }
+    const activeChild = getActiveChild();
+
     return (
-	<>
-	  <div className={className['tabs-menu']}>
-		{
-			headers.map((header, i) => (
-				<button
-				   key={`${header}-${i}`}
-				   onClick={(event) => {setActive(header)}}
-				   className={header === active ? className['active-tab'] : className['unactive-tab']}
-				>
-				    {header}
-				</button>
-			))
-		}
-	  </div>
-          <div className={className['tab-content']}>
-           	{
-			children.map((child) => {
-					if (child.props.name === active) {
-						return child;
-					}
-				})
-	    	}
-           </div>
-	</>
+        <>
+            <div className={className['tabs-menu']}>
+                {
+                    headers.map((header, i) => (
+                        <button
+                            key={`${header}-${i}`}
+                            onClick={(event) => {setActive(header)}}
+                            className={header === active ? className['active-tab'] : className['unactive-tab']}
+                        >
+                            {header}
+                        </button>
+                    ))
+                }
+            </div>
+            <div className={className['tab-content']}>
+                { activeChild }
+            </div>
+        </>
     );
 }
 CustomTabs.propTypes = {
@@ -146,45 +153,45 @@ const ClientsDetailView = (props) => {
     const [ isLoading, setIsLoading ] = useState(true);
 
     const sellsInfoHeaders = [
-      {
-        accessor : 'id',
-        header : 'Id',
-      },
-      {
-	accessor : 'sellDate',
-	header : 'Fecha'
-      },
-      {
-	accessor : 'value',
-	header : 'Valor'
-      },
-      {
-	accessor : 'ticket',
-	header : 'Factura'
-      },
-      {
-	accessor : 'state',
-        header: 'Estado'
-      }
+        {
+            accessor : 'id',
+            header : 'Id',
+        },
+        {
+            accessor : 'sellDate',
+            header : 'Fecha'
+        },
+        {
+            accessor : 'value',
+            header : 'Valor'
+        },
+        {
+            accessor : 'ticket',
+            header : 'Factura'
+        },
+        {
+            accessor : 'state',
+            header: 'Estado'
+        }
     ];
 
     const boughtInfoHeaders = [
-      {
-        accessor : 'id',
-        header : 'Id',
-      },
-      {
-	accessor : 'name',
-	header : 'Nombre Prod.'
-      },
-      {
-	accessor : 'category',
-	header : 'Categoria'
-      },
-      {
-	accessor : 'quantity',
-	header : 'Cantidad'
-      }
+        {
+            accessor : 'id',
+            header : 'Id',
+        },
+        {
+            accessor : 'name',
+            header : 'Nombre Prod.'
+        },
+        {
+            accessor : 'category',
+            header : 'Categoria'
+        },
+        {
+            accessor : 'quantity',
+            header : 'Cantidad'
+        }
     ];
 
     useEffect(() => {
@@ -196,12 +203,15 @@ const ClientsDetailView = (props) => {
         }
         fetchData();
     },[clientId]);
-    
+
     if (isLoading) {
         return (
             <div className={detailStyles['loading-div']}></div>
         );
     }
+    console.log(sellsInfo);
+    console.log(boughtInfo);
+
 
     return (
         <div className={detailStyles['view-container']}>
@@ -256,38 +266,38 @@ const ClientsDetailView = (props) => {
                     <CustomTabs className={detailStyles}>
                         <TabPane name='Pedidos'>
                             <ClientsTable
-			      dataset={sellsInfo}
-			      Headers={sellsInfoHeaders}
-			      downloadFileName={`OrdenesCliente-${clientId}`}
-			      pageSize={2}
-			      identifier={'id'}
+                                dataset={sellsInfo}
+                                Headers={sellsInfoHeaders}
+                                downloadFileName={`OrdenesCliente-${clientId}`}
+                                pageSize={2}
+                                identifier={'id'}
                             />
                         </TabPane>
                         <TabPane name='Más Comprados'>
                             <ClientsTable
-			      dataset={boughtInfo}
-			      Headers={boughtInfoHeaders}
-			      downloadFileName={`MasVendidosCliente-${clientId}`}
-			      pageSize={3}
-			      identifier={'id'}
+                                dataset={boughtInfo}
+                                Headers={boughtInfoHeaders}
+                                downloadFileName={`MasVendidosCliente-${clientId}`}
+                                pageSize={3}
+                                identifier={'id'}
                             />
                         </TabPane>
                         <TabPane name='Ubicación'>
                             <StoreMap
-				mapContainerStyle={{
-				    width: '100%',
-				    height: '100%'
-				}}
-				zoom={11}
-				center={{
-				    latitude : detailInfo['basicInfo']['coordinates'].latitude,
-				    longitude : detailInfo['basicInfo']['coordinates'].longitude
-				}}
-				markerCoords={{
-				    latitude : detailInfo['basicInfo']['coordinates'].latitude,
-				    longitude : detailInfo['basicInfo']['coordinates'].longitude
-				}}
-			    />
+                                mapContainerStyle={{
+                                    width: '100%',
+                                    height: '100%'
+                                }}
+                                zoom={11}
+                                center={{
+                                    latitude : detailInfo['basicInfo']['coordinates'].latitude,
+                                    longitude : detailInfo['basicInfo']['coordinates'].longitude
+                                }}
+                                markerCoords={{
+                                    latitude : detailInfo['basicInfo']['coordinates'].latitude,
+                                    longitude : detailInfo['basicInfo']['coordinates'].longitude
+                                }}
+                            />
                         </TabPane>
                     </CustomTabs>
                 </div>
