@@ -58,8 +58,8 @@ const getClientDetailById = (id) => {
                 storeAddress: 'Cra. 10 #10-10, Bogotá, Colombia',
                 createdAt : '06-07-21',
                 coordinates : {
-                    latitude : 4.15,
-                    longitude : -7.15
+                    latitude : 4.68734,
+                    longitude : -74.14816
                 }
             },
             sellingInfo : {
@@ -98,7 +98,7 @@ const getClientByIdSells = (id) => {
 const getClientByIdMostBought = (id) => {
     const data = [];
     const sample = {
-        id : 11,
+        id : 5,
         name : 'Test Product',
         category : 'Test Category',
         quantity : 8

@@ -212,7 +212,6 @@ const ClientsDetailView = (props) => {
     console.log(sellsInfo);
     console.log(boughtInfo);
 
-
     return (
         <div className={detailStyles['view-container']}>
             <h2>Detalle Cliente</h2>
@@ -286,7 +285,7 @@ const ClientsDetailView = (props) => {
                             <StoreMap
                                 mapContainerStyle={{
                                     width: '100%',
-                                    height: '100%'
+                                    height: '300px'
                                 }}
                                 zoom={11}
                                 center={{

@@ -83,6 +83,9 @@ const ClientsTable = (props) => {
             return false;
         }));
     }
+    
+    console.log(dataset);
+    console.log(displayDataset);
 
     return (
         <>
