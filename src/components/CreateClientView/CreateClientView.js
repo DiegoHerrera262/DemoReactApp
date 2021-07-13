@@ -24,7 +24,7 @@ const getAddress = async (addressCoords) => {
         const { latitude, longitude } = addressCoords
         const GoogleGeocodeURL = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GoogleMapsToken}`
         const result = await axios.get(GoogleGeocodeURL);
-        if (result.data.results.length > 0){
+        if (result.data.results.length > 0) {
             return result.data.results[0].formatted_address.toString().trim();
         }
     } catch (error) {
@@ -41,10 +41,10 @@ const InputField = (props) => {
                 htmlFor={fieldName}
                 className={createClientStyles['input-label']}
             >
-                { labelKey }
+                {labelKey}
             </label>
             <br />
-            <input 
+            <input
                 id={fieldName}
                 name={fieldName}
                 type={fieldType}
@@ -57,7 +57,7 @@ const InputField = (props) => {
             {
                 formHook.touched[fieldName] && formHook.errors[fieldName] && (
                     <div className={createClientStyles['error-message']}>
-                        { formHook.errors[fieldName] }
+                        {formHook.errors[fieldName]}
                     </div>
                 )
             }
@@ -66,10 +66,10 @@ const InputField = (props) => {
 }
 
 const SelectField = (props) => {
-    const {fieldName, formHook, labelKey, optionVals} = props;
+    const { fieldName, formHook, labelKey, optionVals } = props;
     return (
         <>
-            <label 
+            <label
                 htmlFor={fieldName}
                 className={createClientStyles['input-label']}
             >
@@ -83,7 +83,7 @@ const SelectField = (props) => {
                 className={createClientStyles['select']}
             >
                 {
-                    optionVals.map((optn,index) => (
+                    optionVals.map((optn, index) => (
                         <option
                             key={`${labelKey}${index}`}
                             value={optn}
@@ -94,7 +94,7 @@ const SelectField = (props) => {
                 }
             </select>
             <br />
-            { formHook.touched[fieldName] && formHook.errors[fieldName] && (
+            {formHook.touched[fieldName] && formHook.errors[fieldName] && (
                 <div
                     className={createClientStyles['error-message']}
                 >
@@ -107,8 +107,8 @@ const SelectField = (props) => {
 
 const AddressInput = (props) => {
     const { fieldName, value, labelKey, setAddress, setCoords } = props;
-    const [ temporaryAddress, setTemporaryAddress ] = useState(value);
-    const [ isFocused, setIsFocused ] = useState(false);
+    const [temporaryAddress, setTemporaryAddress] = useState(value);
+    const [isFocused, setIsFocused] = useState(false);
 
     const handleChange = (event) => {
         const newAddress = event.target.value.trim();
@@ -125,8 +125,8 @@ const AddressInput = (props) => {
         /* Here get request to google maps api to
         set coordinates */
         try {
-            const streetQuery = temporaryAddress.replace(' ','+')
-                                    .replace('#','%23')
+            const streetQuery = temporaryAddress.replace(' ', '+')
+                .replace('#', '%23')
             const GoogleGeocodeURL = `https://maps.googleapis.com/maps/api/geocode/json?address=${streetQuery}}&key=${GoogleMapsToken}`;
             const result = await axios.get(GoogleGeocodeURL);
             if (result.data.results.length > 0) {
@@ -138,7 +138,7 @@ const AddressInput = (props) => {
             }
             setAddress(temporaryAddress);
             setIsFocused(false);
-        } catch(error) {
+        } catch (error) {
             console.log(error);
         }
     }
@@ -149,10 +149,10 @@ const AddressInput = (props) => {
                 htmlFor={fieldName}
                 className={createClientStyles['input-label']}
             >
-                { labelKey }
+                {labelKey}
             </label>
             <br />
-            <input 
+            <input
                 id={fieldName}
                 name={fieldName}
                 type='text'
@@ -172,21 +172,21 @@ const ClientMap = (props) => {
 
     const changeCoords = async (event) => {
         const coords = {
-            latitude : event.latLng.lat(),
-            longitude : event.latLng.lng(),
+            latitude: event.latLng.lat(),
+            longitude: event.latLng.lng(),
         }
         setAddress(await getAddress(coords));
         setCoords(coords);
     }
 
     const { isLoaded, loadError } = useLoadScript({
-        googleMapsApiKey : GoogleMapsToken
+        googleMapsApiKey: GoogleMapsToken
     });
 
     if (loadError) {
         return (
             <p align='center'>
-                <img 
+                <img
                     src={errorImage}
                     alt=''
                     width='40px'
@@ -194,7 +194,7 @@ const ClientMap = (props) => {
                 />
                 <br />
                 Error al cargar el mapa.
-            </p>  
+            </p>
         );
     }
 
@@ -203,22 +203,22 @@ const ClientMap = (props) => {
             <div className={createClientStyles['loading-div']} />
         );
     }
-    
+
     return (
         <GoogleMap
             mapContainerStyle={mapContainerStyle}
             zoom={zoom}
             center={center}
         >
-            <Marker 
-                draggable 
-                position={{ lat: markerCoords.latitude, lng: markerCoords.longitude }} 
+            <Marker
+                draggable
+                position={{ lat: markerCoords.latitude, lng: markerCoords.longitude }}
                 onDragEnd={changeCoords}
                 icon={{
-                    url : mapPin,
-                    scaledSize : {
-                        width : 35,
-                        height : 35
+                    url: mapPin,
+                    scaledSize: {
+                        width: 35,
+                        height: 35
                     }
                 }}
             />
@@ -240,22 +240,22 @@ const zonesAPICall = () => [
 ]
 
 const CreateClientView = (props) => {
-    const [ assessors, setAssessors ] = useState([]);
-    const [ zones, setZones ] = useState([]);
-    const [ isLoading, setIsLoading] = useState(true);
-    const [ modalImage, setModalImage ] = useState(errorImage);
+    const [assessors, setAssessors] = useState([]);
+    const [zones, setZones] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [modalImage, setModalImage] = useState(errorImage);
 
-    const [ addressCoords, setAddressCoords ] = useState({
-        latitude : 4.68357,
-        longitude : -74.14443
+    const [addressCoords, setAddressCoords] = useState({
+        latitude: 4.68357,
+        longitude: -74.14443
     });
-    const [ formattedAddress, setFormattedAddress ] = useState('Cll 22i #10344');
+    const [formattedAddress, setFormattedAddress] = useState('Cll 22i #10344');
 
-    const [ showCreateMessage, setShowCreateMessage ] = useState(false);
-    const [ createMessage, setCreateMessage ] = useState('');;
+    const [showCreateMessage, setShowCreateMessage] = useState(false);
+    const [createMessage, setCreateMessage] = useState('');;
 
-    const [ showConfirmModal, setShowConfirmModal ] = useState(false);
-    const [ showErrorModal, setShowErrorModal ] = useState(false);
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
+    const [showErrorModal, setShowErrorModal] = useState(false);
 
     /* Here data should be fetched from the Assessors API */
     useEffect(() => {
@@ -265,17 +265,17 @@ const CreateClientView = (props) => {
                 geolocation.getCurrentPosition(async (position) => {
                     console.log('Ubicando navegador...');
                     setAddressCoords({
-                        latitude : position.coords.latitude,
-                        longitude : position.coords.longitude
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude
                     })
                     setFormattedAddress(await getAddress({
-                        latitude : position.coords.latitude,
-                        longitude : position.coords.longitude
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude
                     }))
                 },
-                () => {
-                    console.log('Ubicación imposible.')
-                });
+                    () => {
+                        console.log('Ubicación imposible.')
+                    });
             }
             setAssessors(await assessorsAPICall());
             setZones(await zonesAPICall());
@@ -285,12 +285,12 @@ const CreateClientView = (props) => {
     }, []);
 
     const defaultInitialValues = {
-        name : '',
-        documentType : '',
-        documentId : '',
-        cellphone : '',
-        email : '',
-        assessor : '',
+        name: '',
+        documentType: '',
+        documentId: '',
+        cellphone: '',
+        email: '',
+        assessor: '',
         storeName: '',
         locality: '',
         neighborhood: '',
@@ -300,60 +300,60 @@ const CreateClientView = (props) => {
     }
 
     const formik = useFormik({
-        initialValues : defaultInitialValues,
-        validationSchema : Yup.object({
-            name : Yup.string()
-                .matches(/^[a-zA-Z]{1,10}[\s]{0,1}[a-zA-Z]{0,10}$/, 
+        initialValues: defaultInitialValues,
+        validationSchema: Yup.object({
+            name: Yup.string()
+                .matches(/^[a-zA-Z]{1,10}[\s]{0,1}[a-zA-Z]{0,10}$/,
                     'Ingrese un nombre válido')
                 .required('Campo requerido'),
-            documentType : Yup.string()
-                .matches(/^[^-]*$/, 
+            documentType: Yup.string()
+                .matches(/^[^-]*$/,
                     'Seleccione un tipo de documento')
                 .required('Campo requerido'),
-            documentId : Yup.number()
+            documentId: Yup.number()
                 .positive()
                 .integer()
                 .lessThan(9999999999, 'Ingrese número de identificación válido en Colombia')
                 .moreThan(9999999, 'Ingrese número de identificación válido en Colombia')
                 .required('Campo requerido'),
-            cellphone : Yup.number()
+            cellphone: Yup.number()
                 .lessThan(9999999999, 'Ingrese un número de celular válido en Colombia')
                 .moreThan(999999999, 'Ingrese un número de celular válido en Colombia')
                 .required('Campo requerido'),
-            email : Yup.string()
+            email: Yup.string()
                 .email('Ingrese una dirección de email válida')
                 .required('Campo requerido'),
-            assessor : Yup.string()
-                .matches(/^[^-]*$/, 
-                        'Seleccione un asesor')
+            assessor: Yup.string()
+                .matches(/^[^-]*$/,
+                    'Seleccione un asesor')
                 .required('Campo requerido'),
-            storeName : Yup.string()
-                .matches(/^[a-zA-Z]{1,10}[0-9]{0,10}[\s]{0,1}[a-zA-Z]{0,10}[0-9]{0,10}$/, 
+            storeName: Yup.string()
+                .matches(/^[a-zA-Z]{1,10}[0-9]{0,10}[\s]{0,1}[a-zA-Z]{0,10}[0-9]{0,10}$/,
                     'Ingrese un nombre válido')
                 .required('Campo requerido'),
-            locality : Yup.string()
-                .matches(/^[a-zA-Z]{1,10}[\s]{0,1}[a-zA-Z]{0,10}$/, 
+            locality: Yup.string()
+                .matches(/^[a-zA-Z]{1,10}[\s]{0,1}[a-zA-Z]{0,10}$/,
                     'Ingrese una localidad válida')
                 .required('Campo requerido'),
-            neighborhood : Yup.string()
-                .matches(/^[a-zA-Z]{1,10}[\s]{0,1}[a-zA-Z]{0,10}$/, 
+            neighborhood: Yup.string()
+                .matches(/^[a-zA-Z]{1,10}[\s]{0,1}[a-zA-Z]{0,10}$/,
                     'Ingrese un barrio válido')
                 .required('Campo requerido'),
-            zone : Yup.string()
+            zone: Yup.string()
                 .matches(/^[a-zA-Z]{3,15}$/, 'Escoja una zona')
                 .required('Campo requerido'),
-            landline : Yup.number()
+            landline: Yup.number()
                 .positive()
                 .integer()
                 .lessThan(9999999, 'Ingrese número fijo válido en Bogotá')
                 .moreThan(999999, 'Ingrese número fijo válido en Bogotá')
                 .required('Campo requerido'),
-            storeAddress : Yup.string()
+            storeAddress: Yup.string()
                 .matches(/^[a-zA-Z]{2,4}[\s]{0,1}[a-zA-Z]{0,20}[\s]{0,1}[0-9]{0,3}[\s]{0,1}#[\s]{0,1}[0-9]{1,3}[a-zA-Z]{0,3}[\s]{0,1}-[\s]{0,1}[0-9]{1,3}[a-zA-Z]{0,3}$/,
                     'Ingrese una diercción válida')
                 .required('Campo requerido')
-            }),
-        onSubmit : (values) => {
+        }),
+        onSubmit: (values) => {
             setShowConfirmModal(true);
         }
     });
@@ -381,23 +381,23 @@ const CreateClientView = (props) => {
 
             formik.resetForm();
             formik.values = defaultInitialValues;
-            const setUpLocation = async () =>{
+            const setUpLocation = async () => {
                 const { geolocation } = navigator;
                 if (geolocation) {
                     geolocation.getCurrentPosition(async (position) => {
                         console.log('Reubicando navegador...');
                         setAddressCoords({
-                            latitude : position.coords.latitude,
-                            longitude : position.coords.longitude
+                            latitude: position.coords.latitude,
+                            longitude: position.coords.longitude
                         })
                         setFormattedAddress(await getAddress({
-                            latitude : position.coords.latitude,
-                            longitude : position.coords.longitude
+                            latitude: position.coords.latitude,
+                            longitude: position.coords.longitude
                         }))
                     },
-                    () => {
-                        console.log('Reubicación imposible.')
-                    });
+                        () => {
+                            console.log('Reubicación imposible.')
+                        });
                 }
             }
             setUpLocation();
@@ -416,13 +416,13 @@ const CreateClientView = (props) => {
     const handleDataValidation = () => {
         const numErrors = Object.keys(formik.errors).length;
         let emptyField = false;
-        for(let i = 0; i < Object.keys(defaultInitialValues).length; i++){
-            if(formik.values[Object.keys(defaultInitialValues)[i]] === ''){
+        for (let i = 0; i < Object.keys(defaultInitialValues).length; i++) {
+            if (formik.values[Object.keys(defaultInitialValues)[i]] === '') {
                 emptyField = true;
                 break;
             }
         }
-        const formIsNotRight =numErrors > 0 || emptyField 
+        const formIsNotRight = numErrors > 0 || emptyField
         setShowErrorModal(formIsNotRight);
         setShowConfirmModal(!formIsNotRight);
     }
@@ -480,7 +480,7 @@ const CreateClientView = (props) => {
                                         labelKey='Email'
                                         fieldType='email'
                                     />
-                                    <SelectField 
+                                    <SelectField
                                         fieldName='assessor'
                                         formHook={formik}
                                         labelKey='Asesor Creador'
@@ -503,13 +503,13 @@ const CreateClientView = (props) => {
                                         labelKey='Localidad'
                                         fieldType='text'
                                     />
-                                    <InputField 
+                                    <InputField
                                         fieldName='neighborhood'
                                         formHook={formik}
                                         labelKey='Barrio'
                                         fieldType='text'
                                     />
-                                    <SelectField 
+                                    <SelectField
                                         fieldName='zone'
                                         formHook={formik}
                                         labelKey='Zona'
@@ -521,7 +521,7 @@ const CreateClientView = (props) => {
                                         labelKey='Teléfono fijo'
                                         fieldType='number'
                                     />
-                                    <InputField 
+                                    <InputField
                                         fieldName='storeAddress'
                                         formHook={formik}
                                         labelKey='Dirección Tienda'
@@ -532,7 +532,7 @@ const CreateClientView = (props) => {
                             <div className={createClientStyles['header-box']}>
                                 Ubicación
                             </div>
-                            <AddressInput 
+                            <AddressInput
                                 fieldName='location'
                                 labelKey='Dirección'
                                 value={formattedAddress}
@@ -547,9 +547,9 @@ const CreateClientView = (props) => {
                                         height: '100%'
                                     }}
                                     zoom={11}
-                                    center={{ 
-                                        lat: addressCoords.latitude, 
-                                        lng: addressCoords.longitude 
+                                    center={{
+                                        lat: addressCoords.latitude,
+                                        lng: addressCoords.longitude
                                     }}
                                     markerCoords={addressCoords}
                                     setCoords={setAddressCoords}
@@ -559,14 +559,14 @@ const CreateClientView = (props) => {
                             <button
                                 type='submit'
                                 onClick={handleDataValidation}
-                                className={createClientStyles['submit-button']}    
+                                className={createClientStyles['submit-button']}
                             >
                                 CREAR CLIENTE
                             </button>
                         </form>
-                        <Modal 
+                        <Modal
                             isOpen={showConfirmModal}
-                            onRequestClose={() => {setShowConfirmModal(false)}}
+                            onRequestClose={() => { setShowConfirmModal(false) }}
                             className={createClientStyles['Modal']}
                             overlayClassName={createClientStyles['Overlay']}
                         >
@@ -574,7 +574,7 @@ const CreateClientView = (props) => {
                                 Confirme creación de cliente
                             </p>
                             <div
-                                style={{textAlign : 'center'}}
+                                style={{ textAlign: 'center' }}
                             >
                                 <button
                                     onClick={handleSubmitDataFromModal}
@@ -584,9 +584,9 @@ const CreateClientView = (props) => {
                                 </button>
                             </div>
                         </Modal>
-                        <Modal 
+                        <Modal
                             isOpen={showErrorModal}
-                            onRequestClose={() => {setShowErrorModal(false)}}
+                            onRequestClose={() => { setShowErrorModal(false) }}
                             className={createClientStyles['Modal']}
                             overlayClassName={createClientStyles['Overlay']}
                         >
@@ -594,7 +594,7 @@ const CreateClientView = (props) => {
                                 Hay un error en el formulario. Revise las alertas
                             </p>
                             <div
-                                style={{textAlign : 'center'}}
+                                style={{ textAlign: 'center' }}
                             >
                                 <button
                                     onClick={() => setShowErrorModal(false)}
@@ -604,14 +604,14 @@ const CreateClientView = (props) => {
                                 </button>
                             </div>
                         </Modal>
-                        <Modal 
+                        <Modal
                             isOpen={showCreateMessage}
-                            onRequestClose={() => {setShowCreateMessage(false)}}
+                            onRequestClose={() => { setShowCreateMessage(false) }}
                             className={createClientStyles['Modal']}
                             overlayClassName={createClientStyles['Overlay']}
                         >
                             <p align='center'>
-                                <img 
+                                <img
                                     src={modalImage}
                                     alt=''
                                     width='40px'
@@ -626,6 +626,6 @@ const CreateClientView = (props) => {
             }
         </>
     );
-} 
+}
 
 export default CreateClientView;

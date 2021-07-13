@@ -12,6 +12,7 @@ import ClientsTable from "./components/ClientsTable";
 import UpdateClientView from "./components/UpdateClientView";
 import ClientsDetailView from "./components/ClientsDetailView";
 import ClientsMainView from "./components/ClientsMainView";
+import CreateBonusView from "./components/CreateBonusView";
 
 const Headers = [
   {
@@ -97,20 +98,6 @@ function App() {
   return (
     <BrowserRouter>
       <div>
-        {/*
-        <ul>
-          <Link to='/'>
-            <button type="button">
-              Home
-            </button>
-          </Link>
-          <Link to='/leaders'>
-            <button type="button">
-              Lideres
-            </button>
-          </Link>
-        </ul>
-        */}
         <Switch>
           <Route exact path="/" render={() => <HomePage />} />
 
@@ -136,6 +123,12 @@ function App() {
 
           <Route
             exact
+            path="/clients"
+            render={(props) => <ClientsMainView />}
+          />
+
+          <Route
+            exact
             path="/clients/create"
             render={() => <CreateClientView />}
           />
@@ -155,10 +148,11 @@ function App() {
               <ClientsDetailView clientId={props.match.params.id} />
             )}
           />
+
           <Route
             exact
-            path="/clients"
-            render={(props) => <ClientsMainView />}
+            path="/bonus/create"
+            render={(props) => <CreateBonusView />}
           />
         </Switch>
       </div>
