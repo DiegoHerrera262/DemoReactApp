@@ -115,7 +115,7 @@ const CreateBonusView = (props) => {
             bonusName: '',
             quantity: '',
             state: '',
-            bonusType: 'General para todos los usuarios',
+            bonusType: 'Por cantidad de pedidos',
             numOrders: '',
             bonusDiscount: 'Por porcentaje',
             discountAmount: '',
@@ -233,6 +233,7 @@ const CreateBonusView = (props) => {
             <form onSubmit={formik.handleSubmit}>
                 <div className={createStyles['col-wrap']}>
                     <div className={createStyles['col2']}>
+
                         <InputField
                             fieldName='bonusName'
                             formHook={formik}
@@ -247,11 +248,14 @@ const CreateBonusView = (props) => {
                             fieldType='number'
                             className={createStyles}
                         />
-                        <InputField
+                        <SelectField
                             fieldName='state'
                             formHook={formik}
                             labelKey='Estado'
-                            fieldType='text'
+                            optionVals={[
+                                'Activo',
+                                'Inactivo'
+                            ]}
                             className={createStyles}
                         />
                         <SelectField
@@ -307,13 +311,15 @@ const CreateBonusView = (props) => {
                         )
                     }
                 </div>
-                <button
-                    type='submit'
-                    onClick={handleDataValidation}
-                    className={createStyles['submit-button']}
-                >
-                    CREAR
-                </button>
+                <div style={{ textAlign: 'center', paddingTop: '10vh' }}>
+                    <button
+                        type='submit'
+                        onClick={handleDataValidation}
+                        className={createStyles['submit-button']}
+                    >
+                        CREAR
+                    </button>
+                </div>
             </form>
             <Modal
                 isOpen={showConfirmModal}
