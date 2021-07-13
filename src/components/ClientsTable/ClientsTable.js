@@ -88,9 +88,6 @@ const ClientsTable = (props) => {
     );
   };
 
-  console.log(dataset);
-  console.log(displayDataset);
-
   return (
     <>
       <div className={tableStyles["search-bar"]}>

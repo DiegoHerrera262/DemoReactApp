@@ -72,7 +72,8 @@
    border-radius: 6px;
 }
 
-.unactive-tab, .active-tab {
+.unactive-tab,
+.active-tab {
    font: 12px;
    color: white;
    font-weight: bold;
@@ -84,15 +85,17 @@
    margin-right: 3%;
 }
 
-.unactive-tab:hover, .active-tab:hover {
+.unactive-tab:hover,
+.active-tab:hover {
    cursor: pointer;
 }
 
 .active-tab {
-   border-bottom: 2px solid; 
+   border-bottom: 2px solid;
 }
 
-.detail-col, .table-col {
+.detail-col,
+.table-col {
    width: 92vw;
    flex: 100%;
    margin-left: auto;
@@ -104,9 +107,9 @@
    margin-top: 6em;
 }
 
-.detail-wrapper{
-   width : 96.5%;
-   background: #FFFFFF;
+.detail-wrapper {
+   width: 96.5%;
+   background: #ffffff;
    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
    padding-top: 0.9em;
    border-radius: 6px;
@@ -114,28 +117,29 @@
    flex-direction: row;
 }
 
-.tab-content{
+.tab-content {
    font: inhert;
    width: 93.5%;
-   background: #FFFFFF;
+   background: #ffffff;
    padding: 60px 10px 32px 10px;
    border-radius: 6px;
-   overflow: auto;
+   overflow-x: auto;
 }
 
 .name-banner {
    text-align: center;
    font-weight: 300;
-   color: #FFFFFF;
+   color: #ffffff;
    padding-top: 2px;
    padding-bottom: 2px;
    margin-bottom: 4px;
-   background: #E8BE2A;
+   background: #e8be2a;
    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
    border-radius: 6px;
 }
 
-.basic-info-col, .sells-col {
+.basic-info-col,
+.sells-col {
    margin: 32px 10px 32px 10px;
    flex: 50%;
 }
@@ -143,7 +147,7 @@
 .basic-info-content {
    padding: 3px;
    padding-left: 1ch;
-   background: #FFFFFF;
+   background: #ffffff;
    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
    border-radius: 6px;
 }
@@ -151,10 +155,10 @@
 .client-type-label {
    padding: 1px 2px 1px 2px;
    margin-right: 2ch;
-   background: #60B3C6;
+   background: #60b3c6;
    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
    border-radius: 6px;
-   color: #FFFFFF;
+   color: #ffffff;
 }
 
 .client-level-label {
@@ -167,7 +171,7 @@
    padding: 0.25em 0.7ch 1px 0.7ch;
    margin-top: 0.8em;
    margin-bottom: 0.5em;
-   background: #53C149;
+   background: #53c149;
    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
    border-radius: 6px;
 }
@@ -183,7 +187,7 @@
    padding: 0.25em 0.7ch 1px 0.7ch;
    margin-top: 0.5em;
    margin-bottom: 0.5em;
-   background: #C52441;
+   background: #c52441;
    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
    border-radius: 6px;
 }
@@ -199,7 +203,7 @@
    padding: 0.25em 0.7ch 1px 0.7ch;
    margin-top: 0.5em;
    margin-bottom: 0.5em;
-   background: #EF722C;
+   background: #ef722c;
    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
    border-radius: 6px;
 }
@@ -216,8 +220,8 @@
    padding: 4px, 1.5ch, 4px, 1.5ch;
    font: inherit;
    color: white;
-   background: #E8BE2A;
-   border: 1px solid #E8BE2A;
+   background: #e8be2a;
+   border: 1px solid #e8be2a;
    border-radius: 6px;
 }
 
@@ -225,12 +229,13 @@
    margin-top: 1.5em;
    font: inherit;
    color: white;
-   background: #53C149;
-   border: 1px solid #53C149;
+   background: #53c149;
+   border: 1px solid #53c149;
    border-radius: 6px;
 }
 
-.manage-button:hover, .order-button:hover {
+.manage-button:hover,
+.order-button:hover {
    font-weight: bold;
 }
 
@@ -239,19 +244,21 @@
       visibility: visible;
       padding: 1px 2px 1px 2px;
       margin-right: 2ch;
-      background: #ED9521;
+      background: #ed9521;
       box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
       border-radius: 6px;
-      color: #FFFFFF;
+      color: #ffffff;
    }
-   .unactive-tab, .active-tab {
+   .unactive-tab,
+   .active-tab {
       margin-left: 7%;
       margin-right: 7%;
-   } 
+   }
 }
 
-@media all and (min-width: 992px) { 
-   .client-level-label, .client-type-label {
+@media all and (min-width: 992px) {
+   .client-level-label,
+   .client-type-label {
       font-size: 12px;
    }
    .view-container {
@@ -292,7 +299,8 @@
       line-height: 64px;
       top: -32px;
    }
-   .unactive-tab, .active-tab {
+   .unactive-tab,
+   .active-tab {
       font-size: 15px;
       margin-left: 3%;
       margin-right: 3%;
@@ -302,8 +310,7 @@
    }
 }
 
-
-@media all and (min-width : 1250px) {
+@media all and (min-width: 1250px) {
    .view-container {
       font-size: 20px;
    }
@@ -325,21 +332,22 @@
       line-height: 96px;
       top: -32px;
    }
-   .unactive-tab, .active-tab {
+   .unactive-tab,
+   .active-tab {
       font-size: 20px;
       margin-left: 3%;
       margin-right: 3%;
    }
-   .tab-content{
+   .tab-content {
       width: 93.5%;
-      background: #FFFFFF;
+      background: #ffffff;
       padding: 95px 10px 32px 10px;
-      overflow: scroll;
+      overflow-x: scroll;
    }
 }
 
-@media all and (min-width: 1500px){
+@media all and (min-width: 1500px) {
    .table-col {
-     width: 20vw;
+      width: 20vw;
    }
 }

@@ -33,7 +33,7 @@ const EditClientButton = (props) => {
   const { id, buttonStyle } = props;
   return (
     <RedirectButton
-      buttonLabel="Editar"
+      buttonLabel="EDITAR"
       buttonStyle={buttonStyle}
       path={`/clients/update/${id}`}
     />
@@ -44,7 +44,7 @@ const ClientDetailButton = (props) => {
   const { id, buttonStyle } = props;
   return (
     <RedirectButton
-      buttonLabel="Ver Detalle"
+      buttonLabel="VER DETALLE"
       buttonStyle={buttonStyle}
       path={`/clients/detail/${id}`}
     />
@@ -229,8 +229,6 @@ const ClientsMainView = (props) => {
     initSetUp();
   }, []);
 
-  console.log(tableData);
-
   const handleChangeFilter = (event) => {
     setFilterType(event.target.value);
   };
@@ -340,16 +338,15 @@ const ClientsMainView = (props) => {
             </option>
           ))}
         </select>
-        {}
         <CustomForm {...formProps[filterType]} />
       </div>
-      {isLoading && <div>Cargando...</div>}
+      {isLoading && <div className={mainStyles['loading-div']}></div>}
       {!isLoading && (
         <ClientsTable
           dataset={tableData}
           Headers={tableHeaders}
           downloadFileName={`Clientes-${filterType}`}
-          pageSize={10}
+          pageSize={6}
           identifier={"id"}
           actions={[
             {

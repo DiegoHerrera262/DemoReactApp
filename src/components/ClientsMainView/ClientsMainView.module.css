@@ -22,7 +22,6 @@
 }
 
 .view-container {
-  border: 1px solid black;
   font-family: "Roboto", sans-serif;
   font-weight: 100;
   font-size: 12px;
@@ -30,24 +29,144 @@
   padding: 8px 6px 8px 30px;
 }
 
+.view-container input,
+select {
+  border: none;
+}
+
+.view-container select {
+  font-size: inherit;
+}
+
+.create-button-div {
+  text-align: right;
+  padding-right: 20%;
+  padding-top: 2em;
+  padding-bottom: 1em;
+  margin-left: 0%;
+}
+
+.create-button,
+.submit-button {
+  padding: 5px 1ch 5px 1ch;
+  font-size: inherit;
+  border: none;
+  color: green;
+  background: #53c149;
+  border-radius: 6px;
+}
+
+.create-button:hover,
+.submit-button:hover {
+  border: none;
+  color: white;
+  background: #53c149;
+  border-radius: 6px;
+}
+
 .filter-prompt {
-  border: 1px solid black;
+  padding-top: 1em;
+  padding-bottom: 6em;
   width: 100%;
   margin-left: 0%;
 }
 
-@media all and (min-width: 1053px){
+.select-filter {
+  font-size: 1.25em;
+  color: white;
+  margin-top: 0.5em;
+  margin-bottom: 2em;
+  padding: 2px 1ch 2px 1ch;
+  background: #e5e5e5;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+}
+
+.filter-label {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  font-weight: bold;
+}
+
+.select,
+.input {
+  font-family: inherit;
+  border: none;
+  margin-top: 0.5em;
+  margin-bottom: 2em;
+  padding: 2px 1ch 2px 1ch;
+  background: #ffffff;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+}
+
+.filter-banner {
+  height: 44px;
+  line-height: 44px;
+  width: 80%;
+  padding-left: 1ch;
+  margin-bottom: 1.5em;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: white;
+  background: #272741;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 6px;
+}
+
+.edit-button,
+.detail-button {
+  font-weight: bold;
+  border: none;
+  background: none;
+}
+
+.edit-button {
+  color: #ed9521;
+}
+
+.detail-button {
+  color: #4341af;
+}
+
+.edit-button:hover,
+.detail-button:hover {
+  border-bottom: 1px solid;
+}
+
+@media all and (min-width: 1053px) {
   .filter-prompt {
     width: 90%;
     margin-left: auto;
     margin-right: auto;
   }
+  .filter-banner {
+    width: 60%;
+  }
+  .create-button-div {
+    padding-right: 41%;
+  }
+}
+
+@media all and (min-width: 992px) {
+  .view-container {
+    font-size: 16px;
+  }
 }
 
 @media all and (min-width: 1200px) {
+  .filter-banner {
+    margin-bottom: 2.5em;
+    font-size: 1.25em;
+    height: 65px;
+    line-height: 65px;
+  }
   .filter-prompt {
     width: 92%;
     margin-left: auto;
     margin-right: auto;
+  }
+  .select-filter {
+    font-size: 20px;
   }
 }

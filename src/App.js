@@ -119,11 +119,13 @@ function App() {
             path="/leaders"
             render={() => <LeadersListTableView />}
           />
+
           <Route
             exact
             path="/leaders/create"
             render={() => <CreateZoneLeaderView />}
           />
+
           <Route
             exact
             path="/leaders/update/:id"
