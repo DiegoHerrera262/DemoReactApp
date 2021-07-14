@@ -365,18 +365,9 @@ const CreateZoneLeaderForm = (props) => {
             );
           })}
 
-          <h2
-            className={zoneLeaderStyles["h2"]}
-            style={{ paddingLeft: "0.8ch" }}
-          >
-            {" "}
-            Documentos{" "}
-          </h2>
+          <h2 className={zoneLeaderStyles["h2"]}> Documentos </h2>
           {/**/}
-          <h3 className={zoneLeaderStyles["h3"]} style={{ paddingLeft: "1ch" }}>
-            {" "}
-            Documento de identidad{" "}
-          </h3>
+          <h3 className={zoneLeaderStyles["h3"]}> Documento de identidad </h3>
           <FileInput
             fieldName="frontID"
             formHook={formik}
@@ -389,10 +380,7 @@ const CreateZoneLeaderForm = (props) => {
             accept=".pdf, image/*"
           />
 
-          <h3 className={zoneLeaderStyles["h3"]} style={{ paddingLeft: "1ch" }}>
-            {" "}
-            RUT{" "}
-          </h3>
+          <h3 className={zoneLeaderStyles["h3"]}> RUT </h3>
           <FileInput
             fieldName="rut"
             formHook={formik}
@@ -405,10 +393,7 @@ const CreateZoneLeaderForm = (props) => {
             accept=".pdf, .doc, .docx"
           />
 
-          <h3 className={zoneLeaderStyles["h3"]} style={{ paddingLeft: "1ch" }}>
-            {" "}
-            Certificación bancaria{" "}
-          </h3>
+          <h3 className={zoneLeaderStyles["h3"]}> Certificación bancaria </h3>
           <FileInput
             fieldName="bankData"
             formHook={formik}
@@ -421,10 +406,7 @@ const CreateZoneLeaderForm = (props) => {
             accept=".pdf, .doc, .docx"
           />
 
-          <h3 className={zoneLeaderStyles["h3"]} style={{ paddingLeft: "1ch" }}>
-            {" "}
-            Contrato{" "}
-          </h3>
+          <h3 className={zoneLeaderStyles["h3"]}> Contrato </h3>
           <FileInput
             fieldName="contract"
             formHook={formik}

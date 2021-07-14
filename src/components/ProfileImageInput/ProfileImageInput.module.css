@@ -21,10 +21,11 @@
 }
 
 .error-message {
-  text-align: center;
-  margin-left: 1ch;
+  text-align: left;
+  margin-left: 2.4ch;
   margin-bottom: 1em;
-  font-size: 0.7em;
+  font-size: inherit;
+  font-weight: 300;
   color: red;
 }
 
