@@ -51,10 +51,21 @@
   .view-container {
     font-size: 16px;
   }
+
+  .header-box {
+    height: 53px;
+    line-height: 53px;
+  }
 }
 
 @media all and (min-width: 1200px) {
   .view-container {
     font-size: 24px;
+  }
+
+  .header-box {
+    width: 95%;
+    height: 63px;
+    line-height: 63px;
   }
 }

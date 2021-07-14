@@ -210,9 +210,15 @@
   .view-container {
     font-size: 16px;
   }
+
   .Modal {
     left: 40vw;
     width: 20vw;
+  }
+
+  .header-box {
+    height: 53px;
+    line-height: 53px;
   }
 }
 
@@ -242,5 +248,10 @@
 
   .submit-button {
     margin-left: 15%;
+  }
+
+  .header-box {
+    height: 63px;
+    line-height: 63px;
   }
 }

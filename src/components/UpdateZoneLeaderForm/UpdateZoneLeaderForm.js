@@ -221,8 +221,8 @@ const UpdateZoneLeaderForm = (props) => {
       {showCreatingLeaderMessage && (
         <div className={serverMessageStyle}>{serverMessage}</div>
       )}
-      <div className={zoneLeaderStyles["column-wrapper"]}>
-        <div className={zoneLeaderStyles["col2"]}>
+      <div className={zoneLeaderStyles["col-wrap"]}>
+        <div className={zoneLeaderStyles["col-left"]}>
           <ProfileImageInput
             edit
             src={profileImageSource}
@@ -264,7 +264,7 @@ const UpdateZoneLeaderForm = (props) => {
             />
           </div>
         </div>
-        <div className={zoneLeaderStyles["col2"]}>
+        <div className={zoneLeaderStyles["col-right"]}>
           {rightFields.map((field) => {
             if (typeKeys[field] === "select") {
               return (
@@ -296,10 +296,7 @@ const UpdateZoneLeaderForm = (props) => {
             Documentos{" "}
           </h2>
 
-          <h3 className={zoneLeaderStyles["h3"]} style={{ paddingLeft: "1ch" }}>
-            {" "}
-            Documento de identidad{" "}
-          </h3>
+          <h3 className={zoneLeaderStyles["h3"]}> Documento de identidad </h3>
           <FileInput
             edit
             fieldName="frontID"
@@ -309,10 +306,7 @@ const UpdateZoneLeaderForm = (props) => {
             accept=".pdf, image/*"
           />
 
-          <h3 className={zoneLeaderStyles["h3"]} style={{ paddingLeft: "1ch" }}>
-            {" "}
-            RUT{" "}
-          </h3>
+          <h3 className={zoneLeaderStyles["h3"]}> RUT </h3>
           <FileInput
             edit
             fieldName="rut"
@@ -322,10 +316,7 @@ const UpdateZoneLeaderForm = (props) => {
             accept=".pdf, .doc, .docx"
           />
 
-          <h3 className={zoneLeaderStyles["h3"]} style={{ paddingLeft: "1ch" }}>
-            {" "}
-            Certificación bancaria{" "}
-          </h3>
+          <h3 className={zoneLeaderStyles["h3"]}> Certificación bancaria </h3>
           <FileInput
             edit
             fieldName="bankData"
@@ -335,10 +326,7 @@ const UpdateZoneLeaderForm = (props) => {
             accept=".pdf, .doc, .docx"
           />
 
-          <h3 className={zoneLeaderStyles["h3"]} style={{ paddingLeft: "1ch" }}>
-            {" "}
-            Contrato{" "}
-          </h3>
+          <h3 className={zoneLeaderStyles["h3"]}> Contrato </h3>
           <FileInput
             edit
             fieldName="contract"
@@ -360,7 +348,7 @@ const UpdateZoneLeaderForm = (props) => {
           onClick={handleErrorClick}
           className={zoneLeaderStyles["submit-button"]}
         >
-          Actualizar líder
+          GUARDAR
         </button>
       </div>
 
@@ -378,7 +366,7 @@ const UpdateZoneLeaderForm = (props) => {
             onClick={handleSubmitDataFromModal}
             className={zoneLeaderStyles["submit-button"]}
           >
-            Confirmar
+            CONFIRMAR
           </button>
         </div>
       </Modal>
@@ -398,7 +386,7 @@ const UpdateZoneLeaderForm = (props) => {
             }}
             className={zoneLeaderStyles["error-button"]}
           >
-            Cerrar
+            CERRAR
           </button>
         </div>
       </Modal>

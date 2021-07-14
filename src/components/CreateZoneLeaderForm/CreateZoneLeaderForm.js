@@ -449,7 +449,7 @@ const CreateZoneLeaderForm = (props) => {
             onClick={handleSubmitDataFromModal}
             className={zoneLeaderStyles["confirm-button"]}
           >
-            Confirmar
+            CONFIRMAR
           </button>
         </div>
       </Modal>
@@ -469,7 +469,7 @@ const CreateZoneLeaderForm = (props) => {
             }}
             className={zoneLeaderStyles["error-button"]}
           >
-            Cerrar
+            CERRAR
           </button>
         </div>
       </Modal>
