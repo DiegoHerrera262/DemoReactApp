@@ -134,6 +134,7 @@
 .submit-button:hover {
   background: #53c149;
   color: #ffffff;
+  cursor: pointer;
 }
 
 .Modal {

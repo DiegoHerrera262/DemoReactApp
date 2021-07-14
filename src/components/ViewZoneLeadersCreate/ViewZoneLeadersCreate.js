@@ -80,23 +80,11 @@ const CreateZoneLeaderView = (props) => {
 
   return (
     <>
-      {loadingData && <div className={createStyles["loader"]}></div>}
+      {loadingData && <div className={createStyles["loading-div"]}></div>}
       {!loadingData && (
-        <div className={createStyles["main-page-container"]}>
-          <div
-            style={{
-              maxWidth: "91%",
-              marginTop: "1.9em",
-              marginBottom: "2.1em",
-              marginLeft: "auto",
-              marginRight: "auto",
-              fontSize: "1.5em",
-              fontWeight: "600",
-            }}
-          >
-            Crear líder de zona
-          </div>
-          <div className={createStyles["info-title"]}>Información general</div>
+        <div className={createStyles["view-container"]}>
+          <h1 className={createStyles["page-title"]}>Crear líder de zona</h1>
+          <div className={createStyles["header-box"]}>Información general</div>
           <CreateZoneLeaderForm
             defaultInitialValues={defaultInitialValues}
             labelKeys={labelKeys}

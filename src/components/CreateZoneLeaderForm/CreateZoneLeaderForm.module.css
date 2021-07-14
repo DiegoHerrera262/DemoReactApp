@@ -5,23 +5,49 @@
   margin-top: 1ch;
 }
 
-.form {
-  font-family: "Roboto", sans-serif;
-  padding: 1ch;
+.col-wrap {
+  border: 1px solid black;
+  margin-bottom: 2em;
+  display: flex;
+  flex-direction: column;
+}
+
+.col-left,
+.col-right {
+  flex: 100%;
+}
+
+.map-container {
+  margin-top: 48px;
+  margin-bottom: 48px;
+  margin-left: 5%;
+  width: 80%;
+  height: 237px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
-  background-color: #f5f4f4;
-  /*width: 100%;*/
+  overflow: hidden;
 }
 
-[type="file"] {
-  position: absolute;
-  filter: alpha(opacity=0);
-  opacity: 0;
+.submit-button {
+  font-size: 2em;
+  font-weight: bold;
+  width: 80%;
+  height: 52px;
+  margin-left: 7%;
+  border: none;
+  border-radius: 6px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  background: #b6ecb1;
+  color: #53973e;
 }
 
-/*
-MAP STYLING
-*/
+.submit-button:hover {
+  background: #53c149;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+/*************************************************************************
 .map-container {
   overflow: hidden;
   border-radius: 7px;
@@ -34,9 +60,6 @@ MAP STYLING
   box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.17);
 }
 
-/*
-MODAL STYLES
-*/
 .Modal {
   font-family: "Roboto", sans-serif;
   position: absolute;
@@ -58,9 +81,6 @@ MODAL STYLES
   background-color: rgba(255, 255, 255, 0.5);
 }
 
-/*
-BUTTON STYLES
-*/
 .submit-button {
   width: 50%;
   text-align: center;
@@ -119,10 +139,6 @@ BUTTON STYLES
   cursor: pointer;
 }
 
-/*
-COLUMN STYLES
-*/
-
 .column-wrapper {
   max-width: 100%;
   padding: 0ch;
@@ -147,9 +163,6 @@ COLUMN STYLES
   flex: 100%;
 }
 
-/*
-SUBMIT MESSAGE STYLES
-*/
 .error-div {
   margin-left: auto;
   margin-right: auto;
@@ -251,3 +264,5 @@ SUBMIT MESSAGE STYLES
     max-width: 30%;
   }
 }
+
+*******/
