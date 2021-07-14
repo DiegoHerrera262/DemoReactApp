@@ -35,8 +35,8 @@ const GenericTable = (props) => {
 
   useMemo(() => {
     if (sortingField) {
-      setDisplayDataset(
-        displayDataset.sort((obj1, obj2) => {
+      setDisplayDataset((prev) =>
+        prev.sort((obj1, obj2) => {
           if (obj1[sortingField] < obj2[sortingField]) {
             return sortSmallToLarge ? -1 : 1;
           }
@@ -47,7 +47,7 @@ const GenericTable = (props) => {
         })
       );
     }
-  }, [sortingField, displayDataset, sortSmallToLarge]);
+  }, [sortingField, sortSmallToLarge]);
 
   const sortData = (field) => {
     setSortingField(field);
@@ -55,7 +55,7 @@ const GenericTable = (props) => {
       setSortSmallToLarge(true);
     }
     if (field === sortingField) {
-      setSortSmallToLarge(!sortSmallToLarge);
+      setSortSmallToLarge((prev) => !prev);
     }
   };
 
