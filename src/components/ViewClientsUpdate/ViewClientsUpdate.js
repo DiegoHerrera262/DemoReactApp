@@ -26,7 +26,7 @@ const UpdateClientView = (props) => {
 
   const [defaultInitialValues, setDefaultInitialValues] = useState(resetValues);
 
-  /* Here data should be fetched from the Assessors API */
+  /* Here data should be fetched from the Clients API */
   useEffect(() => {
     const fetchData = async () => {
       const clientData = await getClientById(clientId);

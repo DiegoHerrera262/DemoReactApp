@@ -13,6 +13,7 @@ import UpdateClientView from "./components/ViewClientsUpdate";
 import ClientsDetailView from "./components/ViewClientsDetail";
 import ClientsMainView from "./components/ViewClientsMain";
 import CreateBonusView from "./components/ViewBonusCreate";
+import ViewBonusUpdate from "./components/ViewBonusUpdate";
 
 const Headers = [
   {
@@ -153,6 +154,14 @@ function App() {
             exact
             path="/bonus/create"
             render={(props) => <CreateBonusView />}
+          />
+
+          <Route
+            exact
+            path="/bonus/update/:id"
+            render={(props) => (
+              <ViewBonusUpdate bonusId={props.match.params.id} />
+            )}
           />
         </Switch>
       </div>

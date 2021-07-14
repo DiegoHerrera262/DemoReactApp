@@ -1,47 +1,21 @@
 import React, { useState, useEffect } from "react";
-//import { useFormik } from "formik";
-//import * as Yup from "yup";
-//import Modal from "react-modal";
-import createStyles from "./ViewBonusCreate.module.css";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import Modal from "react-modal";
+// import updateStyles from "./ViewBonusUpdate.module.css";
 
-import BonusCRUDForm from "../BonusCRUDForm";
+import { getLevels } from "../../endpoint/clients.methods";
+// import { putBonus, getBonusById } from "../../endpoint/bonus.methods";
 
-//import { getLevels } from "../../endpoint/clients.methods";
-import { postBonus } from "../../endpoint/bonus.methods";
+import InputField from "../GenericFieldInput/GenericFieldInput";
+import SelectField from "../GenericSelectInput/GenericSelectInput";
 
-//import InputField from "../GenericFieldInput/GenericFieldInput";
-//import SelectField from "../GenericSelectInput/GenericSelectInput";
+import errorImage from "../../assets/errorImage.png";
+import confirmationImage from "../../assets/confirmationImage.png";
 
-//import errorImage from "../../assets/errorImage.png";
-//import confirmationImage from "../../assets/confirmationImage.png";
-
-// DO NOT DELETE THIS
-// Modal.setAppElement("body");
-
-const defaultInitialValues = {
-  bonusName: "",
-  quantity: "",
-  state: "",
-  bonusType: "Por cantidad de pedidos",
-  numOrders: "",
-  bonusDiscount: "Por porcentaje",
-  discountAmount: "",
-  clientLevel: "",
-};
-
-const CreateBonusView = (props) => {
-  return (
-    <BonusCRUDForm
-      create
-      defaultInitialValues={defaultInitialValues}
-      httpMethod={postBonus}
-      className={createStyles}
-    />
-  );
-};
-
-/*
-const CreateBonusView = (props) => {
+const BonusCRUDForm = (props) => {
+  const { className, defaultInitialValues, create, httpMethod, httpParams } =
+    props;
   const [levelOptions, setLevelOptions] = useState([]);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
@@ -51,32 +25,14 @@ const CreateBonusView = (props) => {
 
   useEffect(() => {
     const fetchLevels = async () => {
-      setLevelOptions(await getLevels());
+      const rawLevels = await getLevels();
+      setLevelOptions(["--Seleccione un nivel--", ...rawLevels]);
     };
     fetchLevels();
   }, []);
 
-  const defaultInitialValues = {
-    bonusName: "",
-    quantity: "",
-    state: "",
-    bonusType: "General para todos los usuarios",
-    numOrders: "",
-    bonusDiscount: "Por porcentaje",
-    discountAmount: "",
-    clientLevel: "",
-  };
   const formik = useFormik({
-    initialValues: {
-      bonusName: "",
-      quantity: "",
-      state: "",
-      bonusType: "Por cantidad de pedidos",
-      numOrders: "",
-      bonusDiscount: "Por porcentaje",
-      discountAmount: "",
-      clientLevel: "",
-    },
+    initialValues: defaultInitialValues,
     validationSchema: Yup.object({
       bonusName: Yup.string().required("Campo requerido"),
       quantity: Yup.number()
@@ -122,7 +78,7 @@ const CreateBonusView = (props) => {
         }),
       clientLevel: Yup.string().when("bonusType", {
         is: (val) => val === "Por cantidad de pedidos",
-        then: Yup.string().required("Campo requerido"),
+        then: Yup.string().matches(/[^-]/).required("Campo requerido"),
       }),
     }),
     onSubmit: (values) => {
@@ -131,6 +87,7 @@ const CreateBonusView = (props) => {
   });
 
   const handleSubmitDataFromModal = () => {
+    const action = create ? "Creación " : "Actualización ";
     try {
       const data = new FormData();
 
@@ -143,20 +100,32 @@ const CreateBonusView = (props) => {
       data.append("bonusName", formik.values["bonusName"]);
       data.append("quantity", formik.values["quantity"]);
       data.append("bonusType", formik.values["bonusType"]);
-      // HERE CONNECTION WITH BACKEND
+      /* HERE CONNECTION WITH BACKEND */
 
-      postBonus(data);
+      let httpArg = {
+        data: data,
+      };
+      if (httpParams instanceof Object) {
+        httpArg = {
+          ...httpArg,
+          params: httpParams,
+        };
+      }
+
+      httpMethod(httpArg);
       setShowConfirmModal(false);
 
-      formik.resetForm();
-      formik.values = defaultInitialValues;
+      if (create) {
+        formik.resetForm();
+        formik.values = defaultInitialValues;
+      }
 
-      setCreateMessage("Creacción exitosa.");
+      setCreateMessage(action + "exitosa.");
       setModalImage(confirmationImage);
       setShowCreateMessage(true);
     } catch (error) {
       console.log(error);
-      setCreateMessage("Creacción fallida. Intente nuevamente.");
+      setCreateMessage(action + "fallida. Intente nuevamente.");
       setModalImage(errorImage);
       setShowCreateMessage(true);
     }
@@ -166,10 +135,7 @@ const CreateBonusView = (props) => {
     const numErrors = Object.keys(formik.errors).length;
     let emptyField = false;
     for (let i = 0; i < Object.keys(defaultInitialValues).length; i++) {
-      if (
-        formik.values[Object.keys(defaultInitialValues)[i]] === "" &&
-        formik.getFieldMeta(Object.keys(defaultInitialValues)[i]).initialTouched
-      ) {
+      if (formik.values[Object.keys(defaultInitialValues)[i]] === "") {
         emptyField = true;
         break;
       }
@@ -180,32 +146,34 @@ const CreateBonusView = (props) => {
   };
 
   return (
-    <div className={createStyles["view-container"]}>
-      <h2>Nueva Bonificación</h2>
-      <div className={createStyles["form-banner"]}>Nueva bonificación</div>
+    <div className={className["view-container"]}>
+      <h2>{create ? "Nueva" : "Actualizar"} Bonificación</h2>
+      <div className={className["form-banner"]}>
+        {create ? "Nueva" : "Actualizar"} bonificación
+      </div>
       <form onSubmit={formik.handleSubmit}>
-        <div className={createStyles["col-wrap"]}>
-          <div className={createStyles["col2"]}>
+        <div className={className["col-wrap"]}>
+          <div className={className["col2"]}>
             <InputField
               fieldName="bonusName"
               formHook={formik}
               labelKey="Título bonificación"
               fieldType="text"
-              className={createStyles}
+              className={className}
             />
             <InputField
               fieldName="quantity"
               formHook={formik}
               labelKey="Cantidad"
               fieldType="number"
-              className={createStyles}
+              className={className}
             />
             <SelectField
               fieldName="state"
               formHook={formik}
               labelKey="Estado"
               optionVals={["Activo", "Inactivo"]}
-              className={createStyles}
+              className={className}
             />
             <SelectField
               fieldName="bonusType"
@@ -215,24 +183,24 @@ const CreateBonusView = (props) => {
                 "General para todos los usuarios",
                 "Por cantidad de pedidos",
               ]}
-              className={createStyles}
+              className={className}
             />
           </div>
           {formik.values["bonusType"] === "Por cantidad de pedidos" && (
-            <div className={createStyles["col2"]}>
+            <div className={className["col2"]}>
               <InputField
                 fieldName="numOrders"
                 formHook={formik}
                 labelKey="Cantidad de órdenes"
                 fieldType="number"
-                className={createStyles}
+                className={className}
               />
               <SelectField
                 fieldName="bonusDiscount"
                 formHook={formik}
                 labelKey="Tipo de descuento"
                 optionVals={["Por porcentaje", "Por cantidad"]}
-                className={createStyles}
+                className={className}
               />
               <InputField
                 fieldName="discountAmount"
@@ -243,14 +211,14 @@ const CreateBonusView = (props) => {
                     : "Descuento"
                 }
                 fieldType="number"
-                className={createStyles}
+                className={className}
               />
               <SelectField
                 fieldName="clientLevel"
                 formHook={formik}
                 labelKey="Nivel cliente"
                 optionVals={levelOptions}
-                className={createStyles}
+                className={className}
               />
             </div>
           )}
@@ -259,9 +227,9 @@ const CreateBonusView = (props) => {
           <button
             type="submit"
             onClick={handleDataValidation}
-            className={createStyles["submit-button"]}
+            className={className["submit-button"]}
           >
-            CREAR
+            {create ? "CREAR BONIFICACIÓN" : "GUARDAR"}
           </button>
         </div>
       </form>
@@ -270,14 +238,16 @@ const CreateBonusView = (props) => {
         onRequestClose={() => {
           setShowConfirmModal(false);
         }}
-        className={createStyles["Modal"]}
-        overlayClassName={createStyles["Overlay"]}
+        className={className["Modal"]}
+        overlayClassName={className["Overlay"]}
       >
-        <p align="center">Confirme creación de cliente</p>
+        <p align="center">
+          Confirme {create ? "creación" : "actualización"} de cliente
+        </p>
         <div style={{ textAlign: "center" }}>
           <button
             onClick={handleSubmitDataFromModal}
-            className={createStyles["confirm-button"]}
+            className={className["confirm-button"]}
           >
             CONFIRMAR
           </button>
@@ -288,14 +258,14 @@ const CreateBonusView = (props) => {
         onRequestClose={() => {
           setShowErrorModal(false);
         }}
-        className={createStyles["Modal"]}
-        overlayClassName={createStyles["Overlay"]}
+        className={className["Modal"]}
+        overlayClassName={className["Overlay"]}
       >
         <p align="center">Hay un error en el formulario. Revise las alertas</p>
         <div style={{ textAlign: "center" }}>
           <button
             onClick={() => setShowErrorModal(false)}
-            className={createStyles["error-button"]}
+            className={className["error-button"]}
           >
             CERRAR
           </button>
@@ -306,8 +276,8 @@ const CreateBonusView = (props) => {
         onRequestClose={() => {
           setShowCreateMessage(false);
         }}
-        className={createStyles["Modal"]}
-        overlayClassName={createStyles["Overlay"]}
+        className={className["Modal"]}
+        overlayClassName={className["Overlay"]}
       >
         <p align="center">
           <img src={modalImage} alt="" width="40px" height="40px" />
@@ -318,5 +288,5 @@ const CreateBonusView = (props) => {
     </div>
   );
 };
-*/
-export default CreateBonusView;
+
+export default BonusCRUDForm;
