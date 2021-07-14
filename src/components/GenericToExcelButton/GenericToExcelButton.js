@@ -15,7 +15,6 @@ const GenericExportToExcelButton = (props) => {
                 header.header , leader[header.accessor]
             ]))
         })
-        console.log(excelData)
         // convert JSON to sheet
         const sheet = XLSX.utils.json_to_sheet(excelData);
         // outline file

@@ -1,0 +1,353 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap");
+
+.loading-div {
+   margin-left: auto;
+   margin-right: auto;
+   margin-top: 10%;
+   border: 16px solid #f7debe; /* Light grey */
+   border-top: 16px solid #272741; /* Blue */
+   border-radius: 50%;
+   width: 120px;
+   height: 120px;
+   animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+   0% {
+      transform: rotate(0deg);
+   }
+   100% {
+      transform: rotate(360deg);
+   }
+}
+
+.map-container {
+   width: 100%;
+   height: 280px;
+}
+
+.indicator {
+   font-weight: bold;
+}
+
+.view-container {
+   font-size: 12px;
+   max-width: 93%;
+   font-family: "Roboto", sans-serif;
+   font-weight: 100;
+   font-size: 12px;
+   margin: 1px;
+   margin-left: auto;
+   margin-right: auto;
+   padding: 8px 6px 8px 6px;
+}
+
+.view-wrapper {
+   margin-top: 8vh;
+   display: flex;
+   flex-direction: column;
+}
+
+.banner-div {
+   height: 44px;
+   width: 90%;
+   position: absolute;
+   top: -22px;
+   left: 3.5%;
+   background: #272741;
+   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+   border-radius: 6px;
+}
+
+.tabs-menu {
+   text-align: center;
+   height: 44px;
+   width: 97%;
+   line-height: 44px;
+   position: absolute;
+   top: -22px;
+   left: 0;
+   background: #272741;
+   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+   border-radius: 6px;
+}
+
+.unactive-tab,
+.active-tab {
+   font: 12px;
+   color: white;
+   font-weight: bold;
+   background: none;
+   border: none;
+   padding: 0;
+   padding-bottom: 0;
+   margin-left: 3%;
+   margin-right: 3%;
+}
+
+.unactive-tab:hover,
+.active-tab:hover {
+   cursor: pointer;
+}
+
+.active-tab {
+   border-bottom: 2px solid;
+}
+
+.detail-col,
+.table-col {
+   width: 92vw;
+   flex: 100%;
+   margin-left: auto;
+   margin-right: auto;
+   position: relative;
+}
+
+.table-col {
+   margin-top: 6em;
+}
+
+.detail-wrapper {
+   width: 96.5%;
+   background: #ffffff;
+   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+   padding-top: 0.9em;
+   border-radius: 6px;
+   display: flex;
+   flex-direction: row;
+}
+
+.tab-content {
+   font: inhert;
+   width: 93.5%;
+   background: #ffffff;
+   padding: 60px 10px 32px 10px;
+   border-radius: 6px;
+   overflow-x: auto;
+}
+
+.name-banner {
+   text-align: center;
+   font-weight: 300;
+   color: #ffffff;
+   padding-top: 2px;
+   padding-bottom: 2px;
+   margin-bottom: 4px;
+   background: #e8be2a;
+   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+   border-radius: 6px;
+}
+
+.basic-info-col,
+.sells-col {
+   margin: 32px 10px 32px 10px;
+   flex: 50%;
+}
+
+.basic-info-content {
+   padding: 3px;
+   padding-left: 1ch;
+   background: #ffffff;
+   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+   border-radius: 6px;
+}
+
+.client-type-label {
+   padding: 1px 2px 1px 2px;
+   margin-right: 2ch;
+   background: #60b3c6;
+   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+   border-radius: 6px;
+   color: #ffffff;
+}
+
+.client-level-label {
+   visibility: hidden;
+}
+
+.delivered-info-div {
+   height: 25%;
+   color: white;
+   padding: 0.25em 0.7ch 1px 0.7ch;
+   margin-top: 0.8em;
+   margin-bottom: 0.5em;
+   background: #53c149;
+   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+   border-radius: 6px;
+}
+
+.delivered-info-div p {
+   margin-top: 0.25em;
+   margin-bottom: 0.25em;
+}
+
+.returned-total-div {
+   height: 25%;
+   color: white;
+   padding: 0.25em 0.7ch 1px 0.7ch;
+   margin-top: 0.5em;
+   margin-bottom: 0.5em;
+   background: #c52441;
+   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+   border-radius: 6px;
+}
+
+.returned-total-div p {
+   margin-top: 2px;
+   margin-bottom: 2px;
+}
+
+.returned-percent-div {
+   height: 25%;
+   color: white;
+   padding: 0.25em 0.7ch 1px 0.7ch;
+   margin-top: 0.5em;
+   margin-bottom: 0.5em;
+   background: #ef722c;
+   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+   border-radius: 6px;
+}
+
+.returned-percent-div p {
+   margin-top: 2px;
+   margin-bottom: 2px;
+}
+
+.manage-button {
+   margin-top: 1.5em;
+   margin-right: 1.7em;
+   margin-left: 2%;
+   padding: 4px, 1.5ch, 4px, 1.5ch;
+   font: inherit;
+   color: white;
+   background: #e8be2a;
+   border: 1px solid #e8be2a;
+   border-radius: 6px;
+}
+
+.order-button {
+   margin-top: 1.5em;
+   font: inherit;
+   color: white;
+   background: #53c149;
+   border: 1px solid #53c149;
+   border-radius: 6px;
+}
+
+.manage-button:hover,
+.order-button:hover {
+   font-weight: bold;
+}
+
+@media all and (min-width: 600px) {
+   .client-level-label {
+      visibility: visible;
+      padding: 1px 2px 1px 2px;
+      margin-right: 2ch;
+      background: #ed9521;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      border-radius: 6px;
+      color: #ffffff;
+   }
+   .unactive-tab,
+   .active-tab {
+      margin-left: 7%;
+      margin-right: 7%;
+   }
+}
+
+@media all and (min-width: 992px) {
+   .client-level-label,
+   .client-type-label {
+      font-size: 12px;
+   }
+   .view-container {
+      font-size: 15px;
+   }
+   .view-wrapper {
+      margin-top: 20vh;
+      display: flex;
+      flex-direction: row;
+   }
+   .table-col {
+      width: 40vw;
+      margin-top: 0;
+      margin-right: auto;
+      margin-left: 1%;
+      flex: 50%;
+   }
+   .detail-col {
+      width: 40vw;
+      margin-left: auto;
+      margin-right: 1%;
+      flex: 50%;
+   }
+   .detail-wrapper {
+      width: 99%;
+      padding-top: 1.1em;
+      margin-left: auto;
+      margin-right: auto;
+   }
+   .banner-div {
+      height: 64px;
+      width: 90%;
+      top: -32px;
+      left: 5%;
+   }
+   .tabs-menu {
+      height: 64px;
+      line-height: 64px;
+      top: -32px;
+   }
+   .unactive-tab,
+   .active-tab {
+      font-size: 15px;
+      margin-left: 3%;
+      margin-right: 3%;
+   }
+   .manage-button {
+      margin-left: 6%;
+   }
+}
+
+@media all and (min-width: 1250px) {
+   .view-container {
+      font-size: 20px;
+   }
+   .detail-wrapper {
+      width: 90%;
+      padding-top: 3em;
+   }
+   .manage-button {
+      margin-left: 12%;
+   }
+   .banner-div {
+      height: 96px;
+      width: 85%;
+      top: -32px;
+      left: 7.5%;
+   }
+   .tabs-menu {
+      height: 96px;
+      line-height: 96px;
+      top: -32px;
+   }
+   .unactive-tab,
+   .active-tab {
+      font-size: 20px;
+      margin-left: 3%;
+      margin-right: 3%;
+   }
+   .tab-content {
+      width: 93.5%;
+      background: #ffffff;
+      padding: 95px 10px 32px 10px;
+      overflow-x: scroll;
+   }
+}
+
+@media all and (min-width: 1500px) {
+   .table-col {
+      width: 20vw;
+   }
+}

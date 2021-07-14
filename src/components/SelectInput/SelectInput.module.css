@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap");
 
-select {
+.select {
   width: 95%;
   height: 2.5em;
   margin-left: 1ch;
@@ -14,7 +14,7 @@ select {
   color: #154c79;
 }
 
-select:focus {
+.select:focus {
   border: 2px solid #154c79;
   background-color: #fffdfa;
   outline: none;

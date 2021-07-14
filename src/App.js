@@ -1,85 +1,97 @@
-
-import './App.css';
-import React, {useEffect, useState} from 'react';
-import axios from 'axios';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import "./App.css";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 // import CreateZoneLeaderForm from './components/CreateZoneLeaderForm';
 // import UpdateZoneLeaderForm from './components/UpdateZoneLeaderForm';
-import UpdateZoneLeaderView from './components/UpdateZoneLeaderView';
-import CreateZoneLeaderView from './components/CreateZoneLeaderView';
-import LeadersListTableView from './components/LeadersListTableView';
-import ClientsTable from './components/ClientsTable';
-import  Login from  './components/Login/index'
-import Register from './components/register/index'
-// const leaderId = 29;
-const mockEntry1 = {
-  name : 'Foo',
-  lastName : 'Bar',
-  age : 31,
-  job : 'Developer'
-}
-const mockEntry2 = {
-  name : 'Foo2',
-  lastName : 'Bar2',
-  age : 31,
-  job : 'Developer2'
-}
-const mockData = [];
-for (let i = 0; i < 10; i++) {
-  mockData.push(mockEntry1)
-}
-for (let i = 0; i < 10; i++) {
-  mockData.push(mockEntry2)
-}
+import Login from './components/Login';
+import Register from './components/register';
+import UpdateZoneLeaderView from "./components/ViewZoneLeadersUpdate";
+import CreateZoneLeaderView from "./components/ViewZoneLeadersCreate";
+import LeadersListTableView from "./components/ViewZoneLeadersMain";
+import CreateClientView from "./components/ViewClientsCreate";
+import ClientsTable from "./components/GenericTable";
+import UpdateClientView from "./components/ViewClientsUpdate";
+import ClientsDetailView from "./components/ViewClientsDetail";
+import ClientsMainView from "./components/ViewClientsMain";
+import CreateBonusView from "./components/ViewBonusCreate";
 
 const Headers = [
   {
-    accessor : 'userId',
-    header : 'Id Usuario'
+    accessor: "userId",
+    header: "Id Usuario",
   },
   {
-    accessor : 'id',
-    header : 'Id'
+    accessor: "id",
+    header: "Id",
   },
   {
-    accessor : 'title',
-    header : 'Título'
+    accessor: "title",
+    header: "Título",
   },
   {
-    accessor : 'completed',
-    header : 'Completado'
-  }
+    accessor: "completed",
+    header: "Completado",
+  },
 ];
+
+const MessageButton = (props) => {
+  const { message, id } = props;
+  return (
+    <button
+      onClick={() => {
+        alert(`${message} : ${id}`);
+      }}
+      style={{
+        fontSize: "0.1em",
+        backgroundColor: "white",
+        border: "1px solid #272741",
+        borderRadius: "5px",
+        color: "#272741",
+      }}
+    >
+      {`${message}`}
+    </button>
+  );
+};
 
 function HomePage() {
   const [dataset, setDataset] = useState([]);
 
   useEffect(() => {
     const fetchFakeData = async () => {
-      const res = await axios.get('https://jsonplaceholder.typicode.com/todos');
+      const res = await axios.get("https://jsonplaceholder.typicode.com/todos");
       setDataset(res.data);
-    }
+    };
     fetchFakeData();
-  }, [])
+  }, []);
 
   return (
     <>
-    {
-      dataset.length === 0 && (
-        <div>
-          Cargando...
-        </div>
-      )
-    }
-    {
-      dataset.length > 0 && (
-        <ClientsTable 
+      {dataset.length === 0 && <div>Cargando...</div>}
+      {dataset.length > 0 && (
+        <ClientsTable
           dataset={dataset}
           Headers={Headers}
+          downloadFileName={"SomeTable"}
           pageSize={10}
+          identifier={"id"}
+          actions={[
+            {
+              Component: MessageButton,
+              props: {
+                message: "Editar",
+              },
+            },
+            {
+              Component: MessageButton,
+              props: {
+                message: "Eliminar",
+              },
+            },
+          ]}
         />
-      )
-    }
+      )}
     </>
   );
 }
@@ -88,36 +100,61 @@ function App() {
   return (
     <BrowserRouter>
       <div>
-        {/*
-        <ul>
-          <Link to='/'>
-            <button type="button">
-              Home
-            </button>
-          </Link>
-          <Link to='/leaders'>
-            <button type="button">
-              Lideres
-            </button>
-          </Link>
-        </ul>
-        */}
         <Switch>
-          <Route 
-            exact path='/' 
-            render={() => <HomePage />} 
-          />
-          <Route 
-            exact path='/leaders' 
-            render={() => <LeadersListTableView />} 
-          />
+          <Route exact path="/" render={() => <HomePage />} />
+
           <Route
-            exact path='/leaders/create'
+            exact
+            path="/leaders"
+            render={() => <LeadersListTableView />}
+          />
+
+          <Route
+            exact
+            path="/leaders/create"
             render={() => <CreateZoneLeaderView />}
           />
+
           <Route
-            exact path='/leaders/update/:id'
-            render={(props) => <UpdateZoneLeaderView leaderId={props.match.params.id} />}
+            exact
+            path="/leaders/update/:id"
+            render={(props) => (
+              <UpdateZoneLeaderView leaderId={props.match.params.id} />
+            )}
+          />
+
+          <Route
+            exact
+            path="/clients"
+            render={(props) => <ClientsMainView />}
+          />
+
+          <Route
+            exact
+            path="/clients/create"
+            render={() => <CreateClientView />}
+          />
+
+          <Route
+            exact
+            path="/clients/update/:id"
+            render={(props) => (
+              <UpdateClientView clientId={props.match.params.id} />
+            )}
+          />
+
+          <Route
+            exact
+            path="/clients/detail/:id"
+            render={(props) => (
+              <ClientsDetailView clientId={props.match.params.id} />
+            )}
+          />
+
+          <Route
+            exact
+            path="/bonus/create"
+            render={(props) => <CreateBonusView />}
           />
 
           <Route
