@@ -1,19 +1,18 @@
 import React from "react";
-import selectInputStyles from "./SelectInput.module.css";
 
-const SelectInput = (props) => {
-  const { fieldName, formHook, labelKey, optionVals } = props;
+const SelectField = (props) => {
+  const { fieldName, formHook, labelKey, optionVals, className } = props;
   return (
     <>
-      <label htmlFor={fieldName} className={selectInputStyles["input-label"]}>
+      <label htmlFor={fieldName} className={className["input-label"]}>
         {labelKey}
       </label>
       <br />
       <select
-        className={selectInputStyles["select"]}
         id={fieldName}
         onChange={formHook.handleChange}
         value={formHook.values[fieldName]}
+        className={className["select"]}
       >
         {optionVals.map((optn, index) => (
           <option key={`${labelKey}${index}`} value={optn}>
@@ -23,7 +22,7 @@ const SelectInput = (props) => {
       </select>
       <br />
       {formHook.touched[fieldName] && formHook.errors[fieldName] && (
-        <div className={selectInputStyles["error-message"]}>
+        <div className={className["error-message"]}>
           {formHook.errors[fieldName]}
         </div>
       )}
@@ -31,4 +30,4 @@ const SelectInput = (props) => {
   );
 };
 
-export default SelectInput;
+export default SelectField;

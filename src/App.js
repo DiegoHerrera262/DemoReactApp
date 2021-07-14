@@ -4,15 +4,15 @@ import axios from "axios";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 // import CreateZoneLeaderForm from './components/CreateZoneLeaderForm';
 // import UpdateZoneLeaderForm from './components/UpdateZoneLeaderForm';
-import UpdateZoneLeaderView from "./components/UpdateZoneLeaderView";
-import CreateZoneLeaderView from "./components/CreateZoneLeaderView";
-import LeadersListTableView from "./components/LeadersListTableView";
-import CreateClientView from "./components/CreateClientView";
-import ClientsTable from "./components/ClientsTable";
-import UpdateClientView from "./components/UpdateClientView";
-import ClientsDetailView from "./components/ClientsDetailView";
-import ClientsMainView from "./components/ClientsMainView";
-import CreateBonusView from "./components/CreateBonusView";
+import UpdateZoneLeaderView from "./components/ViewZoneLeadersUpdate";
+import CreateZoneLeaderView from "./components/ViewZoneLeadersCreate";
+import LeadersListTableView from "./components/ViewZoneLeadersMain";
+import CreateClientView from "./components/ViewClientsCreate";
+import ClientsTable from "./components/GenericTable";
+import UpdateClientView from "./components/ViewClientsUpdate";
+import ClientsDetailView from "./components/ViewClientsDetail";
+import ClientsMainView from "./components/ViewClientsMain";
+import CreateBonusView from "./components/ViewBonusCreate";
 
 const Headers = [
   {
