@@ -7,10 +7,10 @@ import {
   getClientByIdMostBought,
 } from "../../endpoint/clients.methods";
 
-import TabPane from "../TabPane";
-import CustomTabs from "../CustomTabs";
+import TabPane from "../GenericTabPane";
+import CustomTabs from "../GenericCustomTabs";
 import StaticMap from "../GenericMarkerMap/GenericMarkerMap";
-import RedirectButton from "../RedirectButton";
+import RedirectButton from "../GenericRedirectButton";
 
 import mapPin from "../../assets/pin.png";
 

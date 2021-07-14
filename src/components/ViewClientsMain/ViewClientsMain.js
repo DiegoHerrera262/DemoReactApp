@@ -10,7 +10,7 @@ import {
 } from "../../endpoint/clients.methods";
 
 import ClientsTable from "../GenericTable";
-import RedirectButton from "../RedirectButton";
+import RedirectButton from "../GenericRedirectButton";
 import InputField from "../GenericFieldInput/GenericFieldInput";
 import SelectField from "../GenericSelectInput/GenericSelectInput";
 

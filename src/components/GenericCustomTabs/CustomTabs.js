@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import TabPane from "../TabPane";
+import TabPane from "../GenericTabPane";
 
 const CustomTabs = (props) => {
   const { children, className } = props;
