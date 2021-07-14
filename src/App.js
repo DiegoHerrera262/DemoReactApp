@@ -9,7 +9,8 @@ import UpdateZoneLeaderView from './components/UpdateZoneLeaderView';
 import CreateZoneLeaderView from './components/CreateZoneLeaderView';
 import LeadersListTableView from './components/LeadersListTableView';
 import ClientsTable from './components/ClientsTable';
-
+import  Login from  './components/Login/index'
+import Register from './components/register/index'
 // const leaderId = 29;
 const mockEntry1 = {
   name : 'Foo',
@@ -117,6 +118,15 @@ function App() {
           <Route
             exact path='/leaders/update/:id'
             render={(props) => <UpdateZoneLeaderView leaderId={props.match.params.id} />}
+          />
+
+          <Route
+            exact path='/login'
+            render={() => <Login />}
+          />
+          <Route
+            exact path='/register'
+            render={() => <Register />}
           />
         </Switch>
       </div>

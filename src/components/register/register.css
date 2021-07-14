@@ -1,0 +1,27 @@
+.style--select--tipeUser{
+    margin-left: 725px;
+    width: 380px;
+}
+
+.button--registerUser{
+    margin-left: 725px;
+    width: 380px;
+    height: 48px;
+    width: 380px;
+    border-radius: 5px;
+    border: none;
+    background-color:#272741 ;
+    color: white;
+    margin-top: 20px;
+}
+
+.text--select--user{
+    color: #272741;
+    text-align: center;
+    margin-top: 30px;   
+}
+
+.style--select--tipeUser{
+    background-color: white;
+    border: solid 1px grey;
+}
