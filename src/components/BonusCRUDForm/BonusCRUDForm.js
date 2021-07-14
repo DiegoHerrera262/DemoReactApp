@@ -39,7 +39,7 @@ const BonusCRUDForm = (props) => {
         .integer()
         .min(1, "Ingrese una cantidad mayor que cero")
         .required("Campo requerido"),
-      state: Yup.string().required("Campo requerido"),
+      state: Yup.string().matches(/[^-]/).required("Campo requerido"),
       bonusType: Yup.string().required("Campo requerido"),
       numOrders: Yup.number()
         .integer()
@@ -172,7 +172,7 @@ const BonusCRUDForm = (props) => {
               fieldName="state"
               formHook={formik}
               labelKey="Estado"
-              optionVals={["Activo", "Inactivo"]}
+              optionVals={["--Seleccione un estado--", "Activo", "Inactivo"]}
               className={className}
             />
             <SelectField

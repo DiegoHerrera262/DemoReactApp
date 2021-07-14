@@ -264,6 +264,7 @@ const ClientForm = (props) => {
         break;
       }
     }
+    console.log(formik.errors);
     const formIsNotRight = numErrors > 0 || emptyField;
     setShowErrorModal(formIsNotRight);
     setShowConfirmModal(!formIsNotRight);
