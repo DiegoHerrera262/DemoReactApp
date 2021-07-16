@@ -1,15 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 
-// HTTP connection to backend
 import { postLeader } from "../../endpoint/zoneLeaders.methods";
 
-// Third party imports
 import { useFormik } from "formik";
 import Modal from "react-modal";
 import * as Yup from "yup";
-// import ReactMapGL, {Marker} from 'react-map-gl';
 
-// Form components
 import FieldInput from "../FieldInput";
 import SelectInput from "../SelectInput";
 import FileInput from "../FileInput";
@@ -17,7 +13,8 @@ import ProfileImageInput from "../ProfileImageInput";
 import LeaderZoneMap from "../LeaderZoneMap";
 
 import blankProfile from "../ProfileImageInput/assets/blankProfilePicture.png";
-// import mapPin from '../assets/pin.png'
+import errorImage from "../../assets/errorImage.png";
+import confirmationImage from "../../assets/confirmationImage.png";
 
 import zoneLeaderStyles from "./CreateZoneLeaderForm.module.css";
 
@@ -25,17 +22,13 @@ import zoneLeaderStyles from "./CreateZoneLeaderForm.module.css";
 Modal.setAppElement("body");
 
 const GoogleMapsAPI = `https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${process.env.REACT_APP_GOOGLE_MAPS_TOKEN}`;
-const MAX_SIZE = 5 * 1024 * 1024;
-
-// Change map display style here
-// const mapStyle = 'mapbox://styles/diegoherrera262/ckpossqqj09fy17npwfhqkadq'
+const MAX_SIZE = 7 * 1024 * 1024;
 
 const CreateZoneLeaderForm = (props) => {
   const { labelKeys, typeKeys, selectValues, zoneKeys } = props;
   let { defaultInitialValues } = props;
   const valueKeys = Object.keys(defaultInitialValues);
 
-  // include document properties on the initial values
   defaultInitialValues = {
     ...defaultInitialValues,
     frontID: null,
@@ -45,40 +38,30 @@ const CreateZoneLeaderForm = (props) => {
     profileImage: null,
   };
 
-  // Split fields according to figma view design
   const leftFields = valueKeys.slice(0, Math.floor(valueKeys.length / 2));
   const rightFields = valueKeys.slice(Math.floor(valueKeys.length / 2));
 
-  // Get current date for validation
   const today = new Date();
 
-  // Ref for resetting profile image
   const profileImageRef = useRef();
-  // Ref for resetting files
   const frontIdRef = useRef();
   const rutRef = useRef();
   const bankDataRef = useRef();
   const contractRef = useRef();
 
-  // Define state for showing error modal
   const [showErrorModal, setErrorShowModal] = useState(false);
-  // Define state for showing confirmation modal
   const [showConfirmModal, setConfirmShowModal] = useState(false);
-  // Define state for profile picture preview source
   const [profileImageSource, setProfileImageSource] = useState(blankProfile);
-  // Define state for map zone identification
   const [zoneMarkerCoords, setZoneMarkerCoords] = useState({
     latitude: 4.68357,
     longitude: -74.14443,
   });
-  // confirmation message after submit
+
   const [showCreatingLeaderMessage, setShowCreatingLeaderMessage] =
     useState(false);
   const [serverMessage, setServerMessage] = useState("");
-  const [serverMessageStyle, setServerMessageStyle] = useState({});
+  const [modalImage, setModalImage] = useState(confirmationImage);
 
-  // Instantiate formik hook
-  // for data management
   const formik = useFormik({
     /*set up initial values*/
     initialValues: defaultInitialValues,
@@ -95,6 +78,9 @@ const CreateZoneLeaderForm = (props) => {
           /^[a-zA-Z]{1,10}[\s]{0,1}[a-zA-Z]{0,20}$/,
           "Ingrese un nombre válido"
         )
+        .required("Campo requerido"),
+      documentType: Yup.string()
+        .matches(/^[^-]*$/, "Seleccione un tipo de documento")
         .required("Campo requerido"),
       documentId: Yup.number()
         .positive()
@@ -198,8 +184,6 @@ const CreateZoneLeaderForm = (props) => {
     },
   });
 
-  // use Effect hook for generating profile image
-  // source when updating input
   useEffect(() => {
     if (formik.values["profileImage"]) {
       const reader = new FileReader();
@@ -212,13 +196,8 @@ const CreateZoneLeaderForm = (props) => {
     }
   }, [formik]);
 
-  // Click handler for showing
-  // alert modal
   const handleErrorClick = () => {
-    console.log(formik.errors);
-    // See if there are any errors
     const numErrors = Object.keys(formik.errors).length;
-    // see if the fields are empty
     let emptyField = false;
     for (let i = 0; i < valueKeys.length; i++) {
       if (formik.values[valueKeys[i]] === "") {
@@ -231,68 +210,55 @@ const CreateZoneLeaderForm = (props) => {
     setConfirmShowModal(!formIsNotRight);
   };
 
-  /*
-    HERE IS WHERE THE SUBMIT
-    ACTION IT TO BE HANDLED WITH
-    THE BACKEND
-    */
   const handleSubmitDataFromModal = async () => {
     const data = new FormData();
     data.append("name", formik.values["name"]);
-    data.append("last_name", formik.values["lastName"]);
+    data.append("lastName", formik.values["lastName"]);
+    data.append("documentType", formik.values["documentType"]);
     data.append("documentId", formik.values["documentId"]);
     data.append("address", formik.values["address"]);
-    data.append("leader_code", formik.values["leaderCode"]);
+    data.append("sellerCode", formik.values["leaderCode"]);
     data.append("email", formik.values["email"]);
     data.append("cellphone", formik.values["cellphone"]);
-    data.append("zone_id", zoneKeys[formik.values["zone"]]);
-    data.append("endContractDate", formik.values["endContractDate"]);
-    data.append("contractDocument", formik.values["contract"]);
-    data.append("documentPhoto", formik.values["frontID"]);
-    data.append("rutDocument", formik.values["rut"]);
-    data.append("profileImage", formik.values["profileImage"]);
+    data.append("zoneId", zoneKeys[formik.values["zone"]]);
+    data.append("contractExpires", formik.values["endContractDate"]);
+    data.append("contractImage", formik.values["contract"]);
+    data.append("documentImage", formik.values["frontID"]);
+    data.append("rutImage", formik.values["rut"]);
+    data.append("imageUrl", formik.values["profileImage"]);
     data.append("bankCertification", formik.values["bankData"]);
 
     try {
       const { message, correct } = await postLeader(data);
-      console.log(formik.values);
       console.log(message);
 
       setServerMessage(message);
       setConfirmShowModal(false);
+      setShowCreatingLeaderMessage(true);
 
-      // reset form and hide modal
       if (correct) {
         formik.resetForm();
         formik.values = defaultInitialValues;
-        // Reset file inputs
         profileImageRef.current.value = "";
         frontIdRef.current.value = "";
         rutRef.current.value = "";
         bankDataRef.current.value = "";
         contractRef.current.value = "";
-
-        setShowCreatingLeaderMessage(true);
-        return setServerMessageStyle(zoneLeaderStyles["confirm-div"]);
+        setModalImage(confirmationImage);
+        return;
       }
 
-      setShowCreatingLeaderMessage(true);
-      setServerMessageStyle(zoneLeaderStyles["error-div"]);
+      setModalImage(errorImage);
     } catch (error) {
       console.log(error);
+      setConfirmShowModal(false);
+      setShowCreatingLeaderMessage(true);
+      setServerMessage("Creación fallida. Intente nuevamente.");
     }
   };
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      {showCreatingLeaderMessage && (
-        <div
-          className={serverMessageStyle}
-          onClick={() => setShowCreatingLeaderMessage(false)}
-        >
-          {serverMessage}
-        </div>
-      )}
       <div className={zoneLeaderStyles["col-wrap"]}>
         <div className={zoneLeaderStyles["col-left"]}>
           {/** */}
@@ -472,6 +438,20 @@ const CreateZoneLeaderForm = (props) => {
             CERRAR
           </button>
         </div>
+      </Modal>
+      <Modal
+        isOpen={showCreatingLeaderMessage}
+        onRequestClose={() => {
+          setShowCreatingLeaderMessage(false);
+        }}
+        className={zoneLeaderStyles["Modal"]}
+        overlayClassName={zoneLeaderStyles["Overlay"]}
+      >
+        <p align="center">
+          <img src={modalImage} alt="" width="40px" height="40px" />
+          <br />
+          {serverMessage}
+        </p>
       </Modal>
     </form>
   );

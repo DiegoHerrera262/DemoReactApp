@@ -17,6 +17,7 @@ const defaultInitialValues = {
   zone: "",
   landline: "",
   storeAddress: "",
+  additionalInfo: "",
 };
 
 const CreateClientView = (props) => {

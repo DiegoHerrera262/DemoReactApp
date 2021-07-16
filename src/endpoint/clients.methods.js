@@ -12,15 +12,15 @@ const getZones = () => {
   return ["Norte", "Sur"];
 };
 
-const postClient = ({ data }) => {
-  const defaultURl = "http://localhost:8000/grocers/create";
+const postClient = async ({ data }) => {
+  const defaultURl = `${process.env.REACT_APP_SERVER_HOST}/grocer/create`;
   console.log("Creando nuevo cliente...");
   try {
-    for (var pair of data.entries()) {
-      console.log(pair[0] + ", " + pair[1]);
-    }
+    await axios.post(defaultURl, data);
+    return { message: "Cliente creado correctamente.", correct: true };
   } catch (error) {
-    return error;
+    console.log(error.message);
+    return { message: error.message, correct: false };
   }
 };
 
