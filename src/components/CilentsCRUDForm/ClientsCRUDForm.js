@@ -207,7 +207,7 @@ const ClientForm = (props) => {
       data.append("zone", zoneKeys[formik.values["zone"]]);
       data.append("sellerCreator", assessorKeys[formik.values["assessor"]]);
       data.append("locality", formik.values["locality"]);
-      data.append("moreAdditionalInformation", formik.values["additionalInfo"]);
+      data.append("addressAdditionalInfo", formik.values["additionalInfo"]);
       data.append("neighborhood", formik.values["neighborhood"]);
       data.append("latitude", addressCoords.latitude);
       data.append("longitude", addressCoords.longitude);
@@ -223,8 +223,9 @@ const ClientForm = (props) => {
         };
       }
 
-      const res = await httpMethod(httpArg);
       setShowConfirmModal(false);
+      setIsLoading(true);
+      const res = await httpMethod(httpArg);
 
       if (res.correct) {
         if (create) {
@@ -258,11 +259,13 @@ const ClientForm = (props) => {
 
         setUpdateMessage(res.message);
         setModalImage(confirmationImage);
+        setIsLoading(false);
         setShowUpdateMessage(true);
         return;
       }
       setUpdateMessage(res.message);
       setModalImage(errorImage);
+      setIsLoading(false);
       setShowUpdateMessage(true);
     } catch (error) {
       console.log(error);
