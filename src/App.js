@@ -15,6 +15,8 @@ import ClientsMainView from "./components/ViewClientsMain";
 import CreateBonusView from "./components/ViewBonusCreate";
 import ViewBonusUpdate from "./components/ViewBonusUpdate";
 
+import { getLeaderById } from "./endpoint/zoneLeaders.methods";
+
 const Headers = [
   {
     accessor: "userId",
@@ -65,31 +67,39 @@ function HomePage() {
     fetchFakeData();
   }, []);
 
+  const handleClick = async () => {
+    const res = await getLeaderById(2);
+    console.log(typeof res);
+  };
+
   return (
     <>
       {dataset.length === 0 && <div>Cargando...</div>}
       {dataset.length > 0 && (
-        <ClientsTable
-          dataset={dataset}
-          Headers={Headers}
-          downloadFileName={"SomeTable"}
-          pageSize={10}
-          identifier={"id"}
-          actions={[
-            {
-              Component: MessageButton,
-              props: {
-                message: "Editar",
+        <>
+          <button onClick={handleClick}>Test Leaders Api</button>
+          <ClientsTable
+            dataset={dataset}
+            Headers={Headers}
+            downloadFileName={"SomeTable"}
+            pageSize={10}
+            identifier={"id"}
+            actions={[
+              {
+                Component: MessageButton,
+                props: {
+                  message: "Editar",
+                },
               },
-            },
-            {
-              Component: MessageButton,
-              props: {
-                message: "Eliminar",
+              {
+                Component: MessageButton,
+                props: {
+                  message: "Eliminar",
+                },
               },
-            },
-          ]}
-        />
+            ]}
+          />
+        </>
       )}
     </>
   );

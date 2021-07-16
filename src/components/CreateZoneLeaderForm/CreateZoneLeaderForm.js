@@ -61,6 +61,7 @@ const CreateZoneLeaderForm = (props) => {
     useState(false);
   const [serverMessage, setServerMessage] = useState("");
   const [modalImage, setModalImage] = useState(confirmationImage);
+  const [isLoading, setIsLoading] = useState(false);
 
   const formik = useFormik({
     /*set up initial values*/
@@ -228,34 +229,42 @@ const CreateZoneLeaderForm = (props) => {
     data.append("imageUrl", formik.values["profileImage"]);
     data.append("bankCertification", formik.values["bankData"]);
 
+    setConfirmShowModal(false);
+    setIsLoading(true);
+
     try {
       const { message, correct } = await postLeader(data);
       console.log(message);
-
       setServerMessage(message);
-      setConfirmShowModal(false);
-      setShowCreatingLeaderMessage(true);
 
       if (correct) {
         formik.resetForm();
         formik.values = defaultInitialValues;
+        setIsLoading(false);
         profileImageRef.current.value = "";
         frontIdRef.current.value = "";
         rutRef.current.value = "";
         bankDataRef.current.value = "";
         contractRef.current.value = "";
         setModalImage(confirmationImage);
+        setShowCreatingLeaderMessage(true);
         return;
       }
 
       setModalImage(errorImage);
     } catch (error) {
       console.log(error);
-      setConfirmShowModal(false);
-      setShowCreatingLeaderMessage(true);
+      setModalImage(errorImage);
       setServerMessage("Creación fallida. Intente nuevamente.");
     }
+
+    setIsLoading(false);
+    setShowCreatingLeaderMessage(true);
   };
+
+  if (isLoading) {
+    return <div className={zoneLeaderStyles["loading-div"]} />;
+  }
 
   return (
     <form onSubmit={formik.handleSubmit}>

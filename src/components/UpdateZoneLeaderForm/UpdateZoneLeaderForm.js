@@ -60,6 +60,7 @@ const UpdateZoneLeaderForm = (props) => {
     useState(false);
   const [serverMessage, setServerMessage] = useState("");
   const [modalImage, setModalImage] = useState(confirmationImage);
+  const [isLoading, setIsLoading] = useState(false);
 
   const formik = useFormik({
     /*set up initial values*/
@@ -165,6 +166,9 @@ const UpdateZoneLeaderForm = (props) => {
     data.append("profileImage", formik.values["profileImage"]);
     data.append("bankCertification", formik.values["bankData"]);
 
+    setConfirmShowModal(false);
+    setIsLoading(true);
+
     try {
       const { message, correct } = await updateLeader(
         parseInt(props.leaderId),
@@ -174,22 +178,28 @@ const UpdateZoneLeaderForm = (props) => {
       console.log(message);
 
       setServerMessage(message);
-      setShowCreatingLeaderMessage(true);
-      setConfirmShowModal(false);
 
       if (correct) {
         setModalImage(confirmationImage);
+        setIsLoading(false);
+        setShowCreatingLeaderMessage(true);
         return;
       }
 
       setModalImage(errorImage);
     } catch (error) {
       console.log(error);
-      setConfirmShowModal(false);
-      setShowCreatingLeaderMessage(true);
+      setModalImage(errorImage);
       setServerMessage("Actualización fallida. Intente nuevamente.");
     }
+
+    setIsLoading(false);
+    setShowCreatingLeaderMessage(true);
   };
+
+  if (isLoading) {
+    return <div className={zoneLeaderStyles["loading-div"]} />;
+  }
 
   return (
     <form onSubmit={formik.handleSubmit} className={zoneLeaderStyles["form"]}>
