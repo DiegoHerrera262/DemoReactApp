@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const getAssessors = () => {
-  return ["Asesor 1", "Asesor 2", "Asesor 3"];
+  return { "Asesor 1": 1, "Asesor 2": 2, "Asesor 3": 3 };
 };
 
 const getLevels = () => {
@@ -9,7 +9,7 @@ const getLevels = () => {
 };
 
 const getZones = () => {
-  return ["Norte", "Sur"];
+  return { Norte: 2, Sur: 1 };
 };
 
 const postClient = async ({ data }) => {

@@ -46,6 +46,9 @@ const ClientForm = (props) => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
 
+  const [assessorKeys, setAssessorKeys] = useState({});
+  const [zoneKeys, setZoneKeys] = useState({});
+
   /* Here data should be fetched from the Assessors API */
   useEffect(() => {
     const fetchData = async () => {
@@ -73,8 +76,12 @@ const ClientForm = (props) => {
         }
         const rawAssessors = await getAssessors();
         const rawZones = await getZones();
-        setAssessors(["--Seleccione un asesor--", ...rawAssessors]);
-        setZones(["--Seleccione una zona--", ...rawZones]);
+        const assessorNames = Object.keys(rawAssessors);
+        const zoneNames = Object.keys(rawZones);
+        setAssessors(["--Seleccione un asesor--", ...assessorNames]);
+        setZones(["--Seleccione una zona--", ...zoneNames]);
+        setAssessorKeys(rawAssessors);
+        setZoneKeys(rawZones);
         setIsLoading(false);
         return;
       }
@@ -197,7 +204,8 @@ const ClientForm = (props) => {
       data.append("phone", formik.values["landline"]);
       data.append("email", formik.values["email"]);
       data.append("address", formattedAddress);
-      data.append("sellerCreator", formik.values["assessor"]);
+      data.append("zone", zoneKeys[formik.values["zone"]]);
+      data.append("sellerCreator", assessorKeys[formik.values["assessor"]]);
       data.append("locality", formik.values["locality"]);
       data.append("moreAdditionalInformation", formik.values["additionalInfo"]);
       data.append("neighborhood", formik.values["neighborhood"]);
