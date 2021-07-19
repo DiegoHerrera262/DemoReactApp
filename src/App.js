@@ -16,6 +16,7 @@ import ClientsDetailView from "./components/ViewClientsDetail";
 import ClientsMainView from "./components/ViewClientsMain";
 import CreateBonusView from "./components/ViewBonusCreate";
 import  CreateProducts from  './components/Products/createProducts/index'
+import  CreateSupplier from  './components/suppliers/createSupplier/index'
 const Headers = [
   {
     accessor: "userId",
@@ -170,7 +171,16 @@ function App() {
             exact path='/create-products'
             render={() => <CreateProducts />}
           />
+
+
+<Route
+            exact path='/create-supplier'
+            render={() => <CreateSupplier />}
+          />
         </Switch>
+
+
+        
       </div>
     </BrowserRouter>
   );

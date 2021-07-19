@@ -1,0 +1,34 @@
+
+
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+.container--create--supplier{
+    font-family: 'Lato', sans-serif;
+    font-size: 10px;
+    margin-left: 400px;
+    margin-top: 80px;
+}
+
+.title--create--supplier{
+    margin-bottom: 50px;
+    margin-top: 30px;
+    font-size: 25px;
+}
+
+.header--create--supplier{
+    width: 420px;
+    height: 50px;
+background-color: #272741;
+color: white;
+border-radius: 6px;
+}
+
+
+.button--supplier{
+    width: 150px;
+    height: 30px;
+ border: none;
+ border-radius: 8px;
+ margin-top: 20px;
+ color: white;
+ background-color:#53C149 ;
+}
