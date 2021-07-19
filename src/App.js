@@ -110,7 +110,7 @@ function App() {
     <BrowserRouter>
       <div>
         <Switch>
-          <Route exact path="/" render={() => <HomePage />} />
+          <Route exact path="/" render={() => <ClientsMainView />} />
 
           <Route
             exact

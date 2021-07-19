@@ -104,8 +104,12 @@ const ClientForm = (props) => {
       }
       const rawAssessors = await getAssessors();
       const rawZones = await getZones();
-      setAssessors(["--Seleccione un asesor--", ...rawAssessors]);
-      setZones(["--Seleccione una zona--", ...rawZones]);
+      const assessorNames = Object.keys(rawAssessors);
+      const zoneNames = Object.keys(rawZones);
+      setAssessors(["--Seleccione un asesor--", ...assessorNames]);
+      setZones(["--Seleccione una zona--", ...zoneNames]);
+      setAssessorKeys(rawAssessors);
+      setZoneKeys(rawZones);
       setIsLoading(false);
     };
     fetchData();
