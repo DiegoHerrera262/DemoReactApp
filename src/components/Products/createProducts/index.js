@@ -152,14 +152,14 @@ onChange={formik.handleChange}
 <div className="info--visualizacion">
 <div className="header--infoVisualizacion"><h1>Visualizacion</h1></div>
 
-<h2 className="title--inputs--products">*imagen</h2>
+<h2 className="title--inputs--products">*Imagen</h2>
 <input 
 className="style--inputs--products--img"
 name="img"
 type="text"
 onChange={formik.handleChange}
 /><br/>
-<button className="button--img--products">subir imagen</button>
+<button className="button--img--products">Subir imagen</button>
 </div>
 
 <div className="info--almacenamiento">

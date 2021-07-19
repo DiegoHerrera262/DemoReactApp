@@ -93,12 +93,13 @@ border-radius: 6px;
 }
 
 .buttons--products--create{
-   width: 200px;
+   width: 250px;
    height: 50px;
    border-radius: 8px;
    border: none; 
    margin-left: 700px;
    margin-top: 80px;
+   margin-bottom: 50px;
    background-color: #53C149;
    color: white;
    font-weight: bold;
