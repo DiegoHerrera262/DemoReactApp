@@ -257,6 +257,7 @@
 }
 
 @media all and (min-width: 992px) {
+  /*
   .client-level-label,
   .client-type-label {
     font-size: 12px;
@@ -264,6 +265,7 @@
   .view-container {
     font-size: 15px;
   }
+  */
   .view-wrapper {
     margin-top: 20vh;
     display: flex;
@@ -301,7 +303,7 @@
   }
   .unactive-tab,
   .active-tab {
-    font-size: 15px;
+    /*font-size: 15px;*/
     margin-left: 3%;
     margin-right: 3%;
   }
@@ -311,9 +313,11 @@
 }
 
 @media all and (min-width: 1250px) {
+  /*
   .view-container {
     font-size: 20px;
   }
+  */
   .detail-wrapper {
     width: 90%;
     padding-top: 3em;
@@ -334,7 +338,7 @@
   }
   .unactive-tab,
   .active-tab {
-    font-size: 20px;
+    /*font-size: 20px;*/
     margin-left: 3%;
     margin-right: 3%;
   }
