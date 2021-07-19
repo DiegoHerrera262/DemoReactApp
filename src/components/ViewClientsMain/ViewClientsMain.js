@@ -3,9 +3,9 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import mainStyles from "./ViewClientsMain.module.css";
 import {
-  getZones,
-  getLevels,
-  getAssessors,
+  getZonesKeys,
+  getLevelsKeys,
+  getAssessorsKeys,
   getClientDataFromQuery,
 } from "../../endpoint/clients.methods";
 
@@ -169,7 +169,7 @@ const ClientsMainView = (props) => {
 
   useEffect(() => {
     const initSetUp = async () => {
-      const levelOptns = await getLevels();
+      const levelOptns = await getLevelsKeys();
       setTableData(
         await getClientDataFromQuery({
           level: levelOptns[0],
@@ -241,19 +241,19 @@ const ClientsMainView = (props) => {
     },
     [filterOptions[1]]: {
       handleFilterSubmit: submitHandlers[filterOptions[1]],
-      getOptions: getLevels,
+      getOptions: getLevelsKeys,
       filterLabel: "Nivel",
       key: `${filterOptions[1]}-1-cond-option`,
     },
     [filterOptions[2]]: {
       handleFilterSubmit: submitHandlers[filterOptions[2]],
-      getOptions: getAssessors,
+      getOptions: getAssessorsKeys,
       filterLabel: "Asesor",
       key: `${filterOptions[2]}-2-cond-option`,
     },
     [filterOptions[3]]: {
       handleFilterSubmit: submitHandlers[filterOptions[3]],
-      getOptions: getZones,
+      getOptions: getZonesKeys,
       filterLabel: "Zona",
       key: `${filterOptions[3]}-3-cond-option`,
     },
@@ -263,7 +263,9 @@ const ClientsMainView = (props) => {
 
   return (
     <div className={mainStyles["view-container"]}>
-      <h2>Clientes</h2>
+      <h2 className={mainStyles["title"]}>
+        <h1>Clientes</h1>
+      </h2>
       <div className={mainStyles["create-button-div"]}>
         <RedirectButton
           buttonLabel="Crear cliente"
@@ -272,7 +274,9 @@ const ClientsMainView = (props) => {
         />
       </div>
       <div className={mainStyles["filter-prompt"]}>
-        <div className={mainStyles["filter-banner"]}>Filtros</div>
+        <div className={mainStyles["filter-banner"]}>
+          <h2>Filtros</h2>
+        </div>
         <label htmlFor="filterType" className={mainStyles["filter-label"]}>
           filtrar por
         </label>

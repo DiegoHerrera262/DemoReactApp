@@ -4,12 +4,24 @@ const getAssessors = () => {
   return { "Asesor 1": 1, "Asesor 2": 2, "Asesor 3": 3 };
 };
 
+const getAssessorsKeys = () => {
+  return Object.keys(getAssessors());
+};
+
 const getLevels = () => {
-  return ["Super Pro", "Proficient", "Basic", "nOOb"];
+  return { "Super Pro": 0, Proficient: 1, Basic: 2, nOOb: 3 };
+};
+
+const getLevelsKeys = () => {
+  return Object.keys(getLevels());
 };
 
 const getZones = () => {
   return { Norte: 2, Sur: 1 };
+};
+
+const getZonesKeys = () => {
+  return Object.keys(getZones());
 };
 
 const postClient = async ({ data }) => {
@@ -217,8 +229,11 @@ const getClientDataFromQuery = (queryParams) => {
 
 export {
   getZones,
+  getZonesKeys,
   getLevels,
+  getLevelsKeys,
   getAssessors,
+  getAssessorsKeys,
   getClientDataFromQuery,
   postClient,
   getClientById,
