@@ -15,7 +15,7 @@ import UpdateClientView from "./components/ViewClientsUpdate";
 import ClientsDetailView from "./components/ViewClientsDetail";
 import ClientsMainView from "./components/ViewClientsMain";
 import CreateBonusView from "./components/ViewBonusCreate";
-
+import  CreateProducts from  './components/Products/createProducts/index'
 const Headers = [
   {
     accessor: "userId",
@@ -164,6 +164,11 @@ function App() {
           <Route
             exact path='/register'
             render={() => <Register />}
+          />
+
+<Route
+            exact path='/create-products'
+            render={() => <CreateProducts />}
           />
         </Switch>
       </div>

@@ -1,0 +1,118 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+
+
+
+.title--crearProducts{
+    margin-left: 250px;
+    margin-bottom: 50px;
+    margin-top: 30px;
+    font-size: 25px;
+}
+
+
+.container--createProducts{
+    font-family: 'Lato', sans-serif;
+    font-size: 10px;
+}
+
+
+.container--partOne--info{
+    display: flex;
+    
+}
+
+.infoGeneral--products{
+    margin-right: 200px;
+    margin-left: 50px;
+}
+
+
+.header--infoGeneral{
+    width: 420px;
+    height: 50px;
+background-color: #272741;
+color: white;
+border-radius: 6px;
+}
+
+.style--inputs--products {
+    width: 400px;
+    height: 35px;
+    border-radius: 8px;
+    border: grey solid 1px;
+}
+
+.style--inputs--products--img{
+    width: 400px;
+    height: 200px;
+    border-radius: 8px;
+    border: grey solid 1px;  
+}
+
+.header--infoFinanciera{
+    width: 420px;
+    height: 50px;
+background-color: #272741;
+color: white;
+border-radius: 6px;
+}
+
+.partTwo--info{
+    display: flex;
+}
+
+.header--infoVisualizacion{
+    width: 420px;
+    height: 50px;
+background-color: #272741;
+color: white;
+border-radius: 6px;
+}
+
+.header--infoAlmacenamiento{
+    width: 420px;
+    height: 50px;
+background-color: #272741;
+color: white;
+border-radius: 6px;
+}
+
+.info--visualizacion{
+    margin-right: 200px;
+    margin-left: 50px;
+}
+
+.partTwo--info{
+    margin-top: 80px;
+    margin-left: 200px;
+}
+
+
+.container--partOne--info{
+    margin-left: 200px;
+}
+
+.buttons--products--create{
+   width: 200px;
+   height: 50px;
+   border-radius: 8px;
+   border: none; 
+   margin-left: 700px;
+   margin-top: 80px;
+   background-color: #53C149;
+   color: white;
+   font-weight: bold;
+}
+
+.button--img--products{
+    width: 100px;
+    height: 25px;
+ border: none;
+ border-radius: 8px;
+ margin-top: 20px;
+ color: white;
+ background-color:#53C149 ;
+
+}
+
