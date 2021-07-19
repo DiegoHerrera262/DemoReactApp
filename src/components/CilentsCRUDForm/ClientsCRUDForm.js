@@ -46,6 +46,9 @@ const ClientForm = (props) => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
 
+  const [assessorKeys, setAssessorKeys] = useState({});
+  const [zoneKeys, setZoneKeys] = useState({});
+
   /* Here data should be fetched from the Assessors API */
   useEffect(() => {
     const fetchData = async () => {
@@ -73,8 +76,12 @@ const ClientForm = (props) => {
         }
         const rawAssessors = await getAssessors();
         const rawZones = await getZones();
-        setAssessors(["--Seleccione un asesor--", ...rawAssessors]);
-        setZones(["--Seleccione una zona--", ...rawZones]);
+        const assessorNames = Object.keys(rawAssessors);
+        const zoneNames = Object.keys(rawZones);
+        setAssessors(["--Seleccione un asesor--", ...assessorNames]);
+        setZones(["--Seleccione una zona--", ...zoneNames]);
+        setAssessorKeys(rawAssessors);
+        setZoneKeys(rawZones);
         setIsLoading(false);
         return;
       }
@@ -97,8 +104,12 @@ const ClientForm = (props) => {
       }
       const rawAssessors = await getAssessors();
       const rawZones = await getZones();
-      setAssessors(["--Seleccione un asesor--", ...rawAssessors]);
-      setZones(["--Seleccione una zona--", ...rawZones]);
+      const assessorNames = Object.keys(rawAssessors);
+      const zoneNames = Object.keys(rawZones);
+      setAssessors(["--Seleccione un asesor--", ...assessorNames]);
+      setZones(["--Seleccione una zona--", ...zoneNames]);
+      setAssessorKeys(rawAssessors);
+      setZoneKeys(rawZones);
       setIsLoading(false);
     };
     fetchData();
@@ -117,6 +128,7 @@ const ClientForm = (props) => {
       neighborhood: defaultInitialValues["neighborhood"],
       zone: defaultInitialValues["zone"],
       landline: defaultInitialValues["landline"],
+      additionalInfo: defaultInitialValues["additionalInfo"],
     },
     validationSchema: Yup.object({
       name: Yup.string()
@@ -177,26 +189,29 @@ const ClientForm = (props) => {
         .lessThan(9999999, "Ingrese número fijo válido en Bogotá")
         .moreThan(999999, "Ingrese número fijo válido en Bogotá")
         .required("Campo requerido"),
+      additionalInfo: Yup.string(),
     }),
     onSubmit: (values) => {
       setShowConfirmModal(true);
     },
   });
 
-  const handleSubmitDataFromModal = () => {
+  const handleSubmitDataFromModal = async () => {
     const action = create ? "Creación " : "Actualización ";
     try {
       const data = new FormData();
-      data.append("name", formik.values["name"]);
-      data.append("grocer_name", formik.values["storeName"]);
-      data.append("owner_name", formik.values["name"]);
-      data.append("document_type", formik.values["documentType"]);
-      data.append("document_id", formik.values["documentId"]);
+      data.append("grocerName", formik.values["storeName"]);
+      data.append("ownerName", formik.values["name"]);
+      data.append("documentType", formik.values["documentType"]);
+      data.append("documentId", formik.values["documentId"]);
       data.append("cellphone", formik.values["cellphone"]);
       data.append("phone", formik.values["landline"]);
       data.append("email", formik.values["email"]);
       data.append("address", formattedAddress);
-      data.append("address_additional_info", formik.values["locality"]);
+      data.append("zone", zoneKeys[formik.values["zone"]]);
+      data.append("sellerCreator", assessorKeys[formik.values["assessor"]]);
+      data.append("locality", formik.values["locality"]);
+      data.append("addressAdditionalInfo", formik.values["additionalInfo"]);
       data.append("neighborhood", formik.values["neighborhood"]);
       data.append("latitude", addressCoords.latitude);
       data.append("longitude", addressCoords.longitude);
@@ -212,40 +227,49 @@ const ClientForm = (props) => {
         };
       }
 
-      httpMethod(httpArg);
       setShowConfirmModal(false);
+      setIsLoading(true);
+      const res = await httpMethod(httpArg);
 
-      if (create) {
-        formik.resetForm();
-        formik.values = defaultInitialValues;
-        const setUpLocation = async () => {
-          const { geolocation } = navigator;
-          if (geolocation) {
-            geolocation.getCurrentPosition(
-              async (position) => {
-                console.log("Reubicando navegador...");
-                setAddressCoords({
-                  latitude: position.coords.latitude,
-                  longitude: position.coords.longitude,
-                });
-                setFormattedAddress(
-                  await getAddress({
+      if (res.correct) {
+        if (create) {
+          formik.resetForm();
+          formik.values = defaultInitialValues;
+          const setUpLocation = async () => {
+            const { geolocation } = navigator;
+            if (geolocation) {
+              geolocation.getCurrentPosition(
+                async (position) => {
+                  console.log("Reubicando navegador...");
+                  setAddressCoords({
                     latitude: position.coords.latitude,
                     longitude: position.coords.longitude,
-                  })
-                );
-              },
-              () => {
-                console.log("Reubicación imposible.");
-              }
-            );
-          }
-        };
-        setUpLocation();
-      }
+                  });
+                  setFormattedAddress(
+                    await getAddress({
+                      latitude: position.coords.latitude,
+                      longitude: position.coords.longitude,
+                    })
+                  );
+                },
+                () => {
+                  console.log("Reubicación imposible.");
+                }
+              );
+            }
+          };
+          setUpLocation();
+        }
 
-      setUpdateMessage(action + "exitosa.");
-      setModalImage(confirmationImage);
+        setUpdateMessage(res.message);
+        setModalImage(confirmationImage);
+        setIsLoading(false);
+        setShowUpdateMessage(true);
+        return;
+      }
+      setUpdateMessage(res.message);
+      setModalImage(errorImage);
+      setIsLoading(false);
       setShowUpdateMessage(true);
     } catch (error) {
       console.log(error);
@@ -264,6 +288,7 @@ const ClientForm = (props) => {
         break;
       }
     }
+    console.log(formik.errors);
     const formIsNotRight = numErrors > 0 || emptyField;
     setShowErrorModal(formIsNotRight);
     setShowConfirmModal(!formIsNotRight);
@@ -299,6 +324,7 @@ const ClientForm = (props) => {
                 "--Seleccione tipo de documento--",
                 "Cédula de ciudadanía",
                 "Cédula de extrangería",
+                "NIT",
               ]}
               className={className}
             />
@@ -368,6 +394,13 @@ const ClientForm = (props) => {
               formHook={formik}
               labelKey="Teléfono fijo"
               fieldType="number"
+              className={className}
+            />
+            <InputField
+              fieldName="additionalInfo"
+              formHook={formik}
+              labelKey="Información adicional"
+              fieldType="text"
               className={className}
             />
           </div>

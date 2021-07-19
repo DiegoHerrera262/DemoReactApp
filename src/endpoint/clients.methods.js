@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const getAssessors = () => {
-  return ["Asesor 1", "Asesor 2", "Asesor 3"];
+  return { "Asesor 1": 1, "Asesor 2": 2, "Asesor 3": 3 };
 };
 
 const getLevels = () => {
@@ -9,51 +9,66 @@ const getLevels = () => {
 };
 
 const getZones = () => {
-  return ["Norte", "Sur"];
+  return { Norte: 2, Sur: 1 };
 };
 
-const postClient = ({ data }) => {
-  const defaultURl = "http://localhost:8000/grocers/create";
+const postClient = async ({ data }) => {
+  const defaultURl = `${process.env.REACT_APP_SERVER_HOST}/grocer/create`;
   console.log("Creando nuevo cliente...");
   try {
-    for (var pair of data.entries()) {
-      console.log(pair[0] + ", " + pair[1]);
-    }
+    await axios.post(defaultURl, data);
+    return { message: "Cliente creado correctamente.", correct: true };
   } catch (error) {
-    return error;
+    console.log(error.message);
+    return { message: error.message, correct: false };
   }
 };
 
-const putClientById = ({ data, params: { id } }) => {
-  const defaultURl = `http://localhost:8000/grocers/${id}`;
+const putClientById = async ({ data, params: { id } }) => {
+  const defaultURl = `http://localhost:8000/grocer/${id}`;
   try {
-    console.log("Actualizando cliente: ", id);
-    for (var pair of data.entries()) {
-      console.log(pair[0] + ", " + pair[1]);
-    }
+    await axios.put(defaultURl, data);
+    return { message: "Cliente actualizado correctamente.", correct: true };
   } catch (error) {
-    return error;
+    console.log(error.message);
+    return { message: error.message, correct: false };
   }
 };
 
-const getClientById = (id) => {
-  const defaultURl = `http://localhost:8000/grocers/${id}`;
+const getClientById = async (id) => {
+  const defaultURl = `http://localhost:8000/grocer/${id}`;
   try {
+    const assessorKeys = await getAssessors();
+    const zoneKeys = await getZones();
+
+    const clientReq = await axios.get(defaultURl);
+    const clientData = clientReq.data;
+
+    const assessorName = Object.keys(assessorKeys).filter(
+      (key) => assessorKeys[key] === parseInt(clientData.sellerCreator)
+    );
+    const zoneName = Object.keys(zoneKeys).filter(
+      (key) => zoneKeys[key] === parseInt(clientData.zone)
+    );
+
     return {
-      name: "Test Name",
-      documentType: "Cédula de ciudadanía",
-      documentId: parseInt(`${id}000000000`),
-      cellphone: parseInt(`${id}000000000`),
-      email: `mail${id}@mail.com`,
-      assessor: "Asesor 1",
-      storeName: "Tienda Superveci",
-      locality: "Suba",
-      neighborhood: "Suba Rincon",
-      zone: "Norte",
-      landline: parseInt(`123430${id}`),
-      storeAddress: "Cll. 22i #108-32, Bogotá, Colombia",
+      name: clientData.ownerName,
+      documentType: clientData.documentType,
+      documentId: parseInt(clientData.documentId),
+      cellphone: parseInt(clientData.cellphone),
+      email: clientData.email,
+      assessor: assessorName[0],
+      storeName: clientData.grocerName,
+      locality: clientData.locality,
+      neighborhood: clientData.neighborhood,
+      zone: zoneName[0],
+      landline: parseInt(clientData.phone),
+      storeAddress: clientData.address,
+      additionalInfo: clientData.addressAdditionalInfo,
+      level: clientData.level,
     };
   } catch (error) {
+    console.log(error);
     return error;
   }
 };

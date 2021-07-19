@@ -94,23 +94,13 @@ const UpdateZoneLeaderView = (props) => {
 
   return (
     <>
-      {loadingData && <div className={updateStyles["loader"]}></div>}
+      {loadingData && <div className={updateStyles["loading-div"]}></div>}
       {!loadingData && (
-        <div className={updateStyles["main-page-container"]}>
-          <div
-            style={{
-              maxWidth: "91%",
-              marginTop: "1.9em",
-              marginBottom: "2.1em",
-              marginLeft: "auto",
-              marginRight: "auto",
-              fontSize: "1.5em",
-              fontWeight: "600",
-            }}
-          >
+        <div className={updateStyles["view-container"]}>
+          <h1 className={updateStyles["page-title"]}>
             Editar datos líder de zona
-          </div>
-          <div className={updateStyles["info-title"]}>Información general</div>
+          </h1>
+          <div className={updateStyles["header-box"]}>Información general</div>
           <UpdateZoneLeaderForm
             defaultInitialValues={defaultInitialValues}
             leaderId={props.leaderId}

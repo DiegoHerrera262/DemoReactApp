@@ -1,22 +1,31 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap");
 
+.file {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  filter: alpha(opacity=0);
+  opacity: 0;
+}
+
 .profile-image-card {
-  max-width: 100%;
+  width: 81%;
   margin: 1ch;
   border-radius: 9px;
   border: 1px solid #ffffff;
-  box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.17);
-  background-color: #ffffff;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
   display: flex;
   flex-direction: row;
   align-items: center;
 }
 
 .error-message {
-  text-align: center;
-  margin-left: 1ch;
+  text-align: left;
+  margin-left: 2.4ch;
   margin-bottom: 1em;
-  font-size: 0.7em;
+  font-size: inherit;
+  font-weight: 300;
   color: red;
 }
 
@@ -28,7 +37,7 @@
 }
 
 .info-container {
-  padding-left: 2ch;
+  text-align: center;
   flex: 80%;
 }
 
@@ -49,41 +58,33 @@
 .profile-image-label {
   padding-bottom: 8px;
   font-size: 1.4em;
-  color: #063970;
+  font-weight: 300;
+  color: #272741;
 }
 
 .edit-button {
-  font-size: 0.9em;
+  font-size: 1em;
   font-weight: bold;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-right: 2ch;
-  padding-left: 2ch;
-  border-radius: 8px;
-  border: 1px solid #f1eae4;
-  background-color: #eeeee4;
+  border: none;
+  background: none;
   color: #29790a;
+  font-weight: bold;
 }
 
 .edit-button-edit {
-  font-size: 0.9em;
+  font-size: 1em;
   font-weight: bold;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-right: 2ch;
-  padding-left: 2ch;
-  border-radius: 8px;
-  border: 1px solid #f1eae4;
-  background-color: #eeeee4;
+  border: none;
+  background: none;
   color: #f39033;
+  font-weight: bold;
 }
 
 .edit-button:hover,
-.edit-button-edit:hover,
 .edit-button:focus,
-.edit-button-edit:focus {
-  border: 1px solid #063970;
-  color: #063970;
+.edit-button-edit:focus,
+.edit-button-edit:hover {
+  border-bottom: 1px solid;
   cursor: pointer;
 }
 
@@ -92,13 +93,8 @@ ADAPTING TO SMALL - MEDIUM SCREENS
 */
 @media all and (min-width: 768px) {
   .profile-image-card {
-    max-width: 100%;
     margin: 1ch;
     padding-bottom: 0.8em;
-    border-radius: 7px;
-    border: 1px solid #ffffff;
-    box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.17);
-    background-color: #ffffff;
     display: flex;
     flex-direction: column;
   }
@@ -116,7 +112,6 @@ ADAPTING TO SMALL - MEDIUM SCREENS
     padding-top: 7px;
     padding-bottom: 5px;
     font-size: 1.2em;
-    color: #063970;
   }
 
   .profile-photo {
@@ -131,34 +126,6 @@ ADAPTING TO SMALL - MEDIUM SCREENS
     height: 8em;
     border-radius: 50%;
     border: 1px solid #ee9714;
-  }
-
-  .edit-button {
-    font-size: 0.7em;
-    margin-left: 1.4ch;
-    margin-right: auto;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    padding-right: 5ch;
-    padding-left: 5ch;
-    border-radius: 8px;
-    border: 1px solid #f1eae4;
-    background-color: #eeeee4;
-    color: #29790a;
-  }
-
-  .edit-button-edit {
-    font-size: 0.7em;
-    margin-left: 1.4ch;
-    margin-right: auto;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    padding-right: 5ch;
-    padding-left: 5ch;
-    border-radius: 8px;
-    border: 1px solid #f1eae4;
-    background-color: #eeeee4;
-    color: #f39033;
   }
 }
 
@@ -168,24 +135,7 @@ ADAPTING TO LARGE - XL SCREENS
 
 @media all and (min-width: 993px) {
   .profile-image-card {
-    max-width: 94%;
-    margin: 1ch;
     padding: auto auto 0.8em auto;
-    border: 1px solid;
-    border-radius: 7px;
-    border: 1px solid #ffffff;
-    box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.17);
-    background-color: #ffffff;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .profile-image-label {
-    padding-top: 7px;
-    padding-bottom: 5px;
-    padding-right: 2ch;
-    font-size: 1.1em;
-    color: #063970;
   }
 
   .image-container {
@@ -194,7 +144,7 @@ ADAPTING TO LARGE - XL SCREENS
   }
 
   .info-container {
-    padding-left: 2ch;
+    padding-left: 1ch;
     flex: 100%;
   }
 
@@ -210,31 +160,5 @@ ADAPTING TO LARGE - XL SCREENS
     height: 12em;
     border-radius: 50%;
     border: 1px solid #ee9714;
-  }
-
-  .edit-button {
-    font-size: 0.7em;
-    margin-left: 1.5ch;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    padding-right: 5ch;
-    padding-left: 5ch;
-    border-radius: 8px;
-    border: 1px solid #f1eae4;
-    background-color: #eeeee4;
-    color: #29790a;
-  }
-
-  .edit-button-edit {
-    font-size: 0.7em;
-    margin-left: 1.5ch;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    padding-right: 5ch;
-    padding-left: 5ch;
-    border-radius: 8px;
-    border: 1px solid #f1eae4;
-    background-color: #eeeee4;
-    color: #f39033;
   }
 }

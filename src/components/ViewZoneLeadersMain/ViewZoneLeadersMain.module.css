@@ -1,14 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap");
 
-.container {
-  min-height: 100vh;
-  margin: 0;
-  font-family: "Roboto", sans-serif;
-  background-color: #f5f4f4;
-  padding: 1em 1ch 0em 1ch;
-}
-
-.loader {
+.loading-div {
   margin-left: auto;
   margin-right: auto;
   margin-top: 40vh;
@@ -26,5 +18,34 @@
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+.view-container {
+  font-family: "Roboto", sans-serif;
+  font-weight: 100;
+  font-size: 12px;
+  margin: 1px;
+  padding: 8px 6px 8px 30px;
+}
+
+.create-button-div {
+  width: 89%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 4em;
+  margin-bottom: 4em;
+  text-align: right;
+}
+
+@media all and (min-width: 992px) {
+  .view-container {
+    font-size: 16px;
+  }
+}
+
+@media all and (min-width: 1200px) {
+  .view-container {
+    font-size: 24px;
   }
 }

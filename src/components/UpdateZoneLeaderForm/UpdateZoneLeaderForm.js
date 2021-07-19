@@ -1,15 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 
-// HTTP connection to backend
 import { updateLeader } from "../../endpoint/zoneLeaders.methods";
 
-// Third party imports
 import { useFormik } from "formik";
 import Modal from "react-modal";
 import * as Yup from "yup";
-// import axios from 'axios';
 
-// Form components
 import FieldInput from "../FieldInput";
 import SelectInput from "../SelectInput";
 import FileInput from "../FileInput";
@@ -17,13 +13,14 @@ import ProfileImageInput from "../ProfileImageInput";
 import LeaderZoneMap from "../LeaderZoneMap";
 
 import blankProfile from "../ProfileImageInput/assets/blankProfilePicture.png";
+import errorImage from "../../assets/errorImage.png";
+import confirmationImage from "../../assets/confirmationImage.png";
 
 import zoneLeaderStyles from "./UpdateZoneLeaderForm.module.css";
 
 // DO NOT DELETE THIS
 Modal.setAppElement("body");
 
-// Change map display style here
 const GoogleMapsAPI = `https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${process.env.REACT_APP_GOOGLE_MAPS_TOKEN}`;
 
 const UpdateZoneLeaderForm = (props) => {
@@ -32,7 +29,6 @@ const UpdateZoneLeaderForm = (props) => {
 
   const valueKeys = Object.keys(defaultInitialValues);
 
-  // include document properties on the initial values
   defaultInitialValues = {
     frontID: {},
     rut: {},
@@ -42,40 +38,30 @@ const UpdateZoneLeaderForm = (props) => {
     ...defaultInitialValues,
   };
 
-  // Split fields according to figma view design
   const leftFields = valueKeys.slice(0, Math.floor(valueKeys.length / 2));
   const rightFields = valueKeys.slice(Math.floor(valueKeys.length / 2));
 
-  // Get current date for validation
   const today = new Date();
 
-  // Ref for resetting profile image
   const profileImageRef = useRef();
-  // Ref for resetting files
   const frontIdRef = useRef();
   const rutRef = useRef();
   const bankDataRef = useRef();
   const contractRef = useRef();
 
-  // Define state for showing error modal
   const [showErrorModal, setErrorShowModal] = useState(false);
-  // Define state for showing confirmation modal
   const [showConfirmModal, setConfirmShowModal] = useState(false);
-  // Define state for profile picture preview source
   const [profileImageSource, setProfileImageSource] = useState(blankProfile);
-  // Define state for map zone identification
   const [zoneMarkerCoords, setZoneMarkerCoords] = useState({
     latitude: 4.68357,
     longitude: -74.14443,
   });
-  // confirmation message after submit
   const [showCreatingLeaderMessage, setShowCreatingLeaderMessage] =
     useState(false);
   const [serverMessage, setServerMessage] = useState("");
-  const [serverMessageStyle, setServerMessageStyle] = useState({});
+  const [modalImage, setModalImage] = useState(confirmationImage);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Instantiate formik hook
-  // for data management
   const formik = useFormik({
     /*set up initial values*/
     initialValues: defaultInitialValues,
@@ -135,8 +121,6 @@ const UpdateZoneLeaderForm = (props) => {
     },
   });
 
-  // use Effect hook for generating profile image
-  // source when updating input
   useEffect(() => {
     if (formik.values["profileImage"]) {
       const reader = new FileReader();
@@ -149,8 +133,6 @@ const UpdateZoneLeaderForm = (props) => {
     }
   }, [formik]);
 
-  // Click handler for showing
-  // alert modal
   const handleErrorClick = () => {
     // See if there are any errors
     const numErrors = Object.keys(formik.errors).length;
@@ -167,62 +149,62 @@ const UpdateZoneLeaderForm = (props) => {
     setConfirmShowModal(!formIsNotRight);
   };
 
-  /*
-    HERE IS WHERE THE SUBMIT
-    ACTION IT TO BE HANDLED WITH
-    THE BACKEND
-    */
   const handleSubmitDataFromModal = async () => {
-    const postData = {
-      name: formik.values["name"],
-      last_name: formik.values["lastName"],
-      documentId: formik.values["documentId"],
-      address: formik.values["address"],
-      leader_code: formik.values["leaderCode"],
-      email: formik.values["email"],
-      cellphone: formik.values["cellphone"],
-      zone_id: zoneKeys[formik.values["zone"]],
-      endContractDate: formik.values["endContractDate"],
-      documentPhoto: "https://AmazonWEB.com/Some/Random/url",
-      rutDocument: "https://AmazonWEB.com/Some/Random/url",
-      contractDocument: "https://AmazonWEB.com/Some/Random/url",
-      profileImage: "https://AmazonWEB.com/Some/Random/url",
-      bankCertification: "https://AmazonWEB.com/Some/Random/url",
-    };
+    const data = new FormData();
+    data.append("name", formik.values["name"]);
+    data.append("last_name", formik.values["lastName"]);
+    data.append("documentId", formik.values["documentId"]);
+    data.append("address", formik.values["address"]);
+    data.append("leader_code", formik.values["leaderCode"]);
+    data.append("email", formik.values["email"]);
+    data.append("cellphone", formik.values["cellphone"]);
+    data.append("zone_id", zoneKeys[formik.values["zone"]]);
+    data.append("endContractDate", formik.values["endContractDate"]);
+    data.append("contractDocument", formik.values["contract"]);
+    data.append("documentPhoto", formik.values["frontID"]);
+    data.append("rutDocument", formik.values["rut"]);
+    data.append("profileImage", formik.values["profileImage"]);
+    data.append("bankCertification", formik.values["bankData"]);
 
-    console.log(postData);
+    setConfirmShowModal(false);
+    setIsLoading(true);
 
     try {
       const { message, correct } = await updateLeader(
         parseInt(props.leaderId),
-        postData
+        data
       );
       console.log(formik.values);
       console.log(message);
 
       setServerMessage(message);
-      setConfirmShowModal(false);
 
-      // reset form and hide modal
       if (correct) {
+        setModalImage(confirmationImage);
+        setIsLoading(false);
         setShowCreatingLeaderMessage(true);
-        return setServerMessageStyle(zoneLeaderStyles["confirm-div"]);
+        return;
       }
 
-      setShowCreatingLeaderMessage(true);
-      setServerMessageStyle(zoneLeaderStyles["error-div"]);
+      setModalImage(errorImage);
     } catch (error) {
       console.log(error);
+      setModalImage(errorImage);
+      setServerMessage("Actualización fallida. Intente nuevamente.");
     }
+
+    setIsLoading(false);
+    setShowCreatingLeaderMessage(true);
   };
+
+  if (isLoading) {
+    return <div className={zoneLeaderStyles["loading-div"]} />;
+  }
 
   return (
     <form onSubmit={formik.handleSubmit} className={zoneLeaderStyles["form"]}>
-      {showCreatingLeaderMessage && (
-        <div className={serverMessageStyle}>{serverMessage}</div>
-      )}
-      <div className={zoneLeaderStyles["column-wrapper"]}>
-        <div className={zoneLeaderStyles["col2"]}>
+      <div className={zoneLeaderStyles["col-wrap"]}>
+        <div className={zoneLeaderStyles["col-left"]}>
           <ProfileImageInput
             edit
             src={profileImageSource}
@@ -264,7 +246,7 @@ const UpdateZoneLeaderForm = (props) => {
             />
           </div>
         </div>
-        <div className={zoneLeaderStyles["col2"]}>
+        <div className={zoneLeaderStyles["col-right"]}>
           {rightFields.map((field) => {
             if (typeKeys[field] === "select") {
               return (
@@ -296,10 +278,7 @@ const UpdateZoneLeaderForm = (props) => {
             Documentos{" "}
           </h2>
 
-          <h3 className={zoneLeaderStyles["h3"]} style={{ paddingLeft: "1ch" }}>
-            {" "}
-            Documento de identidad{" "}
-          </h3>
+          <h3 className={zoneLeaderStyles["h3"]}> Documento de identidad </h3>
           <FileInput
             edit
             fieldName="frontID"
@@ -309,10 +288,7 @@ const UpdateZoneLeaderForm = (props) => {
             accept=".pdf, image/*"
           />
 
-          <h3 className={zoneLeaderStyles["h3"]} style={{ paddingLeft: "1ch" }}>
-            {" "}
-            RUT{" "}
-          </h3>
+          <h3 className={zoneLeaderStyles["h3"]}> RUT </h3>
           <FileInput
             edit
             fieldName="rut"
@@ -322,10 +298,7 @@ const UpdateZoneLeaderForm = (props) => {
             accept=".pdf, .doc, .docx"
           />
 
-          <h3 className={zoneLeaderStyles["h3"]} style={{ paddingLeft: "1ch" }}>
-            {" "}
-            Certificación bancaria{" "}
-          </h3>
+          <h3 className={zoneLeaderStyles["h3"]}> Certificación bancaria </h3>
           <FileInput
             edit
             fieldName="bankData"
@@ -335,10 +308,7 @@ const UpdateZoneLeaderForm = (props) => {
             accept=".pdf, .doc, .docx"
           />
 
-          <h3 className={zoneLeaderStyles["h3"]} style={{ paddingLeft: "1ch" }}>
-            {" "}
-            Contrato{" "}
-          </h3>
+          <h3 className={zoneLeaderStyles["h3"]}> Contrato </h3>
           <FileInput
             edit
             fieldName="contract"
@@ -360,7 +330,7 @@ const UpdateZoneLeaderForm = (props) => {
           onClick={handleErrorClick}
           className={zoneLeaderStyles["submit-button"]}
         >
-          Actualizar líder
+          GUARDAR
         </button>
       </div>
 
@@ -376,9 +346,9 @@ const UpdateZoneLeaderForm = (props) => {
         <div style={{ textAlign: "center" }}>
           <button
             onClick={handleSubmitDataFromModal}
-            className={zoneLeaderStyles["submit-button"]}
+            className={zoneLeaderStyles["confirm-button"]}
           >
-            Confirmar
+            CONFIRMAR
           </button>
         </div>
       </Modal>
@@ -398,9 +368,23 @@ const UpdateZoneLeaderForm = (props) => {
             }}
             className={zoneLeaderStyles["error-button"]}
           >
-            Cerrar
+            CERRAR
           </button>
         </div>
+      </Modal>
+      <Modal
+        isOpen={showCreatingLeaderMessage}
+        onRequestClose={() => {
+          setShowCreatingLeaderMessage(false);
+        }}
+        className={zoneLeaderStyles["Modal"]}
+        overlayClassName={zoneLeaderStyles["Overlay"]}
+      >
+        <p align="center">
+          <img src={modalImage} alt="" width="40px" height="40px" />
+          <br />
+          {serverMessage}
+        </p>
       </Modal>
     </form>
   );

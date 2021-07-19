@@ -6,6 +6,7 @@ import createStyles from "./ViewZoneLeadersCreate.module.css";
 const defaultInitialValues = {
   name: "",
   lastName: "",
+  documentType: "",
   documentId: "",
   zone: "",
   address: "",
@@ -19,6 +20,7 @@ const defaultInitialValues = {
 const labelKeys = {
   name: "Nombre",
   lastName: "Apellido",
+  documentType: "Tipo de documento",
   documentId: "Documento de identidad",
   zone: "Zona",
   address: "Dirección",
@@ -32,6 +34,7 @@ const typeKeys = {
   name: "text",
   lastName: "text",
   documentId: "number",
+  documentType: "select",
   zone: "select",
   address: "text",
   leaderCode: "number",
@@ -54,7 +57,12 @@ const CreateZoneLeaderView = (props) => {
   const [zoneIds, setZoneIds] = useState({});
   const [loadingData, setLoadingData] = useState(true);
   const [selectValues, setSelectValues] = useState({
-    zone: ["--Elija una zona--", "Norte", "Sur"],
+    zone: ["--Seleccione una zona--", "Norte", "Sur"],
+    documentType: [
+      "--Seleccione un tipo de documento--",
+      "Cédula de ciudadanía",
+      "Cédula de extrangería",
+    ],
   });
 
   useEffect(() => {
@@ -71,6 +79,11 @@ const CreateZoneLeaderView = (props) => {
       setZoneIds(zoneKeys);
       setSelectValues({
         zone: ["--Elija una zona--", ...Object.keys(zoneKeys)],
+        documentType: [
+          "--Seleccione un tipo de documento--",
+          "Cédula de ciudadanía",
+          "Cédula de extrangería",
+        ],
       });
 
       setLoadingData(false);
@@ -80,23 +93,11 @@ const CreateZoneLeaderView = (props) => {
 
   return (
     <>
-      {loadingData && <div className={createStyles["loader"]}></div>}
+      {loadingData && <div className={createStyles["loading-div"]}></div>}
       {!loadingData && (
-        <div className={createStyles["main-page-container"]}>
-          <div
-            style={{
-              maxWidth: "91%",
-              marginTop: "1.9em",
-              marginBottom: "2.1em",
-              marginLeft: "auto",
-              marginRight: "auto",
-              fontSize: "1.5em",
-              fontWeight: "600",
-            }}
-          >
-            Crear líder de zona
-          </div>
-          <div className={createStyles["info-title"]}>Información general</div>
+        <div className={createStyles["view-container"]}>
+          <h1 className={createStyles["page-title"]}>Crear líder de zona</h1>
+          <div className={createStyles["header-box"]}>Información general</div>
           <CreateZoneLeaderForm
             defaultInitialValues={defaultInitialValues}
             labelKeys={labelKeys}

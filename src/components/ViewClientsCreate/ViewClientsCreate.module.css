@@ -134,6 +134,7 @@
 .submit-button:hover {
   background: #53c149;
   color: #ffffff;
+  cursor: pointer;
 }
 
 .Modal {
@@ -199,11 +200,25 @@
     margin-left: 17%;
     width: 50%;
   }
+  .Modal {
+    left: 27vw;
+    width: 40vw;
+  }
 }
 
 @media all and (min-width: 992px) {
   .view-container {
-    font-size: 15px;
+    font-size: 16px;
+  }
+
+  .Modal {
+    left: 40vw;
+    width: 20vw;
+  }
+
+  .header-box {
+    height: 53px;
+    line-height: 53px;
   }
 }
 
@@ -232,8 +247,11 @@
   }
 
   .submit-button {
-    font-size: 1em;
     margin-left: 15%;
-    width: 50%;
+  }
+
+  .header-box {
+    height: 63px;
+    line-height: 63px;
   }
 }

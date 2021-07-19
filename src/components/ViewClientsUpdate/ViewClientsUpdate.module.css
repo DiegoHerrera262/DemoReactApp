@@ -194,16 +194,27 @@
     height: 400px;
     margin-left: 1em;
   }
+
   .submit-button {
     font-size: 1em;
     margin-left: 17%;
     width: 50%;
   }
+
+  .Modal {
+    left: 27vw;
+    width: 40vw;
+  }
 }
 
 @media all and (min-width: 992px) {
   .view-container {
-    font-size: 15px;
+    font-size: 16px;
+  }
+
+  .Modal {
+    left: 40vw;
+    width: 20vw;
   }
 }
 
@@ -232,8 +243,6 @@
   }
 
   .submit-button {
-    font-size: 1em;
     margin-left: 15%;
-    width: 50%;
   }
 }
