@@ -307,7 +307,7 @@ const ClientForm = (props) => {
         <div className={className["col-wrap"]}>
           <div className={className["col-client"]}>
             <div className={className["header-box"]}>
-              Información del cliente propietario
+              <h1>Información del cliente propietario</h1>
             </div>
             <InputField
               fieldName="name"
@@ -359,7 +359,7 @@ const ClientForm = (props) => {
           </div>
           <div className={className["col-store"]}>
             <div className={className["header-box"]}>
-              Información de la tienda
+              <h1>Información de la tienda</h1>
             </div>
             <InputField
               fieldName="storeName"
@@ -405,7 +405,9 @@ const ClientForm = (props) => {
             />
           </div>
         </div>
-        <div className={className["header-box"]}>Ubicación</div>
+        <div className={className["header-box"]}>
+          <h1>Ubicación</h1>
+        </div>
         <AddressGraphicSearchBar
           fieldName="location"
           labelKey="Dirección"
@@ -425,13 +427,15 @@ const ClientForm = (props) => {
           markerCoords={addressCoords}
           mapPin={mapPin}
         />
-        <button
-          type="submit"
-          onClick={handleDataValidation}
-          className={className["submit-button"]}
-        >
-          {create ? "CREAR CLIENTE" : "GUARDAR"}
-        </button>
+        <div style={{ textAlign: "center" }}>
+          <button
+            type="submit"
+            onClick={handleDataValidation}
+            className={className["submit-button"]}
+          >
+            {create ? "CREAR CLIENTE" : "GUARDAR"}
+          </button>
+        </div>
       </form>
       <Modal
         isOpen={showConfirmModal}
