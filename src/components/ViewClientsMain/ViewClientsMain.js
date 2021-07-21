@@ -275,10 +275,10 @@ const ClientsMainView = (props) => {
       </div>
       <div className={mainStyles["filter-prompt"]}>
         <div className={mainStyles["filter-banner"]}>
-          <h2>Filtros</h2>
+          <h1>Filtros</h1>
         </div>
         <label htmlFor="filterType" className={mainStyles["filter-label"]}>
-          filtrar por
+          Filtrar por
         </label>
         <br />
         <select
