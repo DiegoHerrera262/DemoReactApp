@@ -11,6 +11,7 @@
 }
 
 .error-message {
+  font-size: 1.2em;
   font-weight: 300;
   padding-left: 1.5em;
   margin-bottom: 1em;
@@ -19,7 +20,7 @@
 
 .select {
   /*font-size: 0.9em;*/
-  font-size: 1.2em;
+  font-size: 1.3em;
   /*border: none;*/
   border: grey solid 1px;
   width: 82%;

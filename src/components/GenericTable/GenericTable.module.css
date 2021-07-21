@@ -52,7 +52,7 @@
 }
 
 .table-container {
-  font-size: 12px;
+  font-size: 13px;
   width: 100%;
   overflow: scroll;
 }
@@ -144,9 +144,11 @@ background-color: #f2f2f2;
   .search-input {
     width: 232px;
   }
+  /*
   .table-container {
     font-size: inherit;
   }
+  */
   /*.page-index {
       font-size: 9px;
       text-align: left;

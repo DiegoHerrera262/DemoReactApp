@@ -263,9 +263,9 @@ const ClientsMainView = (props) => {
 
   return (
     <div className={mainStyles["view-container"]}>
-      <h2 className={mainStyles["title"]}>
+      <div className={mainStyles["title"]}>
         <h1>Clientes</h1>
-      </h2>
+      </div>
       <div className={mainStyles["create-button-div"]}>
         <RedirectButton
           buttonLabel="Crear cliente"

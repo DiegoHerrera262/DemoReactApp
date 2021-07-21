@@ -65,6 +65,7 @@
 @media all and (min-width: 1200px) {
   .view-container {
     /*font-size: 24px;*/
+    width: 1250px;
     font-size: 10px;
     margin-left: 10.5%;
   }
