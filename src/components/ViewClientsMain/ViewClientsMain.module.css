@@ -59,11 +59,16 @@ input {
   padding: 5px 1ch 5px 1ch;
   width: 100px;
   height: 22px;
-  font-size: inherit;
+  /*font-size: inherit;*/
+  font-size: 1.5em;
   border: none;
   color: green;
   background: #53c149;
   border-radius: 6px;
+}
+
+.submit-button {
+  margin-left: 1ch;
 }
 
 .create-button:hover,
@@ -84,9 +89,10 @@ input {
 .select-filter {
   width: 245px;
   height: 35px;
-  /*font-size: 1.25em;*/
+  font-size: 1.5em;
   /*color: white;*/
   margin-top: 0.5em;
+  margin-left: 1ch;
   margin-bottom: 2em;
   padding: 2px 1ch 2px 1ch;
   /*background: #e5e5e5;*/
@@ -99,6 +105,7 @@ input {
 .input-label {
   margin-top: 1em;
   margin-bottom: 1em;
+  margin-left: 1ch;
   font-size: 1.5em;
   font-weight: bold;
 }
@@ -113,11 +120,13 @@ input {
 .select,
 .input {
   font-family: inherit;
+  font-size: 1.5em;
   width: 230px;
   height: 35px;
   /*border: none;*/
   border: grey solid 1px;
   margin-top: 0.5em;
+  margin-left: 1ch;
   margin-bottom: 2em;
   padding: 2px 1ch 2px 1ch;
   background: #ffffff;

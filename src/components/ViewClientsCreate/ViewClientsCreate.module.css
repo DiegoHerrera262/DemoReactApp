@@ -56,7 +56,7 @@
 .input-label {
   font-weight: bold;
   font-size: 1.5em;
-  /*padding-left: 1em;*/
+  padding-left: 1em;
 }
 
 .input-label:hover {
@@ -64,7 +64,7 @@
 }
 
 .error-message {
-  font-size: 1.2em;
+  font-size: 1.4em;
   font-weight: 300;
   padding-left: 1.5em;
   margin-bottom: 1em;
@@ -72,30 +72,32 @@
 }
 
 .input {
+  box-sizing: border-box;
   /*font-size: 0.9em;*/
-  font-size: 1.3em;
+  font-size: 1.5em;
   /*border: none;*/
   border: grey solid 1px;
   width: 78%;
   height: 35px;
   margin-top: 1em;
   margin-bottom: 1em;
-  /*margin-left: 1em;*/
+  margin-left: 1em;
   padding-left: 1em;
   /*box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);*/
   border-radius: 8px;
 }
 
 .select {
+  box-sizing: border-box;
   /*font-size: 0.9em;*/
-  font-size: 1.3em;
+  font-size: 1.5em;
   /*border: none;*/
   border: grey solid 1px;
-  width: 82%;
+  width: 78%;
   height: 35px;
   margin-top: 1em;
   margin-bottom: 1em;
-  /*margin-left: 1em;*/
+  margin-left: 1em;
   padding-left: 1em;
   /*box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);*/
   border-radius: 8px;
@@ -240,6 +242,7 @@
 @media all and (min-width: 1200px) {
   .view-container {
     /*font-size: 24px;*/
+    max-width: 1250px;
     font-size: 10px;
     margin-left: 5.5%;
   }
@@ -280,11 +283,11 @@
   }
 
   .select {
-    width: 412px;
+    width: 400px;
   }
 
   .submit-button {
-    margin-right: 38%;
+    margin-right: 13%;
   }
 }
 

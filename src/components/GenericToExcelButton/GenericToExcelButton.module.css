@@ -1,6 +1,7 @@
 .export-button {
-  font-size: 10px;
-  width: 100px;
+  /*font-size: 10px;*/
+  font-size: 1.3em;
+  width: 121px;
   height: 22px;
   background-color: #c4c4c4;
   color: #ffffff;
@@ -16,7 +17,7 @@
 @media all and (min-width: 992px) {
   .export-button {
     /*font-size: 13px;*/
-    width: 121px;
+    /*width: 121px;*/
     height: 29px;
   }
 }
