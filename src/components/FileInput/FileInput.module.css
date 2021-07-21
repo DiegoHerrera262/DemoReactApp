@@ -37,13 +37,13 @@
 
 .file-input-label {
   margin-bottom: 3px;
-  font-size: 0.7em;
+  font-size: 1em;
   font-weight: 300;
   color: #272741;
 }
 
 .edit-button {
-  font-size: 1em;
+  font-size: 1.2em;
   padding-top: 2px;
   padding-bottom: 2px;
   padding-right: 1ch;
@@ -55,7 +55,7 @@
 }
 
 .edit-button-edit {
-  font-size: 1em;
+  font-size: 1.2em;
   font-weight: bold;
   padding-top: 2px;
   padding-bottom: 2px;
@@ -77,10 +77,10 @@
 
 .error-message {
   text-align: left;
-  margin-left: 2.4ch;
-  margin-bottom: 1em;
-  font-size: inherit;
+  font-size: 1.1em;
   font-weight: 300;
+  padding-left: 1.5em;
+  margin-bottom: 1em;
   color: red;
 }
 

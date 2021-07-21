@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
 
 .loading-div {
   margin-left: auto;
@@ -22,16 +22,18 @@
 }
 
 .view-container {
-  font-family: "Roboto", sans-serif;
+  font-family: "Lato", sans-serif;
   font-weight: 100;
-  font-size: 12px;
+  /*font-size: 12px;*/
+  font-size: 10px;
   margin: 1px;
   padding: 8px 6px 8px 30px;
 }
 
 .page-title {
-  font-size: inherit;
-  margin-bottom: 1em;
+  /*font-size: inherit;*/
+  font-size: 25px;
+  margin-bottom: 2.1em;
 }
 
 .header-box {
@@ -39,8 +41,8 @@
   margin-top: 1.25em;
   margin-bottom: 1.25em;
   padding-left: 1em;
-  height: 43px;
-  line-height: 43px;
+  height: 50px;
+  line-height: 50px;
   width: 86%;
   border-radius: 6px;
   background: #272741;
@@ -48,9 +50,11 @@
 }
 
 @media all and (min-width: 992px) {
+  /*
   .view-container {
     font-size: 16px;
   }
+  */
 
   .header-box {
     height: 53px;
@@ -60,12 +64,15 @@
 
 @media all and (min-width: 1200px) {
   .view-container {
-    font-size: 24px;
+    /*font-size: 24px;*/
+    font-size: 10px;
+    margin-left: 10.5%;
   }
-
+  /*
   .header-box {
     width: 95%;
     height: 63px;
     line-height: 63px;
   }
+  */
 }

@@ -67,7 +67,8 @@
 }
 
 .input {
-  font-size: 0.9em;
+  /*font-size: 0.9em;*/
+  font-size: 1.2em;
   /*border: none;*/
   border: grey solid 1px;
   width: 78%;
@@ -81,7 +82,8 @@
 }
 
 .select {
-  font-size: 0.9em;
+  /*font-size: 0.9em;*/
+  font-size: 1.2em;
   /*border: none;*/
   border: grey solid 1px;
   width: 82%;
