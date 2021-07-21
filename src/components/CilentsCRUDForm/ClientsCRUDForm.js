@@ -405,28 +405,31 @@ const ClientForm = (props) => {
             />
           </div>
         </div>
-        <div className={className["header-box"]}>
-          <h1>Ubicación</h1>
+        <div className={className["location-div"]}>
+          <div className={className["header-box"]}>
+            <h1>Ubicación</h1>
+          </div>
+          <AddressGraphicSearchBar
+            fieldName="location"
+            labelKey="Dirección"
+            value={formattedAddress}
+            setAddress={setFormattedAddress}
+            setCoords={setAddressCoords}
+            className={className}
+            mapContainerStyle={{
+              width: "100%",
+              height: "100%",
+            }}
+            zoom={11}
+            center={{
+              lat: addressCoords.latitude,
+              lng: addressCoords.longitude,
+            }}
+            markerCoords={addressCoords}
+            mapPin={mapPin}
+          />
         </div>
-        <AddressGraphicSearchBar
-          fieldName="location"
-          labelKey="Dirección"
-          value={formattedAddress}
-          setAddress={setFormattedAddress}
-          setCoords={setAddressCoords}
-          className={className}
-          mapContainerStyle={{
-            width: "100%",
-            height: "100%",
-          }}
-          zoom={11}
-          center={{
-            lat: addressCoords.latitude,
-            lng: addressCoords.longitude,
-          }}
-          markerCoords={addressCoords}
-          mapPin={mapPin}
-        />
+
         <div style={{ textAlign: "center" }}>
           <button
             type="submit"

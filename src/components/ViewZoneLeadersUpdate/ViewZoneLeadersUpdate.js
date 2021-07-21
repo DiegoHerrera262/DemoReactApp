@@ -57,6 +57,7 @@ const UpdateZoneLeaderView = (props) => {
       const result = await getLeaderById(id);
       const resData = result[0];
       console.log(resData);
+      console.log(resData);
 
       /* 
             THIS SHOULD BE FETCHED FROM ZONE TABLE

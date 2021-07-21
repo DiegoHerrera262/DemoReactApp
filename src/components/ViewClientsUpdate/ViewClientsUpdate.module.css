@@ -36,6 +36,10 @@
   margin-bottom: 2.1em;
 }
 
+.location-div {
+  margin-top: 60px;
+}
+
 .header-box {
   font-weight: 400;
   margin-top: 1.25em;
@@ -112,6 +116,7 @@
 }
 
 .col-store {
+  margin-top: 60px;
   flex: 100%;
 }
 
@@ -252,6 +257,7 @@
   .col-store {
     flex: 50%;
     padding-left: 6px;
+    margin-top: 0;
   }
 
   .map-container {

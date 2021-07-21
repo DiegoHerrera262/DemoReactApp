@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap");
-
 .file {
   position: absolute;
   bottom: 0;
@@ -11,6 +9,7 @@
 .profile-image-card {
   width: 81%;
   margin: 1ch;
+  margin-left: 0;
   border-radius: 9px;
   border: 1px solid #ffffff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -24,7 +23,7 @@
   text-align: left;
   margin-left: 2.4ch;
   margin-bottom: 1em;
-  font-size: inherit;
+  font-size: 1.2em;
   font-weight: 300;
   color: red;
 }
@@ -58,12 +57,12 @@
 .profile-image-label {
   padding-bottom: 8px;
   font-size: 1.4em;
-  font-weight: 300;
+  font-weight: 400;
   color: #272741;
 }
 
 .edit-button {
-  font-size: 1em;
+  font-size: 1.2em;
   font-weight: bold;
   border: none;
   background: none;
@@ -72,7 +71,7 @@
 }
 
 .edit-button-edit {
-  font-size: 1em;
+  font-size: 1.2em;
   font-weight: bold;
   border: none;
   background: none;
@@ -93,7 +92,6 @@ ADAPTING TO SMALL - MEDIUM SCREENS
 */
 @media all and (min-width: 768px) {
   .profile-image-card {
-    margin: 1ch;
     padding-bottom: 0.8em;
     display: flex;
     flex-direction: column;
@@ -160,5 +158,11 @@ ADAPTING TO LARGE - XL SCREENS
     height: 12em;
     border-radius: 50%;
     border: 1px solid #ee9714;
+  }
+}
+
+@media all and (min-width: 1200px) {
+  .profile-image-card {
+    width: 413px;
   }
 }

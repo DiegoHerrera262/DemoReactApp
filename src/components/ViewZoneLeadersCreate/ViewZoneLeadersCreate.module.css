@@ -64,16 +64,35 @@
 
 @media all and (min-width: 1200px) {
   .view-container {
+    width: 85%;
     /*font-size: 24px;*/
+    font-size: 10px;
+    margin-left: 5.5%;
+  }
+
+  .header-box {
+    width: 94%;
+    /*
+    height: 63px;
+    line-height: 63px;
+    */
+  }
+}
+
+@media all and (min-width: 1468) {
+  .header-box {
+    width: 60%;
+    /*
+    height: 63px;
+    line-height: 63px;
+    */
+  }
+}
+
+@media all and (min-width: 1900px) {
+  .view-container {
     width: 1250px;
     font-size: 10px;
     margin-left: 10.5%;
   }
-  /*
-  .header-box {
-    width: 95%;
-    height: 63px;
-    line-height: 63px;
-  }
-  */
 }

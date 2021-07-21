@@ -149,9 +149,6 @@
 }
 
 @media all and (min-width: 992px) {
-  .view-container {
-    font-size: 16px;
-  }
   .Modal {
     left: 40vw;
     width: 20vw;
@@ -159,10 +156,6 @@
 }
 
 @media all and (min-width: 1200px) {
-  .view-container {
-    font-size: 24px;
-  }
-
   .col-wrap {
     flex-direction: row;
   }
@@ -179,8 +172,8 @@
 
   .map-container {
     height: 486px;
-    /*width: 78%;*/
-    width: 412px;
+    width: 78%;
+    /*width: 412px;*/
   }
 
   /*
@@ -188,9 +181,16 @@
     margin-left: 3%;
   }
   */
-
+  /*
   .submit-button {
     margin-right: 38%;
+  }
+  */
+}
+
+@media all and (min-width: 1900px) {
+  .col-wrap {
+    width: 1250px;
   }
 }
 
