@@ -58,18 +58,21 @@ const putClientById = async ({ data, params: { id } }) => {
 const getClientById = async (id) => {
   const defaultURl = `http://localhost:8000/grocer/${id}`;
   try {
+    /*
     const assessorKeys = await getAssessors();
     const zoneKeys = await getZones();
-
+    */
     const clientReq = await axios.get(defaultURl);
     const clientData = clientReq.data;
 
+    /*
     const assessorName = Object.keys(assessorKeys).filter(
       (key) => assessorKeys[key] === parseInt(clientData.sellerCreator)
     );
     const zoneName = Object.keys(zoneKeys).filter(
       (key) => zoneKeys[key] === parseInt(clientData.zone)
     );
+    */
 
     return {
       name: clientData.ownerName,
@@ -77,11 +80,11 @@ const getClientById = async (id) => {
       documentId: parseInt(clientData.documentId),
       cellphone: parseInt(clientData.cellphone),
       email: clientData.email,
-      assessor: assessorName[0],
+      assessor: clientData.sellerCreator,
       storeName: clientData.grocerName,
       locality: clientData.locality,
       neighborhood: clientData.neighborhood,
-      zone: zoneName[0],
+      zone: clientData.zone,
       landline: parseInt(clientData.phone),
       storeAddress: clientData.address,
       additionalInfo: clientData.addressAdditionalInfo,

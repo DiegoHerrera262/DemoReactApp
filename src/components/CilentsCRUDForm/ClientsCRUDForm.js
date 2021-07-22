@@ -23,6 +23,8 @@ Modal.setAppElement("body");
 const ClientForm = (props) => {
   const {
     clientId,
+    rawAssessors,
+    rawZones,
     defaultInitialValues,
     httpMethod,
     httpParams,
@@ -74,8 +76,8 @@ const ClientForm = (props) => {
             }
           );
         }
-        const rawAssessors = await getAssessors();
-        const rawZones = await getZones();
+        // const rawAssessors = await getAssessors();
+        // const rawZones = await getZones();
         const assessorNames = Object.values(rawAssessors);
         const zoneNames = Object.values(rawZones);
         setAssessors(["--Seleccione un asesor--", ...assessorNames]);
@@ -102,10 +104,10 @@ const ClientForm = (props) => {
       } catch (error) {
         console.log(error);
       }
-      const rawAssessors = await getAssessors();
-      const rawZones = await getZones();
-      const assessorNames = Object.keys(rawAssessors);
-      const zoneNames = Object.keys(rawZones);
+      // const rawAssessors = await getAssessors();
+      // const rawZones = await getZones();
+      const assessorNames = Object.values(rawAssessors);
+      const zoneNames = Object.values(rawZones);
       setAssessors(["--Seleccione un asesor--", ...assessorNames]);
       setZones(["--Seleccione una zona--", ...zoneNames]);
       setAssessorKeys(rawAssessors);
@@ -113,7 +115,14 @@ const ClientForm = (props) => {
       setIsLoading(false);
     };
     fetchData();
-  }, [create, clientId, defaultInitialValues, setIsLoading]);
+  }, [
+    create,
+    clientId,
+    defaultInitialValues,
+    rawAssessors,
+    rawZones,
+    setIsLoading,
+  ]);
 
   const formik = useFormik({
     initialValues: {

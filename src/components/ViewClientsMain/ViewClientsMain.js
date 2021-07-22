@@ -207,6 +207,7 @@ const ClientsMainView = (props) => {
     } catch (error) {
       console.log(error);
     }
+    setIsLoading(false);
   }, []);
 
   const handleChangeFilter = (event) => {
