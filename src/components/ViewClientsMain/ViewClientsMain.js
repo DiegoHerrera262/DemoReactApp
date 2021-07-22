@@ -186,7 +186,7 @@ const ClientsMainView = (props) => {
       setZonesObj(placeholderZonesObj);
       setLevelsObj(placeholderLevelsObj);
       const rawData = await getClientDataFromQuery({
-        level: Object.keys(placeholderLevelsObj)[0],
+        level: Object.values(placeholderLevelsObj)[0],
       });
       setTableData(
         rawData.map((client) => {
@@ -206,8 +206,8 @@ const ClientsMainView = (props) => {
       initSetUp();
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
     }
-    setIsLoading(false);
   }, []);
 
   const handleChangeFilter = (event) => {
@@ -247,34 +247,29 @@ const ClientsMainView = (props) => {
     [filterOptions[1]]: async (values) => {
       console.log("Filtrando clientes por nivel...");
       setIsLoading(true);
-      for (const key in levelsObj) {
-        if (levelsObj[key] === values["levelValue"]) {
-          /*
+
+      /*
           setTableData(
             await getClientDataFromQuery({
               level: key,
             })
           );
           */
-          const rawData = await getClientDataFromQuery({
-            level: key,
-          });
-          setTableData(
-            rawData.map((client) => {
-              // console.log(client);
-              // console.log(placeholderAssessorsObj[client["sellerCreator"]]);
-              return {
-                ...client,
-                sellerCreator: assessorsObj[client["sellerCreator"]],
-                status:
-                  parseInt(client["status"]) === 0 ? "Activo" : "Inactivo",
-                zone: zonesObj[client["zone"]],
-              };
-            })
-          );
-          break;
-        }
-      }
+      const rawData = await getClientDataFromQuery({
+        level: values["levelValue"],
+      });
+      setTableData(
+        rawData.map((client) => {
+          // console.log(client);
+          // console.log(placeholderAssessorsObj[client["sellerCreator"]]);
+          return {
+            ...client,
+            sellerCreator: assessorsObj[client["sellerCreator"]],
+            status: parseInt(client["status"]) === 0 ? "Activo" : "Inactivo",
+            zone: zonesObj[client["zone"]],
+          };
+        })
+      );
       setIsLoading(false);
     },
     [filterOptions[2]]: async (values) => {
@@ -411,6 +406,12 @@ const ClientsMainView = (props) => {
   };
 
   const CustomForm = formOptions[filterType];
+
+  /*
+  if (isLoading) {
+    return <div className={mainStyles["loading-div"]}></div>;
+  }
+  */
 
   return (
     <div className={mainStyles["view-container"]}>

@@ -9,7 +9,7 @@ import SelectField from "../GenericSelectInput/GenericSelectInput";
 import AddressGraphicSearchBar from "../GenericAddressGraphicSearchBar/GenericAddressGraphicSearchBar";
 
 import getAddress from "../../utils/getAddress";
-import { getZones, getAssessors } from "../../endpoint/clients.methods";
+// import { getZones, getAssessors } from "../../endpoint/clients.methods";
 
 import errorImage from "../../assets/errorImage.png";
 import confirmationImage from "../../assets/confirmationImage.png";
