@@ -58,8 +58,8 @@
 }
 
 .clients-table thead {
-  width: 92;
-  height: 50px;
+  width: 92%;
+  /*height: 50px;*/
   border: 1px solid;
   border: none;
   color: #ffffff;
@@ -72,6 +72,8 @@
 }
 
 .clients-table th {
+  /*height: 50px;*/
+  height: 42px;
   vertical-align: bottom;
   padding-bottom: 8px;
   border: none;
