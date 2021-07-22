@@ -150,7 +150,12 @@ const GenericTable = (props) => {
                               Math.random() * 1000 + 1
                             )}-${field}`}
                           >
-                            {`${row[field]}`}
+                            {row[field]
+                              ? Date.parse(row[field]) &&
+                                typeof row[field] !== "number"
+                                ? `${row[field].substring(0, 10)}`
+                                : `${row[field].toString()}`
+                              : `${row[field]}`}
                           </td>
                         ))}
                         {actions && (

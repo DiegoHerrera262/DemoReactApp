@@ -76,8 +76,8 @@ const ClientForm = (props) => {
         }
         const rawAssessors = await getAssessors();
         const rawZones = await getZones();
-        const assessorNames = Object.keys(rawAssessors);
-        const zoneNames = Object.keys(rawZones);
+        const assessorNames = Object.values(rawAssessors);
+        const zoneNames = Object.values(rawZones);
         setAssessors(["--Seleccione un asesor--", ...assessorNames]);
         setZones(["--Seleccione una zona--", ...zoneNames]);
         setAssessorKeys(rawAssessors);
@@ -127,6 +127,7 @@ const ClientForm = (props) => {
       locality: defaultInitialValues["locality"],
       neighborhood: defaultInitialValues["neighborhood"],
       zone: defaultInitialValues["zone"],
+      status: defaultInitialValues["status"],
       landline: defaultInitialValues["landline"],
       additionalInfo: defaultInitialValues["additionalInfo"],
     },
@@ -183,6 +184,9 @@ const ClientForm = (props) => {
       zone: Yup.string()
         .matches(/^[a-zA-Z]{3,15}$/, "Escoja una zona")
         .required("Campo requerido"),
+      status: Yup.string()
+        .required("Campo requerdo")
+        .matches(/^[^-]*$/, "Seleccione un asesor"),
       landline: Yup.number()
         .positive()
         .integer()
@@ -198,6 +202,7 @@ const ClientForm = (props) => {
 
   const handleSubmitDataFromModal = async () => {
     const action = create ? "Creación " : "Actualización ";
+    console.log(formik.values);
     try {
       const data = new FormData();
       data.append("grocerName", formik.values["storeName"]);
@@ -208,10 +213,19 @@ const ClientForm = (props) => {
       data.append("phone", formik.values["landline"]);
       data.append("email", formik.values["email"]);
       data.append("address", formattedAddress);
-      data.append("zone", zoneKeys[formik.values["zone"]]);
-      data.append("sellerCreator", assessorKeys[formik.values["assessor"]]);
+      for (const key in zoneKeys) {
+        if (zoneKeys[key] === formik.values["zone"]) {
+          data.append("zone", key);
+        }
+      }
+      for (const key in assessorKeys) {
+        if (assessorKeys[key] === formik.values["assessor"]) {
+          data.append("sellerCreator", key);
+        }
+      }
       data.append("locality", formik.values["locality"]);
       data.append("addressAdditionalInfo", formik.values["additionalInfo"]);
+      data.append("status", formik.values["status"] === "Activo" ? 0 : 1);
       data.append("neighborhood", formik.values["neighborhood"]);
       data.append("latitude", addressCoords.latitude);
       data.append("longitude", addressCoords.longitude);
@@ -401,6 +415,13 @@ const ClientForm = (props) => {
               formHook={formik}
               labelKey="Información adicional"
               fieldType="text"
+              className={className}
+            />
+            <SelectField
+              fieldName="status"
+              formHook={formik}
+              labelKey="Estado cliente"
+              optionVals={["--Seleccione un estado--", "Activo", "Inactivo"]}
               className={className}
             />
           </div>

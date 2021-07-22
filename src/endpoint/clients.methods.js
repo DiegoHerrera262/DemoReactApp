@@ -1,35 +1,35 @@
 import axios from "axios";
 
 const getAssessors = () => {
-  return { "Asesor 1": 1, "Asesor 2": 2, "Asesor 3": 3 };
+  return { 1: "Asesor 1", 2: "Asesor 2", 3: "Asesor 3", 30: "Asesor 30" };
 };
 
 const getAssessorsKeys = () => {
-  return Object.keys(getAssessors());
+  return Object.values(getAssessors());
 };
 
 const getLevels = () => {
-  return { Novato: 0, Fiel: 1, Pro: 2 };
+  return { 0: "Vecino novato", 1: "Vecino fiel", 2: "Vecino pro" };
 };
 
 const getLevelsKeys = () => {
-  return Object.keys(getLevels());
+  return Object.values(getLevels());
 };
 
 const getZones = () => {
-  return { Norte: 2, Sur: 1 };
+  return { 2: "Norte", 1: "Sur" };
 };
 
 const getZonesKeys = () => {
-  return Object.keys(getZones());
+  return Object.values(getZones());
 };
 
 const getStatus = () => {
-  return { Activo: 1, Inactivo: 0 };
+  return { 0: "Activo", 1: "Inactivo" };
 };
 
 const getStatusKeys = () => {
-  return Object.keys(getStatus());
+  return Object.values(getStatus());
 };
 
 const postClient = async ({ data }) => {
@@ -157,6 +157,18 @@ const getClientByIdMostBought = (id) => {
   return data;
 };
 
+const getClientDataFromQuery = async (queryParams) => {
+  try {
+  } catch {}
+  const defaultURl = `${process.env.REACT_APP_SERVER_HOST}/grocers/`;
+  // console.log(queryParams);
+  const res = await axios.get(defaultURl, {
+    params: queryParams,
+  });
+  return res.data;
+};
+
+/*
 const getClientDataFromQuery = (queryParams) => {
   let sampleDatum = {};
   let dataset = [];
@@ -234,6 +246,7 @@ const getClientDataFromQuery = (queryParams) => {
   }
   return dataset;
 };
+*/
 
 export {
   getZones,
