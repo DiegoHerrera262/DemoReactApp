@@ -9,7 +9,7 @@ const getAssessorsKeys = () => {
 };
 
 const getLevels = () => {
-  return { "Super Pro": 0, Proficient: 1, Basic: 2, nOOb: 3 };
+  return { Novato: 0, Fiel: 1, Pro: 2 };
 };
 
 const getLevelsKeys = () => {
@@ -22,6 +22,14 @@ const getZones = () => {
 
 const getZonesKeys = () => {
   return Object.keys(getZones());
+};
+
+const getStatus = () => {
+  return { Activo: 1, Inactivo: 0 };
+};
+
+const getStatusKeys = () => {
+  return Object.keys(getStatus());
 };
 
 const postClient = async ({ data }) => {
@@ -234,6 +242,8 @@ export {
   getLevelsKeys,
   getAssessors,
   getAssessorsKeys,
+  getStatusKeys,
+  getStatus,
   getClientDataFromQuery,
   postClient,
   getClientById,

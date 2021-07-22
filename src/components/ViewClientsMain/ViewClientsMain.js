@@ -83,18 +83,11 @@ const DateFilterOptions = (props) => {
 
 const SelectFilterOptions = (props) => {
   const { handleFilterSubmit, getOptions, filterLabel } = props;
-  const [levels, setLevels] = useState([]);
-
-  useEffect(() => {
-    const fetchLevels = async () => {
-      setLevels(await getOptions());
-    };
-    fetchLevels();
-  }, [getOptions]);
+  const levels = getOptions();
 
   const formik = useFormik({
     initialValues: {
-      levelValue: "",
+      levelValue: levels[0],
     },
     validationSchema: Yup.object({
       levelValue: Yup.string().required("Campo Requerido"),
