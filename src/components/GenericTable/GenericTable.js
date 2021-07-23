@@ -79,6 +79,9 @@ const GenericTable = (props) => {
       dataset.filter((row) => {
         const values = Object.values(row);
         for (let j = 0; j < values.length; j++) {
+          if (!values[j]) {
+            return false;
+          }
           if (values[j].toString().trim().includes(filterWord)) {
             return true;
           }
@@ -150,7 +153,12 @@ const GenericTable = (props) => {
                               Math.random() * 1000 + 1
                             )}-${field}`}
                           >
-                            {`${row[field]}`}
+                            {row[field]
+                              ? Date.parse(row[field]) &&
+                                typeof row[field] !== "number"
+                                ? `${row[field].substring(0, 10)}`
+                                : `${row[field].toString()}`
+                              : `${row[field]}`}
                           </td>
                         ))}
                         {actions && (

@@ -1,17 +1,9 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
 
-.container {
-  min-height: 100vh;
-  margin: 0;
-  font-family: "Roboto", sans-serif;
-  background-color: #f5f4f4;
-  padding: 1em 1ch 0em 1ch;
-}
-
-.loader {
+.loading-div {
   margin-left: auto;
   margin-right: auto;
-  margin-top: 40vh;
+  margin-top: 50px;
   border: 16px solid #f7debe; /* Light grey */
   border-top: 16px solid #272741; /* Blue */
   border-radius: 50%;
@@ -26,5 +18,46 @@
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+.view-container {
+  font-family: "Lato", sans-serif;
+  font-weight: 100;
+  /*font-size: 12px;*/
+  font-size: 10px;
+  margin: 1px;
+  padding: 8px 6px 80px 30px;
+}
+
+.title {
+  font-size: 25px;
+  margin-left: 0%;
+}
+
+.create-button-div {
+  width: 89%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 4em;
+  margin-bottom: 4em;
+  text-align: right;
+}
+
+@media all and (min-width: 992px) {
+  /*
+  .view-container {
+    font-size: 16px;
+  }
+  */
+}
+
+@media all and (min-width: 1250px) {
+  .view-container {
+    /*font-size: 24px;*/
+    max-width: 1250px;
+  }
+  .title {
+    margin-left: 4%;
   }
 }

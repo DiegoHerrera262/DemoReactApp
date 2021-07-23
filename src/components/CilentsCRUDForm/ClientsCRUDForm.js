@@ -9,7 +9,7 @@ import SelectField from "../GenericSelectInput/GenericSelectInput";
 import AddressGraphicSearchBar from "../GenericAddressGraphicSearchBar/GenericAddressGraphicSearchBar";
 
 import getAddress from "../../utils/getAddress";
-import { getZones, getAssessors } from "../../endpoint/clients.methods";
+// import { getZones, getAssessors } from "../../endpoint/clients.methods";
 
 import errorImage from "../../assets/errorImage.png";
 import confirmationImage from "../../assets/confirmationImage.png";
@@ -23,6 +23,8 @@ Modal.setAppElement("body");
 const ClientForm = (props) => {
   const {
     clientId,
+    rawAssessors,
+    rawZones,
     defaultInitialValues,
     httpMethod,
     httpParams,
@@ -45,6 +47,9 @@ const ClientForm = (props) => {
 
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
+
+  const [assessorKeys, setAssessorKeys] = useState({});
+  const [zoneKeys, setZoneKeys] = useState({});
 
   /* Here data should be fetched from the Assessors API */
   useEffect(() => {
@@ -71,10 +76,14 @@ const ClientForm = (props) => {
             }
           );
         }
-        const rawAssessors = await getAssessors();
-        const rawZones = await getZones();
-        setAssessors(["--Seleccione un asesor--", ...rawAssessors]);
-        setZones(["--Seleccione una zona--", ...rawZones]);
+        // const rawAssessors = await getAssessors();
+        // const rawZones = await getZones();
+        const assessorNames = Object.values(rawAssessors);
+        const zoneNames = Object.values(rawZones);
+        setAssessors(["--Seleccione un asesor--", ...assessorNames]);
+        setZones(["--Seleccione una zona--", ...zoneNames]);
+        setAssessorKeys(rawAssessors);
+        setZoneKeys(rawZones);
         setIsLoading(false);
         return;
       }
@@ -95,14 +104,25 @@ const ClientForm = (props) => {
       } catch (error) {
         console.log(error);
       }
-      const rawAssessors = await getAssessors();
-      const rawZones = await getZones();
-      setAssessors(["--Seleccione un asesor--", ...rawAssessors]);
-      setZones(["--Seleccione una zona--", ...rawZones]);
+      // const rawAssessors = await getAssessors();
+      // const rawZones = await getZones();
+      const assessorNames = Object.values(rawAssessors);
+      const zoneNames = Object.values(rawZones);
+      setAssessors(["--Seleccione un asesor--", ...assessorNames]);
+      setZones(["--Seleccione una zona--", ...zoneNames]);
+      setAssessorKeys(rawAssessors);
+      setZoneKeys(rawZones);
       setIsLoading(false);
     };
     fetchData();
-  }, [create, clientId, defaultInitialValues, setIsLoading]);
+  }, [
+    create,
+    clientId,
+    defaultInitialValues,
+    rawAssessors,
+    rawZones,
+    setIsLoading,
+  ]);
 
   const formik = useFormik({
     initialValues: {
@@ -116,7 +136,9 @@ const ClientForm = (props) => {
       locality: defaultInitialValues["locality"],
       neighborhood: defaultInitialValues["neighborhood"],
       zone: defaultInitialValues["zone"],
+      status: defaultInitialValues["status"],
       landline: defaultInitialValues["landline"],
+      additionalInfo: defaultInitialValues["additionalInfo"],
     },
     validationSchema: Yup.object({
       name: Yup.string()
@@ -148,7 +170,10 @@ const ClientForm = (props) => {
         .email("Ingrese una dirección de email válida")
         .required("Campo requerido"),
       assessor: Yup.string()
-        .matches(/^[^-]*$/, "Seleccione un asesor")
+        .matches(
+          /^[A-Z]{3,4}[0-9]{3} - [A-Za-z]{0,10}[\s]{0,1}[A-Za-z]{0,10}$/,
+          "Seleccione un asesor"
+        )
         .required("Campo requerido"),
       storeName: Yup.string()
         .matches(
@@ -171,32 +196,48 @@ const ClientForm = (props) => {
       zone: Yup.string()
         .matches(/^[a-zA-Z]{3,15}$/, "Escoja una zona")
         .required("Campo requerido"),
+      status: Yup.string()
+        .required("Campo requerdo")
+        .matches(/^[^-]*$/, "Seleccione un asesor"),
       landline: Yup.number()
         .positive()
         .integer()
         .lessThan(9999999, "Ingrese número fijo válido en Bogotá")
         .moreThan(999999, "Ingrese número fijo válido en Bogotá")
         .required("Campo requerido"),
+      additionalInfo: Yup.string(),
     }),
     onSubmit: (values) => {
       setShowConfirmModal(true);
     },
   });
 
-  const handleSubmitDataFromModal = () => {
+  const handleSubmitDataFromModal = async () => {
     const action = create ? "Creación " : "Actualización ";
+    console.log(formik.values);
     try {
       const data = new FormData();
-      data.append("name", formik.values["name"]);
-      data.append("grocer_name", formik.values["storeName"]);
-      data.append("owner_name", formik.values["name"]);
-      data.append("document_type", formik.values["documentType"]);
-      data.append("document_id", formik.values["documentId"]);
+      data.append("grocerName", formik.values["storeName"]);
+      data.append("ownerName", formik.values["name"]);
+      data.append("documentType", formik.values["documentType"]);
+      data.append("documentId", formik.values["documentId"]);
       data.append("cellphone", formik.values["cellphone"]);
       data.append("phone", formik.values["landline"]);
       data.append("email", formik.values["email"]);
       data.append("address", formattedAddress);
-      data.append("address_additional_info", formik.values["locality"]);
+      for (const key in zoneKeys) {
+        if (zoneKeys[key] === formik.values["zone"]) {
+          data.append("zone", key);
+        }
+      }
+      for (const key in assessorKeys) {
+        if (assessorKeys[key] === formik.values["assessor"]) {
+          data.append("sellerCreator", key);
+        }
+      }
+      data.append("locality", formik.values["locality"]);
+      data.append("addressAdditionalInfo", formik.values["additionalInfo"]);
+      data.append("status", formik.values["status"] === "Activo" ? 0 : 1);
       data.append("neighborhood", formik.values["neighborhood"]);
       data.append("latitude", addressCoords.latitude);
       data.append("longitude", addressCoords.longitude);
@@ -212,40 +253,49 @@ const ClientForm = (props) => {
         };
       }
 
-      httpMethod(httpArg);
       setShowConfirmModal(false);
+      setIsLoading(true);
+      const res = await httpMethod(httpArg);
 
-      if (create) {
-        formik.resetForm();
-        formik.values = defaultInitialValues;
-        const setUpLocation = async () => {
-          const { geolocation } = navigator;
-          if (geolocation) {
-            geolocation.getCurrentPosition(
-              async (position) => {
-                console.log("Reubicando navegador...");
-                setAddressCoords({
-                  latitude: position.coords.latitude,
-                  longitude: position.coords.longitude,
-                });
-                setFormattedAddress(
-                  await getAddress({
+      if (res.correct) {
+        if (create) {
+          formik.resetForm();
+          formik.values = defaultInitialValues;
+          const setUpLocation = async () => {
+            const { geolocation } = navigator;
+            if (geolocation) {
+              geolocation.getCurrentPosition(
+                async (position) => {
+                  console.log("Reubicando navegador...");
+                  setAddressCoords({
                     latitude: position.coords.latitude,
                     longitude: position.coords.longitude,
-                  })
-                );
-              },
-              () => {
-                console.log("Reubicación imposible.");
-              }
-            );
-          }
-        };
-        setUpLocation();
-      }
+                  });
+                  setFormattedAddress(
+                    await getAddress({
+                      latitude: position.coords.latitude,
+                      longitude: position.coords.longitude,
+                    })
+                  );
+                },
+                () => {
+                  console.log("Reubicación imposible.");
+                }
+              );
+            }
+          };
+          setUpLocation();
+        }
 
-      setUpdateMessage(action + "exitosa.");
-      setModalImage(confirmationImage);
+        setUpdateMessage(res.message);
+        setModalImage(confirmationImage);
+        setIsLoading(false);
+        setShowUpdateMessage(true);
+        return;
+      }
+      setUpdateMessage(res.message);
+      setModalImage(errorImage);
+      setIsLoading(false);
       setShowUpdateMessage(true);
     } catch (error) {
       console.log(error);
@@ -264,6 +314,7 @@ const ClientForm = (props) => {
         break;
       }
     }
+    console.log(formik.errors);
     const formIsNotRight = numErrors > 0 || emptyField;
     setShowErrorModal(formIsNotRight);
     setShowConfirmModal(!formIsNotRight);
@@ -282,7 +333,7 @@ const ClientForm = (props) => {
         <div className={className["col-wrap"]}>
           <div className={className["col-client"]}>
             <div className={className["header-box"]}>
-              Información del cliente propietario
+              <h1>Información del cliente propietario</h1>
             </div>
             <InputField
               fieldName="name"
@@ -299,6 +350,7 @@ const ClientForm = (props) => {
                 "--Seleccione tipo de documento--",
                 "Cédula de ciudadanía",
                 "Cédula de extrangería",
+                "NIT",
               ]}
               className={className}
             />
@@ -333,7 +385,7 @@ const ClientForm = (props) => {
           </div>
           <div className={className["col-store"]}>
             <div className={className["header-box"]}>
-              Información de la tienda
+              <h1>Información de la tienda</h1>
             </div>
             <InputField
               fieldName="storeName"
@@ -370,35 +422,56 @@ const ClientForm = (props) => {
               fieldType="number"
               className={className}
             />
+            <InputField
+              fieldName="additionalInfo"
+              formHook={formik}
+              labelKey="Información adicional"
+              fieldType="text"
+              className={className}
+            />
+            <SelectField
+              fieldName="status"
+              formHook={formik}
+              labelKey="Estado cliente"
+              optionVals={["--Seleccione un estado--", "Activo", "Inactivo"]}
+              className={className}
+            />
           </div>
         </div>
-        <div className={className["header-box"]}>Ubicación</div>
-        <AddressGraphicSearchBar
-          fieldName="location"
-          labelKey="Dirección"
-          value={formattedAddress}
-          setAddress={setFormattedAddress}
-          setCoords={setAddressCoords}
-          className={className}
-          mapContainerStyle={{
-            width: "100%",
-            height: "100%",
-          }}
-          zoom={11}
-          center={{
-            lat: addressCoords.latitude,
-            lng: addressCoords.longitude,
-          }}
-          markerCoords={addressCoords}
-          mapPin={mapPin}
-        />
-        <button
-          type="submit"
-          onClick={handleDataValidation}
-          className={className["submit-button"]}
-        >
-          {create ? "CREAR CLIENTE" : "GUARDAR"}
-        </button>
+        <div className={className["location-div"]}>
+          <div className={className["header-box"]}>
+            <h1>Ubicación</h1>
+          </div>
+          <AddressGraphicSearchBar
+            fieldName="location"
+            labelKey="Dirección"
+            value={formattedAddress}
+            setAddress={setFormattedAddress}
+            setCoords={setAddressCoords}
+            className={className}
+            mapContainerStyle={{
+              width: "100%",
+              height: "100%",
+            }}
+            zoom={11}
+            center={{
+              lat: addressCoords.latitude,
+              lng: addressCoords.longitude,
+            }}
+            markerCoords={addressCoords}
+            mapPin={mapPin}
+          />
+        </div>
+
+        <div style={{ textAlign: "center" }}>
+          <button
+            type="submit"
+            onClick={handleDataValidation}
+            className={className["submit-button"]}
+          >
+            {create ? "CREAR CLIENTE" : "GUARDAR"}
+          </button>
+        </div>
       </form>
       <Modal
         isOpen={showConfirmModal}

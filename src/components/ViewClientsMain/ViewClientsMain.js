@@ -7,6 +7,7 @@ import {
   getLevels,
   getAssessors,
   getClientDataFromQuery,
+  getStatus,
 } from "../../endpoint/clients.methods";
 
 import ClientsTable from "../GenericTable";
@@ -83,18 +84,11 @@ const DateFilterOptions = (props) => {
 
 const SelectFilterOptions = (props) => {
   const { handleFilterSubmit, getOptions, filterLabel } = props;
-  const [levels, setLevels] = useState([]);
-
-  useEffect(() => {
-    const fetchLevels = async () => {
-      setLevels(await getOptions());
-    };
-    fetchLevels();
-  }, [getOptions]);
+  const levels = Object.values(getOptions);
 
   const formik = useFormik({
     initialValues: {
-      levelValue: "",
+      levelValue: levels[0],
     },
     validationSchema: Yup.object({
       levelValue: Yup.string().required("Campo Requerido"),
@@ -118,18 +112,28 @@ const SelectFilterOptions = (props) => {
   );
 };
 
-const filterOptions = ["Fecha de creación", "Nivel", "Asesor", "Zona"];
+const filterOptions = [
+  "Fecha de creación",
+  "Nivel",
+  "Asesor",
+  "Zona",
+  "Estado",
+];
 const tableHeaders = [
   {
     accessor: "id",
     header: "Id",
   },
   {
-    accessor: "assessor",
+    accessor: "status",
+    header: "Estado",
+  },
+  {
+    accessor: "sellerCreator",
     header: "Asesor Creador",
   },
   {
-    accessor: "owner",
+    accessor: "ownerName",
     header: "Tendero",
   },
   {
@@ -137,11 +141,11 @@ const tableHeaders = [
     header: "Documento",
   },
   {
-    accessor: "storeAddress",
+    accessor: "address",
     header: "Dirección",
   },
   {
-    accessor: "location",
+    accessor: "locality",
     header: "Ubicación",
   },
   {
@@ -149,7 +153,7 @@ const tableHeaders = [
     header: "Zona",
   },
   {
-    accessor: "creationDate",
+    accessor: "createdAt",
     header: "Fecha de Creación",
   },
   {
@@ -167,17 +171,43 @@ const ClientsMainView = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [tableData, setTableData] = useState([]);
 
+  const [assessorsObj, setAssessorsObj] = useState({});
+  const [zonesObj, setZonesObj] = useState({});
+  const [levelsObj, setLevelsObj] = useState({});
+
   useEffect(() => {
     const initSetUp = async () => {
-      const levelOptns = await getLevels();
+      // const levelOptns = await getLevelsKeys();
+      const placeholderAssessorsObj = await getAssessors();
+      const placeholderZonesObj = await getZones();
+      const placeholderLevelsObj = await getLevels();
+      // console.log(placeholderAssessorsObj);
+      setAssessorsObj(placeholderAssessorsObj);
+      setZonesObj(placeholderZonesObj);
+      setLevelsObj(placeholderLevelsObj);
+      const rawData = await getClientDataFromQuery({
+        level: Object.values(placeholderLevelsObj)[0],
+      });
       setTableData(
-        await getClientDataFromQuery({
-          level: levelOptns[0],
+        rawData.map((client) => {
+          // console.log(client);
+          // console.log(placeholderAssessorsObj[client["sellerCreator"]]);
+          return {
+            ...client,
+            sellerCreator: placeholderAssessorsObj[client["sellerCreator"]],
+            status: parseInt(client["status"]) === 0 ? "Activo" : "Inactivo",
+            zone: placeholderZonesObj[client["zone"]],
+          };
         })
       );
       setIsLoading(false);
     };
-    initSetUp();
+    try {
+      initSetUp();
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
   }, []);
 
   const handleChangeFilter = (event) => {
@@ -188,10 +218,28 @@ const ClientsMainView = (props) => {
     [filterOptions[0]]: async (values) => {
       console.log("Filtrando clientes por fecha...");
       setIsLoading(true);
+      /*
       setTableData(
         await getClientDataFromQuery({
-          startDate: values["startDate"],
-          endDate: values["endDate"],
+          dateFrom: values["startDate"],
+          dateTo: values["endDate"],
+        })
+      );
+      */
+      const rawData = await getClientDataFromQuery({
+        dateFrom: values["startDate"],
+        dateTo: values["endDate"],
+      });
+      setTableData(
+        rawData.map((client) => {
+          // console.log(client);
+          // console.log(placeholderAssessorsObj[client["sellerCreator"]]);
+          return {
+            ...client,
+            sellerCreator: assessorsObj[client["sellerCreator"]],
+            status: parseInt(client["status"]) === 0 ? "Activo" : "Inactivo",
+            zone: zonesObj[client["zone"]],
+          };
         })
       );
       setIsLoading(false);
@@ -199,9 +247,27 @@ const ClientsMainView = (props) => {
     [filterOptions[1]]: async (values) => {
       console.log("Filtrando clientes por nivel...");
       setIsLoading(true);
+
+      /*
+          setTableData(
+            await getClientDataFromQuery({
+              level: key,
+            })
+          );
+          */
+      const rawData = await getClientDataFromQuery({
+        level: values["levelValue"],
+      });
       setTableData(
-        await getClientDataFromQuery({
-          level: values["levelValue"],
+        rawData.map((client) => {
+          // console.log(client);
+          // console.log(placeholderAssessorsObj[client["sellerCreator"]]);
+          return {
+            ...client,
+            sellerCreator: assessorsObj[client["sellerCreator"]],
+            status: parseInt(client["status"]) === 0 ? "Activo" : "Inactivo",
+            zone: zonesObj[client["zone"]],
+          };
         })
       );
       setIsLoading(false);
@@ -209,19 +275,92 @@ const ClientsMainView = (props) => {
     [filterOptions[2]]: async (values) => {
       console.log("Filtrando clientes por asesor...");
       setIsLoading(true);
-      setTableData(
-        await getClientDataFromQuery({
-          assessor: values["levelValue"],
-        })
-      );
+      for (const key in assessorsObj) {
+        if (assessorsObj[key] === values["levelValue"]) {
+          /*
+          setTableData(
+            await getClientDataFromQuery({
+              sellerCreator: key,
+            })
+          );
+          */
+          const rawData = await getClientDataFromQuery({
+            sellerCreator: key,
+          });
+          setTableData(
+            rawData.map((client) => {
+              // console.log(client);
+              // console.log(placeholderAssessorsObj[client["sellerCreator"]]);
+              return {
+                ...client,
+                sellerCreator: assessorsObj[client["sellerCreator"]],
+                status:
+                  parseInt(client["status"]) === 0 ? "Activo" : "Inactivo",
+                zone: zonesObj[client["zone"]],
+              };
+            })
+          );
+          break;
+        }
+      }
       setIsLoading(false);
     },
     [filterOptions[3]]: async (values) => {
       console.log("Filtrando clientes por zona...");
       setIsLoading(true);
+      for (const key in zonesObj) {
+        if (zonesObj[key] === values["levelValue"]) {
+          /*
+          setTableData(
+            await getClientDataFromQuery({
+              zone: parseInt(key),
+            })
+          );
+          */
+          const rawData = await getClientDataFromQuery({
+            zone: key,
+          });
+          setTableData(
+            rawData.map((client) => {
+              // console.log(client);
+              // console.log(placeholderAssessorsObj[client["sellerCreator"]]);
+              return {
+                ...client,
+                sellerCreator: assessorsObj[client["sellerCreator"]],
+                status:
+                  parseInt(client["status"]) === 0 ? "Activo" : "Inactivo",
+                zone: zonesObj[client["zone"]],
+              };
+            })
+          );
+          break;
+        }
+      }
+      setIsLoading(false);
+    },
+    [filterOptions[4]]: async (values) => {
+      console.log("Filtrando clientes por estado...");
+      setIsLoading(true);
+      /*
       setTableData(
         await getClientDataFromQuery({
-          zone: values["levelValue"],
+          status: values["levelValue"] === "Activo" ? 1 : 0,
+        })
+      );
+      */
+      const rawData = await getClientDataFromQuery({
+        status: values["levelValue"] === "Activo" ? 0 : 1,
+      });
+      setTableData(
+        rawData.map((client) => {
+          // console.log(client);
+          // console.log(placeholderAssessorsObj[client["sellerCreator"]]);
+          return {
+            ...client,
+            sellerCreator: assessorsObj[client["sellerCreator"]],
+            status: parseInt(client["status"]) === 0 ? "Activo" : "Inactivo",
+            zone: zonesObj[client["zone"]],
+          };
         })
       );
       setIsLoading(false);
@@ -233,6 +372,7 @@ const ClientsMainView = (props) => {
     [filterOptions[1]]: SelectFilterOptions,
     [filterOptions[2]]: SelectFilterOptions,
     [filterOptions[3]]: SelectFilterOptions,
+    [filterOptions[4]]: SelectFilterOptions,
   };
 
   const formProps = {
@@ -241,29 +381,41 @@ const ClientsMainView = (props) => {
     },
     [filterOptions[1]]: {
       handleFilterSubmit: submitHandlers[filterOptions[1]],
-      getOptions: getLevels,
+      getOptions: levelsObj,
       filterLabel: "Nivel",
       key: `${filterOptions[1]}-1-cond-option`,
     },
     [filterOptions[2]]: {
       handleFilterSubmit: submitHandlers[filterOptions[2]],
-      getOptions: getAssessors,
+      getOptions: assessorsObj,
       filterLabel: "Asesor",
       key: `${filterOptions[2]}-2-cond-option`,
     },
     [filterOptions[3]]: {
       handleFilterSubmit: submitHandlers[filterOptions[3]],
-      getOptions: getZones,
+      getOptions: zonesObj,
       filterLabel: "Zona",
       key: `${filterOptions[3]}-3-cond-option`,
+    },
+    [filterOptions[4]]: {
+      handleFilterSubmit: submitHandlers[filterOptions[4]],
+      getOptions: getStatus(),
+      filterLabel: "Estado",
+      key: `${filterOptions[4]}-4-cond-option`,
     },
   };
 
   const CustomForm = formOptions[filterType];
 
+  /*
+  if (isLoading) {
+    return <div className={mainStyles["loading-div"]}></div>;
+  }
+  */
+
   return (
     <div className={mainStyles["view-container"]}>
-      <h2>Clientes</h2>
+      <h1 className={mainStyles["title"]}>Clientes</h1>
       <div className={mainStyles["create-button-div"]}>
         <RedirectButton
           buttonLabel="Crear cliente"
@@ -272,24 +424,32 @@ const ClientsMainView = (props) => {
         />
       </div>
       <div className={mainStyles["filter-prompt"]}>
-        <div className={mainStyles["filter-banner"]}>Filtros</div>
-        <label htmlFor="filterType" className={mainStyles["filter-label"]}>
-          filtrar por
-        </label>
-        <br />
-        <select
-          className={mainStyles["select-filter"]}
-          id="filterType"
-          onChange={handleChangeFilter}
-          value={filterType}
-        >
-          {filterOptions.map((option, idx) => (
-            <option value={option} key={`${option}-%{idx}-option`}>
-              {option}
-            </option>
-          ))}
-        </select>
-        <CustomForm {...formProps[filterType]} />
+        <div className={mainStyles["filter-banner"]}>
+          <h1>Filtros</h1>
+        </div>
+        <div className={mainStyles["filter-cols-wrap"]}>
+          <div className={mainStyles["filter-type-col"]}>
+            <label htmlFor="filterType" className={mainStyles["filter-label"]}>
+              Filtrar por
+            </label>
+            <br />
+            <select
+              className={mainStyles["select-filter"]}
+              id="filterType"
+              onChange={handleChangeFilter}
+              value={filterType}
+            >
+              {filterOptions.map((option, idx) => (
+                <option value={option} key={`${option}-%{idx}-option`}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className={mainStyles["filter-colt"]}>
+            <CustomForm {...formProps[filterType]} />
+          </div>
+        </div>
       </div>
       {isLoading && <div className={mainStyles["loading-div"]}></div>}
       {!isLoading && (

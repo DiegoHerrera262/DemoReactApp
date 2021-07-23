@@ -1,30 +1,6 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
 
-.main-page-container {
-  min-height: 1vh;
-  padding: 2ch;
-  font-family: "Robot", sans-serif;
-  background-color: #f5f4f4;
-  margin: 0;
-}
-
-.info-title {
-  font-size: 1.5em;
-  margin-top: 1em;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 1.3em;
-  padding: 1ch;
-  padding-left: 2ch;
-  max-width: 91%;
-  border: 1px solid #272741;
-  color: white;
-  background-color: #272741;
-  border-radius: 8px;
-  /*box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.17);*/
-}
-
-.loader {
+.loading-div {
   margin-left: auto;
   margin-right: auto;
   margin-top: 40vh;
@@ -42,5 +18,81 @@
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+.view-container {
+  font-family: "Lato", sans-serif;
+  font-weight: 100;
+  /*font-size: 12px;*/
+  font-size: 10px;
+  margin: 1px;
+  padding: 8px 6px 8px 30px;
+}
+
+.page-title {
+  /*font-size: inherit;*/
+  font-size: 25px;
+  margin-bottom: 2.1em;
+}
+
+.header-box {
+  font-weight: 400;
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
+  padding-left: 1em;
+  height: 50px;
+  line-height: 50px;
+  width: 86%;
+  border-radius: 6px;
+  background: #272741;
+  color: #ffff;
+}
+
+@media all and (min-width: 992px) {
+  /*
+  .view-container {
+    font-size: 16px;
+  }
+  */
+
+  .header-box {
+    height: 53px;
+    line-height: 53px;
+  }
+}
+
+@media all and (min-width: 1200px) {
+  .view-container {
+    width: 85%;
+    /*font-size: 24px;*/
+    font-size: 10px;
+    margin-left: 5.5%;
+  }
+
+  .header-box {
+    width: 94%;
+    /*
+    height: 63px;
+    line-height: 63px;
+    */
+  }
+}
+
+@media all and (min-width: 1468) {
+  .header-box {
+    width: 60%;
+    /*
+    height: 63px;
+    line-height: 63px;
+    */
+  }
+}
+
+@media all and (min-width: 1900px) {
+  .view-container {
+    width: 1250px;
+    font-size: 10px;
+    margin-left: 10.5%;
   }
 }

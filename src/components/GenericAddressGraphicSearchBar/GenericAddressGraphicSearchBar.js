@@ -15,7 +15,7 @@ const AddressInput = (props) => {
   const [isFocused, setIsFocused] = useState(false);
 
   const handleChange = (event) => {
-    const newAddress = event.target.value.trim();
+    const newAddress = event.target.value; /*.trim()*/
     setTemporaryAddress(newAddress);
   };
 

@@ -1,59 +1,121 @@
 import axios from "axios";
 
-const getAssessors = () => {
-  return ["Asesor 1", "Asesor 2", "Asesor 3"];
+const getAssessors = async () => {
+  /*{ 1: "Asesor 1", 2: "Asesor 2", 3: "Asesor 3", 30: "Asesor 30" }*/
+  try {
+    const defaultURL = `${process.env.REACT_APP_SERVER_HOST}/sellers`;
+    const rawAssessors = await axios.get(defaultURL, {
+      params: {
+        all: true,
+      },
+    });
+    const assessors = {};
+    rawAssessors.data.forEach((assessor) => {
+      assessors[
+        assessor["id"]
+      ] = `${assessor["sellerCode"]} - ${assessor["name"]} ${assessor["lastName"]}`;
+    });
+    return assessors;
+  } catch (error) {
+    console.log(error);
+    return {};
+  }
+};
+
+const getAssessorsKeys = () => {
+  try {
+    return Object.values(getAssessors());
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
 };
 
 const getLevels = () => {
-  return ["Super Pro", "Proficient", "Basic", "nOOb"];
+  return { 0: "Vecino novato", 1: "Vecino fiel", 2: "Vecino pro" };
+};
+
+const getLevelsKeys = () => {
+  return Object.values(getLevels());
 };
 
 const getZones = () => {
-  return ["Norte", "Sur"];
+  return { 2: "Norte", 1: "Sur" };
 };
 
-const postClient = ({ data }) => {
-  const defaultURl = "http://localhost:8000/grocers/create";
+const getZonesKeys = () => {
+  return Object.values(getZones());
+};
+
+const getStatus = () => {
+  return { 0: "Activo", 1: "Inactivo" };
+};
+
+const getStatusKeys = () => {
+  return Object.values(getStatus());
+};
+
+const postClient = async ({ data }) => {
+  const defaultURl = `${process.env.REACT_APP_SERVER_HOST}/grocer/create`;
   console.log("Creando nuevo cliente...");
   try {
-    for (var pair of data.entries()) {
-      console.log(pair[0] + ", " + pair[1]);
-    }
+    await axios.post(defaultURl, data);
+    return { message: "Cliente creado correctamente.", correct: true };
   } catch (error) {
-    return error;
+    console.log(error.message);
+    return { message: error.message, correct: false };
   }
 };
 
-const putClientById = ({ data, params: { id } }) => {
-  const defaultURl = `http://localhost:8000/grocers/${id}`;
+const putClientById = async ({ data, params: { id } }) => {
+  const defaultURl = `http://localhost:8000/grocer/${id}`;
   try {
-    console.log("Actualizando cliente: ", id);
-    for (var pair of data.entries()) {
-      console.log(pair[0] + ", " + pair[1]);
-    }
+    await axios.put(defaultURl, data);
+    return { message: "Cliente actualizado correctamente.", correct: true };
   } catch (error) {
-    return error;
+    console.log(error.message);
+    return { message: error.message, correct: false };
   }
 };
 
-const getClientById = (id) => {
-  const defaultURl = `http://localhost:8000/grocers/${id}`;
+const getClientById = async (id) => {
+  const defaultURl = `http://localhost:8000/grocer/${id}`;
   try {
+    /*
+    const assessorKeys = await getAssessors();
+    const zoneKeys = await getZones();
+    */
+    const clientReq = await axios.get(defaultURl);
+    const clientData = clientReq.data;
+
+    /*
+    const assessorName = Object.keys(assessorKeys).filter(
+      (key) => assessorKeys[key] === parseInt(clientData.sellerCreator)
+    );
+    const zoneName = Object.keys(zoneKeys).filter(
+      (key) => zoneKeys[key] === parseInt(clientData.zone)
+    );
+    */
+
     return {
-      name: "Test Name",
-      documentType: "Cédula de ciudadanía",
-      documentId: parseInt(`${id}000000000`),
-      cellphone: parseInt(`${id}000000000`),
-      email: `mail${id}@mail.com`,
-      assessor: "Asesor 1",
-      storeName: "Tienda Superveci",
-      locality: "Suba",
-      neighborhood: "Suba Rincon",
-      zone: "Norte",
-      landline: parseInt(`123430${id}`),
-      storeAddress: "Cll. 22i #108-32, Bogotá, Colombia",
+      name: clientData.ownerName,
+      documentType: clientData.documentType,
+      documentId: parseInt(clientData.documentId),
+      cellphone: parseInt(clientData.cellphone),
+      email: clientData.email,
+      assessor: clientData.sellerCreator,
+      storeName: clientData.grocerName,
+      locality: clientData.locality,
+      neighborhood: clientData.neighborhood,
+      zone: clientData.zone,
+      status: clientData.status,
+      landline: parseInt(clientData.phone),
+      storeAddress: clientData.address,
+      additionalInfo: clientData.addressAdditionalInfo,
+      level: clientData.level,
     };
   } catch (error) {
+    console.log(error);
     return error;
   }
 };
@@ -122,6 +184,18 @@ const getClientByIdMostBought = (id) => {
   return data;
 };
 
+const getClientDataFromQuery = async (queryParams) => {
+  try {
+  } catch {}
+  const defaultURl = `${process.env.REACT_APP_SERVER_HOST}/grocers/`;
+  // console.log(queryParams);
+  const res = await axios.get(defaultURl, {
+    params: queryParams,
+  });
+  return res.data;
+};
+
+/*
 const getClientDataFromQuery = (queryParams) => {
   let sampleDatum = {};
   let dataset = [];
@@ -199,11 +273,17 @@ const getClientDataFromQuery = (queryParams) => {
   }
   return dataset;
 };
+*/
 
 export {
   getZones,
+  getZonesKeys,
   getLevels,
+  getLevelsKeys,
   getAssessors,
+  getAssessorsKeys,
+  getStatusKeys,
+  getStatus,
   getClientDataFromQuery,
   postClient,
   getClientById,

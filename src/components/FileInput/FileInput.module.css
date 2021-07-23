@@ -1,5 +1,13 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap");
 
+.file {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  filter: alpha(opacity=0);
+  opacity: 0;
+}
+
 .file-icon {
   padding-left: 2ch;
   width: 5ch;
@@ -7,7 +15,7 @@
 }
 
 .file-input-card {
-  max-width: 100%;
+  width: 70%;
   margin: 1ch;
   display: flex;
   flex-direction: row;
@@ -23,73 +31,62 @@
 
 .info-container {
   text-align: center;
-  padding-left: 2em;
-  flex: 70%;
+  padding-left: 0;
+  flex: 30%;
 }
 
 .file-input-label {
-  margin-bottom: 10px;
-  font-size: 0.9em;
-  color: #1e81b0;
+  margin-bottom: 3px;
+  font-size: 1em;
+  font-weight: 300;
+  color: #272741;
 }
 
 .edit-button {
-  font-size: 0.9em;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  font-size: 1.5em;
+  padding-top: 2px;
+  padding-bottom: 2px;
   padding-right: 1ch;
   padding-left: 1ch;
-  border-radius: 8px;
-  border: 1px solid #f1eae4;
-  background-color: #eeeee4;
+  border: none;
+  background: none;
   color: #29790a;
   font-weight: bold;
 }
 
 .edit-button-edit {
-  font-size: 0.9em;
+  font-size: 1.2em;
   font-weight: bold;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding-top: 2px;
+  padding-bottom: 2px;
   padding-right: 1ch;
   padding-left: 1ch;
-  border-radius: 8px;
-  border: 1px solid #f1eae4;
-  background-color: #eeeee4;
+  border: none;
+  background: none;
   color: #f39033;
+  font-weight: bold;
 }
 
 .edit-button:hover,
 .edit-button:focus,
 .edit-button-edit:focus,
 .edit-button-edit:hover {
-  border: 1px solid #063970;
-  color: #063970;
+  border-bottom: 1px solid;
   cursor: pointer;
-}
-
-label:focus {
-  border: 1px solid #063970;
-  color: #063970;
-  cursor: pointer;
-  outline: none;
 }
 
 .error-message {
-  text-align: center;
-  margin-left: 1ch;
+  text-align: left;
+  font-size: 1.3em;
+  font-weight: 300;
+  padding-left: 1.5em;
   margin-bottom: 1em;
-  font-size: 0.7em;
   color: red;
 }
 
-/*
-ADAPTING TO MEDIUM - XL SCREENS
-*/
-
 @media all and (min-width: 882px) {
   .file-input-card {
-    max-width: 150px;
+    max-width: 250px;
     margin: 0ch 0 4ch 0;
     display: flex;
     flex-direction: column;
@@ -106,13 +103,5 @@ ADAPTING TO MEDIUM - XL SCREENS
   .info-container {
     padding-left: 2em;
     flex: 100%;
-  }
-
-  .error-message {
-    text-align: left;
-    margin-left: 1ch;
-    margin-bottom: 1em;
-    font-size: 0.7em;
-    color: red;
   }
 }
