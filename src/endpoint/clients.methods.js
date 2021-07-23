@@ -1,7 +1,20 @@
 import axios from "axios";
 
-const getAssessors = () => {
-  return { 1: "Asesor 1", 2: "Asesor 2", 3: "Asesor 3", 30: "Asesor 30" };
+const getAssessors = async () => {
+  /*{ 1: "Asesor 1", 2: "Asesor 2", 3: "Asesor 3", 30: "Asesor 30" }*/
+  const defaultURL = `${process.env.REACT_APP_SERVER_HOST}/sellers`;
+  const rawAssessors = await axios.get(defaultURL, {
+    params: {
+      all: true,
+    },
+  });
+  const assessors = {};
+  rawAssessors.data.forEach((assessor) => {
+    assessors[
+      assessor["id"]
+    ] = `${assessor["sellerCode"]} - ${assessor["name"]} ${assessor["lastName"]}`;
+  });
+  return assessors;
 };
 
 const getAssessorsKeys = () => {
@@ -85,6 +98,7 @@ const getClientById = async (id) => {
       locality: clientData.locality,
       neighborhood: clientData.neighborhood,
       zone: clientData.zone,
+      status: clientData.status,
       landline: parseInt(clientData.phone),
       storeAddress: clientData.address,
       additionalInfo: clientData.addressAdditionalInfo,

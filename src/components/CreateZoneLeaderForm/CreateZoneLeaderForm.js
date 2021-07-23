@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
 import { postLeader } from "../../endpoint/zoneLeaders.methods";
+import { postSeller } from "../../endpoint/sellers.methods";
 
 import { useFormik } from "formik";
 import Modal from "react-modal";
@@ -25,12 +26,13 @@ const GoogleMapsAPI = `https://maps.googleapis.com/maps/api/js?v=3.exp&libraries
 const MAX_SIZE = 7 * 1024 * 1024;
 
 const CreateZoneLeaderForm = (props) => {
-  const { labelKeys, typeKeys, selectValues, zoneKeys } = props;
+  const { labelKeys, typeKeys, selectValues, zoneKeys, leadersKeys } = props;
   let { defaultInitialValues } = props;
   const valueKeys = Object.keys(defaultInitialValues);
 
   defaultInitialValues = {
     ...defaultInitialValues,
+    superCode: "",
     frontID: null,
     rut: null,
     bankData: null,
@@ -97,13 +99,15 @@ const CreateZoneLeaderForm = (props) => {
         .required("Campo requerido"),
       address: Yup.string()
         .matches(
-          /^[a-zA-Z]{2,4}[\s]{0,1}[a-zA-Z]{0,20}[\s]{0,1}[0-9]{0,3}[\s]{0,1}#[\s]{0,1}[0-9]{1,3}[a-zA-Z]{0,3}[\s]{0,1}-[\s]{0,1}[0-9]{1,3}[a-zA-Z]{0,3}$/,
-          "Ingrese una diercción válida"
+          /^[a-zA-Z]{2,4}[\s]{0,1}[a-zA-Z]{0,20}[\s]{0,1}[0-9]{0,3}[\s]{0,1}[a-zA-Z]{0,5}[\s]{0,1}#[\s]{0,1}[0-9]{1,3}[a-zA-Z]{0,3}[\s]{0,1}-[\s]{0,1}[0-9]{1,3}[a-zA-Z]{0,3},[\s]{0,3}[a-zA-Z]{1,10},[\s]{0,3}[a-zA-Z]{1,10}$/,
+          "Ingrese una dirección en formato: dirección, ciudad, país"
         )
         .required("Campo requerido"),
-      leaderCode: Yup.number()
-        .lessThan(999, "Ingrese un código numérico de 3 cifras")
-        .moreThan(100, "Ingrese un código numérico de 3 cifras")
+      leaderCode: Yup.string()
+        .matches(
+          /^[A-Z]{3,4}[0-9]{3}$/,
+          "Ingrese tres o cuatro mayúsculas seguidas de tres dígitos"
+        )
         .required("Campo requerido"),
       email: Yup.string()
         .email("Ingrese una dirección de email válida")
@@ -178,12 +182,24 @@ const CreateZoneLeaderForm = (props) => {
           return false;
         }
       ),
+      isLeader: Yup.boolean().required(),
+      superCode: Yup.string().when("isLeader", {
+        is: (isLeader) => isLeader === false,
+        then: Yup.string()
+          .matches(
+            /^[A-Z]{3,4}[0-9]{3} - [A-Za-z]{0,10}[\s]{0,1}[A-Za-z]{0,10}$/,
+            "Seleccione un líder de zona"
+          )
+          .required("Campo requerido"),
+      }),
     }),
     /*set up submit callback*/
     onSubmit: (values) => {
       setConfirmShowModal(true);
     },
   });
+
+  // console.log(formik.values);
 
   useEffect(() => {
     if (formik.values["profileImage"]) {
@@ -219,9 +235,20 @@ const CreateZoneLeaderForm = (props) => {
     data.append("documentId", formik.values["documentId"]);
     data.append("address", formik.values["address"]);
     data.append("sellerCode", formik.values["leaderCode"]);
+    if (!formik.values["isLeader"]) {
+      for (const key in leadersKeys) {
+        if (leadersKeys[key] === formik.values["superCode"]) {
+          data.append("leaderId", key);
+        }
+      }
+    }
     data.append("email", formik.values["email"]);
     data.append("cellphone", formik.values["cellphone"]);
-    data.append("zoneId", zoneKeys[formik.values["zone"]]);
+    for (const key in zoneKeys) {
+      if (zoneKeys[key] === formik.values["zone"]) {
+        data.append("zoneId", key);
+      }
+    }
     data.append("contractExpires", formik.values["endContractDate"]);
     data.append("contractImage", formik.values["contract"]);
     data.append("documentImage", formik.values["frontID"]);
@@ -233,7 +260,21 @@ const CreateZoneLeaderForm = (props) => {
     setIsLoading(true);
 
     try {
-      const { message, correct } = await postLeader(data);
+      let message = "";
+      let correct = false;
+
+      if (formik.values["isLeader"]) {
+        const res = await postLeader(data);
+        message = res.message;
+        correct = res.correct;
+      }
+      if (!formik.values["isLeader"]) {
+        const res = await postSeller(data);
+        message = res.message;
+        correct = res.correct;
+      }
+      // let { message, correct } = await postLeader(data);
+
       console.log(message);
       setServerMessage(message);
 
@@ -274,7 +315,7 @@ const CreateZoneLeaderForm = (props) => {
           <ProfileImageInput
             src={profileImageSource}
             parentRef={profileImageRef}
-            labelKey="Foto líder de zona"
+            labelKey="Foto asesor"
             formHook={formik}
           />
           {/**/}
@@ -317,6 +358,18 @@ const CreateZoneLeaderForm = (props) => {
           }
         </div>
         <div className={zoneLeaderStyles["col-right"]}>
+          {!formik.values["isLeader"] && (
+            <SelectInput
+              key={"superCode"}
+              fieldName={"superCode"}
+              formHook={formik}
+              labelKey={"Líder asociado"}
+              optionVals={[
+                "--Seleccione un líder de zona--",
+                ...Object.values(leadersKeys),
+              ]}
+            />
+          )}
           {rightFields.map((field) => {
             if (typeKeys[field] === "select") {
               return (
@@ -406,7 +459,7 @@ const CreateZoneLeaderForm = (props) => {
           onClick={handleErrorClick}
           className={zoneLeaderStyles["submit-button"]}
         >
-          CREAR LÍDER
+          CREAR ASESOR
         </button>
       </div>
 
@@ -418,7 +471,7 @@ const CreateZoneLeaderForm = (props) => {
         className={zoneLeaderStyles["Modal"]}
         overlayClassName={zoneLeaderStyles["Overlay"]}
       >
-        <p align="center">Confirme creación de líder</p>
+        <p align="center">Confirme creación de asesor</p>
         <div style={{ textAlign: "center" }}>
           <button
             onClick={handleSubmitDataFromModal}

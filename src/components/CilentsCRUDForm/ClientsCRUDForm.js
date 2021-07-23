@@ -170,7 +170,10 @@ const ClientForm = (props) => {
         .email("Ingrese una dirección de email válida")
         .required("Campo requerido"),
       assessor: Yup.string()
-        .matches(/^[^-]*$/, "Seleccione un asesor")
+        .matches(
+          /^[A-Z]{3,4}[0-9]{3} - [A-Za-z]{0,10}[\s]{0,1}[A-Za-z]{0,10}$/,
+          "Seleccione un asesor"
+        )
         .required("Campo requerido"),
       storeName: Yup.string()
         .matches(

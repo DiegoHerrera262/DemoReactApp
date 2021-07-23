@@ -69,7 +69,7 @@ const LeadersListTableView = (props) => {
       {isLoading && <div className={listStyles["loading-div"]}></div>}
       {!isLoading && (
         <div className={listStyles["view-container"]}>
-          <h2>Líderes de zona</h2>
+          <h1 className={listStyles["title"]}>Asesores</h1>
           <div className={listStyles["create-button-div"]}>
             <CreateLeaderButton />
           </div>

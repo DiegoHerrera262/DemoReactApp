@@ -21,19 +21,17 @@
   }
 }
 
-.h2,
-.h3 {
-  margin-top: 1ch;
-}
-
 .h2 {
+  margin-top: 2em;
+  margin-bottom: 2em;
   font-size: 1.7em;
-  /*padding-left: 1ch;*/
+  margin-left: 0.8em;
 }
 
 .h3 {
+  margin-top: 1em;
   font-size: 1.5em;
-  /*padding-left: 1.25ch;*/
+  margin-left: 0.9em;
 }
 
 .col-wrap {
@@ -174,6 +172,10 @@
     height: 486px;
     width: 78%;
     /*width: 412px;*/
+  }
+
+  .submit-button {
+    margin-right: 13%;
   }
 
   /*

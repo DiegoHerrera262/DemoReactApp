@@ -3,7 +3,7 @@
 .input-label {
   font-weight: bold;
   font-size: 1.5em;
-  /*padding-left: 1em;*/
+  padding-left: 1em;
 }
 
 .input-label:hover {
@@ -19,15 +19,16 @@
 }
 
 .select {
+  box-sizing: border-box;
   /*font-size: 0.9em;*/
   font-size: 1.3em;
   /*border: none;*/
   border: grey solid 1px;
-  width: 82%;
+  width: 78%;
   height: 35px;
   margin-top: 1em;
   margin-bottom: 1em;
-  /*margin-left: 1em;*/
+  margin-left: 1em;
   padding-left: 1em;
   /*box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);*/
   border-radius: 8px;
@@ -39,6 +40,6 @@
 
 @media all and (min-width: 1200px) {
   .select {
-    width: 412px;
+    width: 400px;
   }
 }

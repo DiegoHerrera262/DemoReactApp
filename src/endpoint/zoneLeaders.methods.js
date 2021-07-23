@@ -2,7 +2,7 @@ import axios from "axios";
 
 // setting up get method
 const postLeader = async (leaderData) => {
-  const postURL = `${process.env.REACT_APP_SERVER_HOST}/lideres`;
+  const postURL = `${process.env.REACT_APP_SERVER_HOST}/leaders`;
   try {
     await axios.post(postURL, leaderData);
     return { message: "Lider creado correctamente", correct: true };
@@ -15,7 +15,7 @@ const postLeader = async (leaderData) => {
 };
 
 const updateLeader = async (leaderId, newData) => {
-  const putURL = `${process.env.REACT_APP_SERVER_HOST}/lideres/${leaderId}`;
+  const putURL = `${process.env.REACT_APP_SERVER_HOST}/leaders/${leaderId}`;
   try {
     await axios.put(putURL, newData);
     return { message: "Líder actualizado correctamente", correct: true };
@@ -29,7 +29,7 @@ const updateLeader = async (leaderId, newData) => {
 };
 
 const getLeaders = async () => {
-  const getURL = `${process.env.REACT_APP_SERVER_HOST}/lideres`;
+  const getURL = `${process.env.REACT_APP_SERVER_HOST}/leaders`;
   try {
     const leaderList = await axios.get(getURL);
     return leaderList.data;
@@ -40,7 +40,7 @@ const getLeaders = async () => {
 };
 
 const getLeaderById = async (leaderId) => {
-  const getURL = `${process.env.REACT_APP_SERVER_HOST}/lideres/${leaderId}`;
+  const getURL = `${process.env.REACT_APP_SERVER_HOST}/leaders/${leaderId}`;
   try {
     const leaderData = await axios.get(getURL);
     return leaderData.data;
@@ -60,10 +60,10 @@ const getLeaderById = async (leaderId) => {
 };
 
 const deleteLeaderById = async (leaderId) => {
-  const deleteURL = `${process.env.REACT_APP_SERVER_HOST}/lideres/${leaderId}`;
+  const deleteURL = `${process.env.REACT_APP_SERVER_HOST}/sellers/${leaderId}`;
   try {
     await axios.delete(deleteURL);
-    return { message: "Líder eliminado correctamente.", correct: true };
+    return { message: "Asesor eliminado correctamente.", correct: true };
   } catch (error) {
     console.log(error);
     return { message: "Eliminación incorrecta.", correct: false };

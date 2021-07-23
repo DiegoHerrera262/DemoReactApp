@@ -1,8 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap");
-
 .create-button {
+  font-family: inherit;
   padding: 5px 1ch 5px 1ch;
-  font-size: inherit;
+  width: 150px;
+  height: 29px;
+  /*font-size: inherit;*/
+  font-size: 1.5em;
   border: none;
   color: green;
   background: #53c149;

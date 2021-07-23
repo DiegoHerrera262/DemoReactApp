@@ -195,7 +195,7 @@ const ClientsMainView = (props) => {
           return {
             ...client,
             sellerCreator: placeholderAssessorsObj[client["sellerCreator"]],
-            status: parseInt(client["status"]) === 1 ? "Activo" : "Inactivo",
+            status: parseInt(client["status"]) === 0 ? "Activo" : "Inactivo",
             zone: placeholderZonesObj[client["zone"]],
           };
         })
@@ -415,9 +415,7 @@ const ClientsMainView = (props) => {
 
   return (
     <div className={mainStyles["view-container"]}>
-      <div className={mainStyles["title"]}>
-        <h1>Clientes</h1>
-      </div>
+      <h1 className={mainStyles["title"]}>Clientes</h1>
       <div className={mainStyles["create-button-div"]}>
         <RedirectButton
           buttonLabel="Crear cliente"
@@ -429,23 +427,29 @@ const ClientsMainView = (props) => {
         <div className={mainStyles["filter-banner"]}>
           <h1>Filtros</h1>
         </div>
-        <label htmlFor="filterType" className={mainStyles["filter-label"]}>
-          Filtrar por
-        </label>
-        <br />
-        <select
-          className={mainStyles["select-filter"]}
-          id="filterType"
-          onChange={handleChangeFilter}
-          value={filterType}
-        >
-          {filterOptions.map((option, idx) => (
-            <option value={option} key={`${option}-%{idx}-option`}>
-              {option}
-            </option>
-          ))}
-        </select>
-        <CustomForm {...formProps[filterType]} />
+        <div className={mainStyles["filter-cols-wrap"]}>
+          <div className={mainStyles["filter-type-col"]}>
+            <label htmlFor="filterType" className={mainStyles["filter-label"]}>
+              Filtrar por
+            </label>
+            <br />
+            <select
+              className={mainStyles["select-filter"]}
+              id="filterType"
+              onChange={handleChangeFilter}
+              value={filterType}
+            >
+              {filterOptions.map((option, idx) => (
+                <option value={option} key={`${option}-%{idx}-option`}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className={mainStyles["filter-colt"]}>
+            <CustomForm {...formProps[filterType]} />
+          </div>
+        </div>
       </div>
       {isLoading && <div className={mainStyles["loading-div"]}></div>}
       {!isLoading && (

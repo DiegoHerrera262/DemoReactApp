@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import CreateZoneLeaderForm from "../CreateZoneLeaderForm";
 import createStyles from "./ViewZoneLeadersCreate.module.css";
 
+import { getLeaders } from "../../endpoint/zoneLeaders.methods";
+import { getZones } from "../../endpoint/clients.methods";
+
 // Default initial values for the form
 const defaultInitialValues = {
   name: "",
@@ -9,6 +12,7 @@ const defaultInitialValues = {
   documentType: "",
   documentId: "",
   zone: "",
+  isLeader: false,
   address: "",
   leaderCode: "",
   email: "",
@@ -23,8 +27,9 @@ const labelKeys = {
   documentType: "Tipo de documento",
   documentId: "Documento de identidad",
   zone: "Zona",
+  isLeader: "Seleccione para crear líder de zona",
   address: "Dirección",
-  leaderCode: "Código de líder",
+  leaderCode: "Código de asesor",
   email: "Email",
   cellphone: "Número celular",
   endContractDate: "Fecha fin de contrato",
@@ -36,8 +41,9 @@ const typeKeys = {
   documentId: "number",
   documentType: "select",
   zone: "select",
+  isLeader: "checkbox",
   address: "text",
-  leaderCode: "number",
+  leaderCode: "text",
   email: "email",
   cellphone: "number",
   endContractDate: "date",
@@ -64,28 +70,42 @@ const CreateZoneLeaderView = (props) => {
       "Cédula de extrangería",
     ],
   });
+  const [leadersKeys, setLeadersKeys] = useState({});
 
   useEffect(() => {
-    const fetchData = () => {
+    const fetchData = async () => {
       /*
             THIS MUST BE FETCHED FROM ZONE
             TABLE ON DATABASE
             */
-      const zoneKeys = {
-        Norte: 2,
-        Sur: 1,
-      };
+      const zoneKeys = await getZones();
+
+      let leadersKey = {};
+      const rawLeaders = await getLeaders();
+      console.log(rawLeaders);
+      if (rawLeaders.length > 0) {
+        rawLeaders.forEach((leader) => {
+          leadersKey[
+            leader.id
+          ] = `${leader["sellerCode"]} - ${leader["name"]} ${leader["lastName"]}`;
+        });
+      }
+      /*
+      if (rawLeaders.length === 0) {
+        leadersKey["empty"] = "vacío";
+      }
+      */
 
       setZoneIds(zoneKeys);
       setSelectValues({
-        zone: ["--Elija una zona--", ...Object.keys(zoneKeys)],
+        zone: ["--Elija una zona--", ...Object.values(zoneKeys)],
         documentType: [
           "--Seleccione un tipo de documento--",
           "Cédula de ciudadanía",
           "Cédula de extrangería",
         ],
       });
-
+      setLeadersKeys(leadersKey);
       setLoadingData(false);
     };
     fetchData();
@@ -96,7 +116,7 @@ const CreateZoneLeaderView = (props) => {
       {loadingData && <div className={createStyles["loading-div"]}></div>}
       {!loadingData && (
         <div className={createStyles["view-container"]}>
-          <h1 className={createStyles["page-title"]}>Crear líder de zona</h1>
+          <h1 className={createStyles["page-title"]}>Crear asesor</h1>
           <div className={createStyles["header-box"]}>
             <h1>Información general</h1>
           </div>
@@ -106,6 +126,7 @@ const CreateZoneLeaderView = (props) => {
             typeKeys={typeKeys}
             zoneKeys={zoneIds}
             selectValues={selectValues}
+            leadersKeys={leadersKeys}
           />
         </div>
       )}
