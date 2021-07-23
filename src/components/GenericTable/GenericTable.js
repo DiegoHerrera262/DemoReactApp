@@ -79,6 +79,9 @@ const GenericTable = (props) => {
       dataset.filter((row) => {
         const values = Object.values(row);
         for (let j = 0; j < values.length; j++) {
+          if (!values[j]) {
+            return false;
+          }
           if (values[j].toString().trim().includes(filterWord)) {
             return true;
           }
