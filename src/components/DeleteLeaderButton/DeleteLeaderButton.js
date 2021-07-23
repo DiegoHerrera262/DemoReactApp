@@ -11,7 +11,7 @@ const DeleteLeaderButton = (props) => {
 
   useEffect(() => {
     if (deleted) {
-      console.log("Lider borrado.");
+      console.log("Asesor borrado.");
       handleElimination(id);
       setDeleted(false);
     }
@@ -42,7 +42,7 @@ const DeleteLeaderButton = (props) => {
         className={buttonStyle["Modal"]}
         overlayClassName={buttonStyle["Overlay"]}
       >
-        <p align="center">Confirme eliminación del líder.</p>
+        <p align="center">Confirme eliminación del asesor.</p>
         <div style={{ textAlign: "center" }}>
           <button
             onClick={handleClick}

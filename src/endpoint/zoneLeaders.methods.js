@@ -45,6 +45,7 @@ const getLeaderById = async (leaderId) => {
     const leaderData = await axios.get(getURL);
     return leaderData.data;
   } catch (error) {
+    console.log(error);
     return {
       name: "",
       lastName: "",

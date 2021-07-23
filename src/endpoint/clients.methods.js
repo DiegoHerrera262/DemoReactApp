@@ -2,23 +2,33 @@ import axios from "axios";
 
 const getAssessors = async () => {
   /*{ 1: "Asesor 1", 2: "Asesor 2", 3: "Asesor 3", 30: "Asesor 30" }*/
-  const defaultURL = `${process.env.REACT_APP_SERVER_HOST}/sellers`;
-  const rawAssessors = await axios.get(defaultURL, {
-    params: {
-      all: true,
-    },
-  });
-  const assessors = {};
-  rawAssessors.data.forEach((assessor) => {
-    assessors[
-      assessor["id"]
-    ] = `${assessor["sellerCode"]} - ${assessor["name"]} ${assessor["lastName"]}`;
-  });
-  return assessors;
+  try {
+    const defaultURL = `${process.env.REACT_APP_SERVER_HOST}/sellers`;
+    const rawAssessors = await axios.get(defaultURL, {
+      params: {
+        all: true,
+      },
+    });
+    const assessors = {};
+    rawAssessors.data.forEach((assessor) => {
+      assessors[
+        assessor["id"]
+      ] = `${assessor["sellerCode"]} - ${assessor["name"]} ${assessor["lastName"]}`;
+    });
+    return assessors;
+  } catch (error) {
+    console.log(error);
+    return {};
+  }
 };
 
 const getAssessorsKeys = () => {
-  return Object.values(getAssessors());
+  try {
+    return Object.values(getAssessors());
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
 };
 
 const getLevels = () => {
