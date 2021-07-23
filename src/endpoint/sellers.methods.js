@@ -1,5 +1,15 @@
 import axios from "axios";
 
+const getAllSellers = async () => {
+  const defaultURL = `${process.env.REACT_APP_SERVER_HOST}/sellers`;
+  const rawAssessors = await axios.get(defaultURL, {
+    params: {
+      all: true,
+    },
+  });
+  return rawAssessors.data;
+};
+
 const postSeller = async (sellerData) => {
   const postURL = `${process.env.REACT_APP_SERVER_HOST}/sellers/`;
   try {
@@ -13,4 +23,4 @@ const postSeller = async (sellerData) => {
   }
 };
 
-export { postSeller };
+export { postSeller, getAllSellers };

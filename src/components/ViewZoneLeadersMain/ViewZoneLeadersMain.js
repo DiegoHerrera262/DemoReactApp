@@ -6,7 +6,8 @@ import CreateLeaderButton from "../CreateLeaderButton";
 import UpdateLeaderButton from "../UpdateLeaderButton";
 import DeleteLeaderButton from "../DeleteLeaderButton";
 
-import { getLeaders } from "../../endpoint/zoneLeaders.methods";
+// import { getLeaders } from "../../endpoint/zoneLeaders.methods";
+import { getAllSellers } from "../../endpoint/sellers.methods";
 
 const headerNames = [
   {
@@ -51,7 +52,7 @@ const LeadersListTableView = (props) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      setLeadersArray(await getLeaders());
+      setLeadersArray(await getAllSellers());
       setIsLoading(false);
     };
     fetchData();
@@ -77,7 +78,7 @@ const LeadersListTableView = (props) => {
             key={key}
             dataset={leadersArray}
             Headers={headerNames}
-            downloadFileName={"líderesDeZona"}
+            downloadFileName={"asesores"}
             pageSize={5}
             identifier={"id"}
             actions={[

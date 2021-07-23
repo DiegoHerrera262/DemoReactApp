@@ -120,23 +120,23 @@ function App() {
           <Route exact path="/login" render={() => <Login />} />
           <Route exact path="/register" render={() => <Register />} />
 
-          {/* Leaders Routes */}
+          {/* Assessors Routes */}
 
           <Route
             exact
-            path="/leaders"
+            path="/assessors"
             render={() => <LeadersListTableView />}
           />
 
           <Route
             exact
-            path="/leaders/create"
+            path="/assessors/create"
             render={() => <CreateZoneLeaderView />}
           />
 
           <Route
             exact
-            path="/leaders/update/:id"
+            path="/assessors/update/:id"
             render={(props) => (
               <UpdateZoneLeaderView leaderId={props.match.params.id} />
             )}

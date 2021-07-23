@@ -12,9 +12,9 @@ const UpdateLeaderButton = (props) => {
   return (
     <>
       <button onClick={handleClick} className={buttonStyle["create-button"]}>
-        Crear líder
+        Crear asesor
       </button>
-      {redirect && <Redirect to="/leaders/create" />}
+      {redirect && <Redirect to="/assessors/create" />}
     </>
   );
 };
