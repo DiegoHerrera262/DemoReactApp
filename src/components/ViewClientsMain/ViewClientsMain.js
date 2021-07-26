@@ -205,6 +205,7 @@ const ClientsMainView = (props) => {
     try {
       initSetUp();
     } catch (error) {
+      console.log("Fallo al cargar recursos. Revise conexión.");
       console.log(error);
       setIsLoading(false);
     }
