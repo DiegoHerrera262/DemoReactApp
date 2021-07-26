@@ -20,7 +20,7 @@
   margin: 0;
   margin-left: 2ch;
   margin-right: 2ch;
-  overflow: scroll;
+  overflow: auto;
 }
 
 .leaders-table {
@@ -35,7 +35,7 @@
   font-family: "Roboto", sans-serif;
   font-size: 0.9em;
   background-color: #f5f4f4;
-  overflow: scroll;
+  overflow: auto;
 }
 
 .leaders-table thead {
@@ -211,7 +211,7 @@ td {
     font-family: "Roboto", sans-serif;
     font-size: 1em;
     background-color: #f5f4f4;
-    overflow: scroll;
+    overflow: auto;
   }
 
   .leaders-table th,

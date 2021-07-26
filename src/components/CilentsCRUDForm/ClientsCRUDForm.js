@@ -143,7 +143,8 @@ const ClientForm = (props) => {
     validationSchema: Yup.object({
       name: Yup.string()
         .matches(
-          /^[a-zA-Z]{1,10}[\s]{0,1}[a-zA-Z]{0,10}$/,
+          /^[a-zA-ZÁÉÍÓÚáéíóúñ\s]{0,40}$/,
+          /*/^[a-zA-Z]{1,10}[\s]{0,1}[a-zA-Z]{0,10}$/,*/
           "Ingrese un nombre válido"
         )
         .required("Campo requerido"),
@@ -171,34 +172,26 @@ const ClientForm = (props) => {
         .required("Campo requerido"),
       assessor: Yup.string()
         .matches(
-          /^[A-Z]{3,4}[0-9]{3} - [A-Za-z]{0,10}[\s]{0,1}[A-Za-z]{0,10}$/,
+          /^[A-Z]{3,4}[0-9]{3} - [a-zA-ZÁÉÍÓÚáéíóúñ\s]{2,40}$/,
           "Seleccione un asesor"
         )
         .required("Campo requerido"),
       storeName: Yup.string()
-        .matches(
-          /^[a-zA-Z]{1,10}[0-9]{0,10}[\s]{0,1}[a-zA-Z]{0,10}[0-9]{0,10}$/,
-          "Ingrese un nombre válido"
-        )
+        .matches(/^[a-zA-ZÁÉÍÓÚáéíóúñ\s]{2,40}$/, "Ingrese un nombre válido")
         .required("Campo requerido"),
       locality: Yup.string()
         .matches(
-          /^[a-zA-Z]{1,10}[\s]{0,1}[a-zA-Z]{0,10}$/,
+          /^[a-zA-ZÁÉÍÓÚáéíóúñ\s]{2,40}$/,
           "Ingrese una localidad válida"
         )
         .required("Campo requerido"),
       neighborhood: Yup.string()
-        .matches(
-          /^[a-zA-Z]{1,10}[\s]{0,1}[a-zA-Z]{0,10}$/,
-          "Ingrese un barrio válido"
-        )
+        .matches(/^[a-zA-ZÁÉÍÓÚáéíóúñ\s]{2,40}$/, "Ingrese un barrio válido")
         .required("Campo requerido"),
       zone: Yup.string()
-        .matches(/^[a-zA-Z]{3,15}$/, "Escoja una zona")
+        .matches(/^[a-zA-ZÁÉÍÓÚáéíóúñ\s]{3,15}$/, "Escoja una zona")
         .required("Campo requerido"),
-      status: Yup.string()
-        .required("Campo requerdo")
-        .matches(/^[^-]*$/, "Seleccione un asesor"),
+      status: Yup.string().matches(/^[^-]*$/, "Seleccione un asesor"),
       landline: Yup.number()
         .positive()
         .integer()
@@ -237,7 +230,9 @@ const ClientForm = (props) => {
       }
       data.append("locality", formik.values["locality"]);
       data.append("addressAdditionalInfo", formik.values["additionalInfo"]);
-      data.append("status", formik.values["status"] === "Activo" ? 0 : 1);
+      if (!create) {
+        data.append("status", formik.values["status"] === "Activo" ? 0 : 1);
+      }
       data.append("neighborhood", formik.values["neighborhood"]);
       data.append("latitude", addressCoords.latitude);
       data.append("longitude", addressCoords.longitude);
@@ -382,6 +377,15 @@ const ClientForm = (props) => {
               optionVals={assessors}
               className={className}
             />
+            {!create && (
+              <SelectField
+                fieldName="status"
+                formHook={formik}
+                labelKey="Estado cliente"
+                optionVals={["--Seleccione un estado--", "Activo", "Inactivo"]}
+                className={className}
+              />
+            )}
           </div>
           <div className={className["col-store"]}>
             <div className={className["header-box"]}>
@@ -427,13 +431,6 @@ const ClientForm = (props) => {
               formHook={formik}
               labelKey="Información adicional"
               fieldType="text"
-              className={className}
-            />
-            <SelectField
-              fieldName="status"
-              formHook={formik}
-              labelKey="Estado cliente"
-              optionVals={["--Seleccione un estado--", "Activo", "Inactivo"]}
               className={className}
             />
           </div>

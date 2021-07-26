@@ -97,6 +97,8 @@ const getClientById = async (id) => {
     );
     */
 
+    // console.log(clientData);
+
     return {
       name: clientData.ownerName,
       documentType: clientData.documentType,
@@ -113,6 +115,9 @@ const getClientById = async (id) => {
       storeAddress: clientData.address,
       additionalInfo: clientData.addressAdditionalInfo,
       level: clientData.level,
+      createdAt: clientData.createdAt,
+      latitude: clientData.latitude,
+      longitude: clientData.longitude,
     };
   } catch (error) {
     console.log(error);
@@ -120,26 +125,30 @@ const getClientById = async (id) => {
   }
 };
 
-const getClientDetailById = (id) => {
+const getClientDetailById = async (id) => {
   /* MOCK BACKEND FOR FETCHING DETAIL INFO */
   try {
+    const clientData = await getClientById(id);
+    console.log(clientData);
     return {
       basicInfo: {
-        name: "Test Name",
-        cellphone: parseInt(`${id}000000000`),
-        email: `mail${id}@mail.com`,
-        storeName: "Tienda Superveci",
-        locality: "Suba",
-        storeAddress: "Cra. 10 #10-10, Bogotá, Colombia",
-        createdAt: "06-07-21",
+        name: clientData.name,
+        cellphone: clientData.cellphone,
+        email: clientData.email,
+        storeName: clientData.storeName,
+        locality: clientData.locality,
+        storeAddress: clientData.storeAddress,
+        createdAt: new Date(clientData.createdAt)
+          .toISOString()
+          .substring(0, 10),
         coordinates: {
-          latitude: 4.68734,
-          longitude: -74.14816,
+          latitude: clientData.latitude,
+          longitude: clientData.longitude,
         },
       },
       sellingInfo: {
         clientType: "Orgánico",
-        clientLevel: "Premium",
+        clientLevel: clientData.level,
         deliveredReq: {
           number: 5,
           totalValue: 5000000,

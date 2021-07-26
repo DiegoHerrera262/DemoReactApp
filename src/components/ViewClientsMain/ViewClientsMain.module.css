@@ -50,7 +50,7 @@ input {
 .create-button-div {
   text-align: right;
   padding-right: 20%;
-  padding-top: 2em;
+  padding-top: 0.5em;
   padding-bottom: 1em;
   margin-left: 0%;
 }
@@ -203,8 +203,33 @@ input {
   .filter-col {
     margin-left: 2ch;
   }
+
+  .select-filter-div,
+  .date-filter-div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .start-date,
+  .end-date,
+  .date-button-div {
+    flex: 33%;
+  }
+
+  .end-date {
+    margin-left: 2ch;
+  }
+
+  .select-button-div,
+  .date-button-div {
+    margin-left: 2ch;
+    margin-bottom: 5px;
+  }
+
   .filter-prompt {
     width: 90%;
+    padding-bottom: 3em;
     margin-left: auto;
     margin-right: auto;
   }
