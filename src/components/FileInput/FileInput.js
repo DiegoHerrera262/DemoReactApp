@@ -6,7 +6,7 @@ import isPdfFile from "./assets/isPdfFile.png";
 import isWordDoc from "./assets/isWordDoc.png";
 
 const FileInput = (props) => {
-  const { fieldName, formHook, labelKey, accept, parentRef } = props;
+  const { fieldName, formHook, labelKey, accept, parentRef, headName } = props;
   let iconSrc = emptyFileLogo;
   if (formHook.values[fieldName]) {
     iconSrc =
@@ -20,7 +20,8 @@ const FileInput = (props) => {
     ? fileInputStyles["edit-button-edit"]
     : fileInputStyles["edit-button"];
   return (
-    <>
+    <div className={fileInputStyles["wrapper"]}>
+      <h3 className={fileInputStyles["h3"]}>{headName}</h3>
       <div className={fileInputStyles["file-input-card"]}>
         <div className={fileInputStyles["icon-container"]}>
           <img
@@ -59,7 +60,7 @@ const FileInput = (props) => {
           {formHook.errors[fieldName]}
         </div>
       )}
-    </>
+    </div>
   );
 };
 

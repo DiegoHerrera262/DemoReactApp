@@ -71,16 +71,10 @@ const CreateZoneLeaderForm = (props) => {
     /*set up validation schema with yup*/
     validationSchema: Yup.object({
       name: Yup.string()
-        .matches(
-          /^[a-zA-ZÁÉÍÓÚáéíóúñ\s]{1,50}$/,
-          "Ingrese un nombre válido"
-        )
+        .matches(/^[a-zA-ZÁÉÍÓÚáéíóúñ\s]{0,40}$/, "Ingrese un nombre válido")
         .required("Campo requerido"),
       lastName: Yup.string()
-        .matches(
-          /^[a-zA-ZÁÉÍÓÚáéíóúñ\s]{1,50}$/,
-          "Ingrese un nombre válido"
-        )
+        .matches(/^[a-zA-ZÁÉÍÓÚáéíóúñ\s]{1,50}$/, "Ingrese un nombre válido")
         .required("Campo requerido"),
       documentType: Yup.string()
         .matches(/^[^-]*$/, "Seleccione un tipo de documento")
@@ -394,8 +388,9 @@ const CreateZoneLeaderForm = (props) => {
           })}
 
           <h2 className={zoneLeaderStyles["h2"]}> Documentos </h2>
+
           {/**/}
-          <h3 className={zoneLeaderStyles["h3"]}> Documento de identidad </h3>
+
           <FileInput
             fieldName="frontID"
             formHook={formik}
@@ -405,10 +400,10 @@ const CreateZoneLeaderForm = (props) => {
                 ? `${formik.values["frontID"].name}`
                 : "Ingrese PDF"
             }
-            accept=".pdf, image/*"
+            headName="Documento de identidad"
+            accept=".pdf"
           />
 
-          <h3 className={zoneLeaderStyles["h3"]}> RUT </h3>
           <FileInput
             fieldName="rut"
             formHook={formik}
@@ -416,12 +411,12 @@ const CreateZoneLeaderForm = (props) => {
             labelKey={
               formik.values["rut"]
                 ? `${formik.values["rut"].name}`
-                : "Ingrese PDF o Word"
+                : "Ingrese PDF"
             }
-            accept=".pdf, .doc, .docx"
+            headName="RUT"
+            accept=".pdf"
           />
 
-          <h3 className={zoneLeaderStyles["h3"]}> Certificación bancaria </h3>
           <FileInput
             fieldName="bankData"
             formHook={formik}
@@ -429,12 +424,12 @@ const CreateZoneLeaderForm = (props) => {
             labelKey={
               formik.values["bankData"]
                 ? `${formik.values["bankData"].name}`
-                : "Ingrese PDF o Word"
+                : "Ingrese PDF"
             }
-            accept=".pdf, .doc, .docx"
+            headName="Certificación bancaria"
+            accept=".pdf"
           />
 
-          <h3 className={zoneLeaderStyles["h3"]}> Contrato </h3>
           <FileInput
             fieldName="contract"
             formHook={formik}
@@ -442,9 +437,10 @@ const CreateZoneLeaderForm = (props) => {
             labelKey={
               formik.values["contract"]
                 ? `${formik.values["contract"].name}`
-                : "Ingrese PDF o Word"
+                : "Ingrese PDF"
             }
-            accept=".pdf, .doc, .docx"
+            headName="Contrato"
+            accept=".pdf"
           />
           {/**/}
         </div>
