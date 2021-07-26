@@ -72,13 +72,13 @@ const CreateZoneLeaderForm = (props) => {
     validationSchema: Yup.object({
       name: Yup.string()
         .matches(
-          /^[a-zA-Z]{1,10}[\s]{0,1}[a-zA-Z]{0,10}$/,
+          /^[a-zA-ZÁÉÍÓÚáéíóúñ\s]{1,50}$/,
           "Ingrese un nombre válido"
         )
         .required("Campo requerido"),
       lastName: Yup.string()
         .matches(
-          /^[a-zA-Z]{1,10}[\s]{0,1}[a-zA-Z]{0,20}$/,
+          /^[a-zA-ZÁÉÍÓÚáéíóúñ\s]{1,50}$/,
           "Ingrese un nombre válido"
         )
         .required("Campo requerido"),
@@ -117,7 +117,7 @@ const CreateZoneLeaderForm = (props) => {
         .moreThan(999999999, "Ingrese un número de celular válido en Colombia")
         .required("Campo requerido"),
       zone: Yup.string()
-        .matches(/^[a-zA-Z]{3,15}$/, "Escoja una zona")
+        .matches(/^[a-zA-ZÁÉÍÓÚáéíóúñ\s]{3,15}$/, "Escoja una zona")
         .required("Campo requerido"),
       endContractDate: Yup.date()
         .min(today, "Ingrese una fecha en el futuro")

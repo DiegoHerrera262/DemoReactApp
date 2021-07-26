@@ -74,10 +74,12 @@ const DateFilterOptions = (props) => {
             className={mainStyles}
           />
         </div>
+        <div className={mainStyles['date-button-div']}>
+          <button type="submit" className={mainStyles["submit-button"]}>
+            filtrar
+          </button>
+        </div>
       </div>
-      <button type="submit" className={mainStyles["submit-button"]}>
-        filtrar
-      </button>
     </form>
   );
 };
@@ -98,16 +100,22 @@ const SelectFilterOptions = (props) => {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <SelectField
-        fieldName="levelValue"
-        formHook={formik}
-        labelKey={filterLabel}
-        optionVals={levels}
-        className={mainStyles}
-      />
-      <button type="submit" className={mainStyles["submit-button"]}>
-        filtrar
-      </button>
+      <div className={mainStyles['select-filter-div']}>
+        <div className={mainStyles['filter-select-div']}>
+          <SelectField
+            fieldName="levelValue"
+            formHook={formik}
+            labelKey={filterLabel}
+            optionVals={levels}
+            className={mainStyles}
+          />
+        </div>
+        <div className={mainStyles['select-button-div']}>
+          <button type="submit" className={mainStyles["submit-button"]}>
+            filtrar
+          </button>
+        </div>
+      </div>
     </form>
   );
 };
@@ -157,6 +165,10 @@ const tableHeaders = [
     header: "Fecha de Creación",
   },
   {
+    accessor: "level",
+    header: "Nivel",
+  },
+  {
     accessor: "numOrders",
     header: "Cantidad de Pedidos",
   },
@@ -177,37 +189,36 @@ const ClientsMainView = (props) => {
 
   useEffect(() => {
     const initSetUp = async () => {
-      // const levelOptns = await getLevelsKeys();
-      const placeholderAssessorsObj = await getAssessors();
-      const placeholderZonesObj = await getZones();
-      const placeholderLevelsObj = await getLevels();
-      // console.log(placeholderAssessorsObj);
-      setAssessorsObj(placeholderAssessorsObj);
-      setZonesObj(placeholderZonesObj);
-      setLevelsObj(placeholderLevelsObj);
-      const rawData = await getClientDataFromQuery({
-        level: Object.values(placeholderLevelsObj)[0],
-      });
-      setTableData(
-        rawData.map((client) => {
-          // console.log(client);
-          // console.log(placeholderAssessorsObj[client["sellerCreator"]]);
-          return {
-            ...client,
-            sellerCreator: placeholderAssessorsObj[client["sellerCreator"]],
-            status: parseInt(client["status"]) === 0 ? "Activo" : "Inactivo",
-            zone: placeholderZonesObj[client["zone"]],
-          };
-        })
-      );
+      try {
+        // const levelOptns = await getLevelsKeys();
+        const placeholderAssessorsObj = await getAssessors();
+        const placeholderZonesObj = await getZones();
+        const placeholderLevelsObj = await getLevels();
+        // console.log(placeholderAssessorsObj);
+        setAssessorsObj(placeholderAssessorsObj);
+        setZonesObj(placeholderZonesObj);
+        setLevelsObj(placeholderLevelsObj);
+        const rawData = await getClientDataFromQuery({
+          level: Object.values(placeholderLevelsObj)[0],
+        });
+        setTableData(
+          rawData.map((client) => {
+            // console.log(client);
+            // console.log(placeholderAssessorsObj[client["sellerCreator"]]);
+            return {
+              ...client,
+              sellerCreator: placeholderAssessorsObj[client["sellerCreator"]],
+              status: parseInt(client["status"]) === 0 ? "Activo" : "Inactivo",
+              zone: placeholderZonesObj[client["zone"]],
+            };
+          })
+        );
+      } catch (error) {
+        console.log(error);
+      }
       setIsLoading(false);
     };
-    try {
-      initSetUp();
-    } catch (error) {
-      console.log(error);
-      setIsLoading(false);
-    }
+    initSetUp();
   }, []);
 
   const handleChangeFilter = (event) => {

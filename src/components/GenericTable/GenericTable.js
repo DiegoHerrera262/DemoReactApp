@@ -156,7 +156,7 @@ const GenericTable = (props) => {
                             {row[field]
                               ? Date.parse(row[field]) &&
                                 typeof row[field] !== "number"
-                                ? `${row[field].substring(0, 10)}`
+                                ? `${new Date(row[field]).toISOString().substring(0, 10)}`
                                 : `${row[field].toString()}`
                               : `${row[field]}`}
                           </td>
