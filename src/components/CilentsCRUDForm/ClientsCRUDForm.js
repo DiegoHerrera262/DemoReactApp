@@ -40,6 +40,7 @@ const ClientForm = (props) => {
     latitude: 4.68357,
     longitude: -74.14443,
   });
+
   const [formattedAddress, setFormattedAddress] = useState("Cll 22i #10344");
 
   const [showUpdateMessage, setShowUpdateMessage] = useState(false);
@@ -54,65 +55,68 @@ const ClientForm = (props) => {
   /* Here data should be fetched from the Assessors API */
   useEffect(() => {
     const fetchData = async () => {
-      if (create) {
-        const { geolocation } = navigator;
-        if (geolocation) {
-          geolocation.getCurrentPosition(
-            async (position) => {
-              console.log("Ubicando navegador...");
-              setAddressCoords({
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude,
-              });
-              setFormattedAddress(
-                await getAddress({
+      try {
+        if (create) {
+          const { geolocation } = navigator;
+          if (geolocation) {
+            geolocation.getCurrentPosition(
+              async (position) => {
+                console.log("Ubicando navegador...");
+                setAddressCoords({
                   latitude: position.coords.latitude,
                   longitude: position.coords.longitude,
-                })
-              );
-            },
-            () => {
-              console.log("Ubicación imposible.");
-            }
-          );
+                });
+                setFormattedAddress(
+                  await getAddress({
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                  })
+                );
+              },
+              () => {
+                console.log("Ubicación imposible.");
+              }
+            );
+          }
+          // const rawAssessors = await getAssessors();
+          // const rawZones = await getZones();
+          const assessorNames = Object.values(rawAssessors);
+          const zoneNames = Object.values(rawZones);
+          setAssessors(["--Seleccione un asesor--", ...assessorNames]);
+          setZones(["--Seleccione una zona--", ...zoneNames]);
+          setAssessorKeys(rawAssessors);
+          setZoneKeys(rawZones);
+          setIsLoading(false);
+          return;
         }
-        // const rawAssessors = await getAssessors();
-        // const rawZones = await getZones();
-        const assessorNames = Object.values(rawAssessors);
-        const zoneNames = Object.values(rawZones);
-        setAssessors(["--Seleccione un asesor--", ...assessorNames]);
-        setZones(["--Seleccione una zona--", ...zoneNames]);
-        setAssessorKeys(rawAssessors);
-        setZoneKeys(rawZones);
-        setIsLoading(false);
-        return;
-      }
-      try {
-        const streetQuery = defaultInitialValues["storeAddress"]
-          .replace(" ", "+")
-          .replace("#", "%23");
-        const GoogleGeocodeURL = `https://maps.googleapis.com/maps/api/geocode/json?address=${streetQuery}}&key=${GoogleMapsToken}`;
-        const result = await axios.get(GoogleGeocodeURL);
-        if (result.data.results.length > 0) {
-          const pos = result.data.results[0].geometry.location;
-          setAddressCoords({
-            latitude: pos.lat,
-            longitude: pos.lng,
-          });
+        if (!create) {
+          const streetQuery = defaultInitialValues["storeAddress"]
+            .replace(" ", "+")
+            .replace("#", "%23");
+          const GoogleGeocodeURL = `https://maps.googleapis.com/maps/api/geocode/json?address=${streetQuery}}&key=${GoogleMapsToken}`;
+          const result = await axios.get(GoogleGeocodeURL);
+          if (result.data.results.length > 0) {
+            const pos = result.data.results[0].geometry.location;
+            setAddressCoords({
+              latitude: pos.lat,
+              longitude: pos.lng,
+            });
+          }
+          setFormattedAddress(defaultInitialValues.storeAddress);
+          // const rawAssessors = await getAssessors();
+          // const rawZones = await getZones();
+          const assessorNames = Object.values(rawAssessors);
+          const zoneNames = Object.values(rawZones);
+          setAssessors(["--Seleccione un asesor--", ...assessorNames]);
+          setZones(["--Seleccione una zona--", ...zoneNames]);
+          setAssessorKeys(rawAssessors);
+          setZoneKeys(rawZones);
+          setIsLoading(false);
+          return;
         }
-        setFormattedAddress(defaultInitialValues.storeAddress);
       } catch (error) {
         console.log(error);
       }
-      // const rawAssessors = await getAssessors();
-      // const rawZones = await getZones();
-      const assessorNames = Object.values(rawAssessors);
-      const zoneNames = Object.values(rawZones);
-      setAssessors(["--Seleccione un asesor--", ...assessorNames]);
-      setZones(["--Seleccione una zona--", ...zoneNames]);
-      setAssessorKeys(rawAssessors);
-      setZoneKeys(rawZones);
-      setIsLoading(false);
     };
     fetchData();
   }, [
@@ -204,6 +208,9 @@ const ClientForm = (props) => {
       setShowConfirmModal(true);
     },
   });
+
+  console.log(formattedAddress);
+  // console.log(formik);
 
   const handleSubmitDataFromModal = async () => {
     const action = create ? "Creación " : "Actualización ";
@@ -324,7 +331,7 @@ const ClientForm = (props) => {
       <h1 className={className["page-title"]}>
         {create ? "Crear cliente" : "Actualizar Cliente"}
       </h1>
-      <form onSubmit={formik.handleSubmit}>
+      <form onSubmit={formik.handleSubmit} action="/form">
         <div className={className["col-wrap"]}>
           <div className={className["col-client"]}>
             <div className={className["header-box"]}>
@@ -450,7 +457,7 @@ const ClientForm = (props) => {
               width: "100%",
               height: "100%",
             }}
-            zoom={11}
+            zoom={14}
             center={{
               lat: addressCoords.latitude,
               lng: addressCoords.longitude,

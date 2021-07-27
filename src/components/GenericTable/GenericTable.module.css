@@ -107,7 +107,7 @@
 .clients-table th {
   /*height: 50px;*/
   height: 42px;
-  vertical-align: bottom;
+  vertical-align: center;
   padding: 0.5em 2ch 0.5em 2ch;
   margin-bottom: 0.5em;
   border: none;

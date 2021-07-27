@@ -71,6 +71,10 @@
   color: red;
 }
 
+.address-search-bar {
+  font-family: "Lato", sans-serif;
+}
+
 .input {
   box-sizing: border-box;
   /*font-size: 0.9em;*/
