@@ -8,6 +8,7 @@ import Modal from "react-modal";
 import * as Yup from "yup";
 
 import FieldInput from "../FieldInput";
+import AddressInput from "../AddressInput";
 import SelectInput from "../SelectInput";
 import FileInput from "../FileInput";
 import ProfileImageInput from "../ProfileImageInput";
@@ -18,17 +19,25 @@ import errorImage from "../../assets/errorImage.png";
 import confirmationImage from "../../assets/confirmationImage.png";
 
 import zoneLeaderStyles from "./CreateZoneLeaderForm.module.css";
+import { useLoadScript } from "@react-google-maps/api";
 
 // DO NOT DELETE THIS
 Modal.setAppElement("body");
 
-const GoogleMapsAPI = `https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${process.env.REACT_APP_GOOGLE_MAPS_TOKEN}`;
+const GoogleMapsToken = process.env.REACT_APP_GOOGLE_MAPS_TOKEN;
+const libraries = ["places"];
+// const GoogleMapsAPI = `https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${process.env.REACT_APP_GOOGLE_MAPS_TOKEN}`;
 const MAX_SIZE = 7 * 1024 * 1024;
 
 const CreateZoneLeaderForm = (props) => {
   const { labelKeys, typeKeys, selectValues, zoneKeys, leadersKeys } = props;
   let { defaultInitialValues } = props;
   const valueKeys = Object.keys(defaultInitialValues);
+
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: GoogleMapsToken,
+    libraries: libraries,
+  });
 
   defaultInitialValues = {
     ...defaultInitialValues,
@@ -93,8 +102,8 @@ const CreateZoneLeaderForm = (props) => {
         .required("Campo requerido"),
       address: Yup.string()
         .matches(
-          /^[a-zA-Z]{2,4}[\s]{0,1}[a-zA-Z]{0,20}[\s]{0,1}[0-9]{0,3}[\s]{0,1}[a-zA-Z]{0,5}[\s]{0,1}#[\s]{0,1}[0-9]{1,3}[a-zA-Z]{0,3}[\s]{0,1}-[\s]{0,1}[0-9]{1,3}[a-zA-Z]{0,3},[\s]{0,3}[a-zA-Z]{1,10},[\s]{0,3}[a-zA-Z]{1,10}$/,
-          "Ingrese una dirección en formato: dirección, ciudad, país"
+          /^[0-9a-zA-ZÁÉÍÓÚáéíóúñ,.#\s-]{0,40}$/,
+          "Ingrese caracteres válidos en español, máx. 40."
         )
         .required("Campo requerido"),
       leaderCode: Yup.string()
@@ -297,7 +306,7 @@ const CreateZoneLeaderForm = (props) => {
     setShowCreatingLeaderMessage(true);
   };
 
-  if (isLoading) {
+  if (isLoading || !isLoaded) {
     return <div className={zoneLeaderStyles["loading-div"]} />;
   }
 
@@ -326,6 +335,16 @@ const CreateZoneLeaderForm = (props) => {
                 />
               );
             }
+            if (typeKeys[field] === "address") {
+              return (
+                <AddressInput
+                  key={field}
+                  fieldName={field}
+                  formHook={formik}
+                  labelKey={labelKeys[field]}
+                />
+              );
+            }
             return (
               <FieldInput
                 key={field}
@@ -340,10 +359,9 @@ const CreateZoneLeaderForm = (props) => {
             /**/
             <div className={zoneLeaderStyles["map-container"]}>
               <LeaderZoneMap
-                googleMapURL={GoogleMapsAPI}
-                loadingElement={<div style={{ height: `100%` }} />}
-                containerElement={<div style={{ height: `100%` }} />}
-                mapElement={<div style={{ height: `100%` }} />}
+                isLoaded={isLoaded}
+                loadError={loadError}
+                mapContainerStyle={{ height: `100%` }}
                 markerCoords={zoneMarkerCoords}
                 setCoords={setZoneMarkerCoords}
               />
@@ -373,6 +391,16 @@ const CreateZoneLeaderForm = (props) => {
                   formHook={formik}
                   labelKey={labelKeys[field]}
                   optionVals={selectValues[field]}
+                />
+              );
+            }
+            if (typeKeys[field] === "address") {
+              return (
+                <AddressInput
+                  key={field}
+                  fieldName={field}
+                  formHook={formik}
+                  labelKey={labelKeys[field]}
                 />
               );
             }

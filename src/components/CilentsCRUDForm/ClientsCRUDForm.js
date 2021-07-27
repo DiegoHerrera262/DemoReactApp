@@ -209,12 +209,12 @@ const ClientForm = (props) => {
     },
   });
 
-  console.log(formattedAddress);
+  // console.log(formattedAddress);
   // console.log(formik);
 
   const handleSubmitDataFromModal = async () => {
     const action = create ? "Creación " : "Actualización ";
-    console.log(formik.values);
+    // console.log(formik.values);
     try {
       const data = new FormData();
       data.append("grocerName", formik.values["storeName"]);
@@ -316,7 +316,7 @@ const ClientForm = (props) => {
         break;
       }
     }
-    console.log(formik.errors);
+    // console.log(formik.errors);
     const formIsNotRight = numErrors > 0 || emptyField;
     setShowErrorModal(formIsNotRight);
     setShowConfirmModal(!formIsNotRight);

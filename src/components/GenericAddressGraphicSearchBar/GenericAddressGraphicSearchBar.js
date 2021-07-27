@@ -1,14 +1,12 @@
-import React, { useState } from "react";
+import React /*, { useState }*/ from "react";
 import axios from "axios";
 import errorImage from "../../assets/errorImage.png";
 import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
 
 import getAddress from "../../utils/getAddress";
 
-import usePlacesAutocomplete, {
-  getGeocode,
-  getLatLng,
-} from "use-places-autocomplete";
+import usePlacesAutocomplete /*getGeocode,*/ from /*getLatLng,*/
+"use-places-autocomplete";
 
 import {
   Combobox,
@@ -16,7 +14,7 @@ import {
   ComboboxPopover,
   ComboboxList,
   ComboboxOption,
-  ComboboxOptionText,
+  /*ComboboxOptionText,*/
 } from "@reach/combobox";
 import "@reach/combobox/styles.css";
 
@@ -74,7 +72,7 @@ const AddressInput = (props) => {
   };
   */
 
-  console.log(data);
+  // console.log(data);
 
   const handleBlur = async () => {
     console.log("Recalculando localización...");

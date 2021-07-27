@@ -42,7 +42,7 @@ const typeKeys = {
   documentType: "select",
   zone: "select",
   isLeader: "checkbox",
-  address: "text",
+  address: "address",
   leaderCode: "text",
   email: "email",
   cellphone: "number",
