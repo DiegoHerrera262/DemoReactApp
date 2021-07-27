@@ -46,9 +46,9 @@ const AddressField = (props) => {
     },
   });
 
-  console.log(formHook.values);
+  // console.log(formHook.values);
   // console.log(formHook.touched);
-  console.log(formHook.errors);
+  // console.log(formHook.errors);
 
   /*
   if (!isLoaded || !ready) {
@@ -66,7 +66,7 @@ const AddressField = (props) => {
   const handleBlur = (event) => {
     if (event.relatedTarget) {
       if (event.relatedTarget.attributes["data-reach-combobox-option"]) {
-        alert("Clicked on possible option");
+        // alert("Clicked on possible option");
         formHook.values[fieldName] =
           event.relatedTarget.childNodes[0].childNodes[2].data;
         // console.log(event.relatedTarget.childNodes[0].childNodes[2].data);
