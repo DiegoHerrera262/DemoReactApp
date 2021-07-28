@@ -18,8 +18,8 @@ import CreateBonusView from "./components/ViewBonusCreate";
 import CreateProducts from "./components/Products/createProducts/index";
 import CreateSupplier from "./components/suppliers/createSupplier/index";
 import ViewBonusUpdate from "./components/ViewBonusUpdate";
-
 import { getLeaderById } from "./endpoint/zoneLeaders.methods";
+import  SideBar from './components/lateralMenu/SideBar'
 
 const Headers = [
   {
@@ -203,6 +203,12 @@ function App() {
             exact
             path="/create-supplier"
             render={() => <CreateSupplier />}
+          />
+
+<Route
+            exact
+            path="/sidebar"
+            render={() => < SideBar />}
           />
         </Switch>
       </div>
