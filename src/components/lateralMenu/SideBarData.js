@@ -12,11 +12,12 @@ export const sideBarData =[
     icon: <AiIcons.AiFillHome />,
     iconClose: <RiIcons.RiArrowDownSFill />, 
     iconOpened: <RiIcons.RiArrowUpSFill />,
-subNav:[
+
+subNav: [
     {
     title:'ver todos',
     path: '/products/vertodos',
-    icon: <AiIcons.AiFillHome />,
+    icon: <IoIcons.IoIosPaper/>,
     },
 ]
 
@@ -28,6 +29,7 @@ subNav:[
     icon: <AiIcons.AiFillHome />,
     iconClose: <RiIcons.RiArrowDownSFill />, 
     iconOpened: <RiIcons.RiArrowUpSFill />,
+
 subNav:[
     {
     title:'gestionar pedidos',
@@ -37,8 +39,5 @@ subNav:[
 ]
 
 },
-
-
-
 
 ]
