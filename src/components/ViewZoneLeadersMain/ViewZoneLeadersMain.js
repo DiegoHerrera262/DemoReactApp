@@ -4,10 +4,11 @@ import listStyles from "./ViewZoneLeadersMain.module.css";
 import GenericTable from "../GenericTable/GenericTable";
 import CreateLeaderButton from "../CreateLeaderButton";
 import UpdateLeaderButton from "../UpdateLeaderButton";
-import DeleteLeaderButton from "../DeleteLeaderButton";
+// import DeleteLeaderButton from "../DeleteLeaderButton";
 
 // import { getLeaders } from "../../endpoint/zoneLeaders.methods";
 import { getAllSellers } from "../../endpoint/sellers.methods";
+import { getZones } from "../../endpoint/clients.methods";
 
 const headerNames = [
   {
@@ -42,28 +43,43 @@ const LeadersListTableView = (props) => {
       id: "",
       name: "",
       last_name: "",
-      zone_id: "",
+      zoneId: "",
       cellphone: "",
       address: "",
     },
   ]);
   const [isLoading, setIsLoading] = useState(true);
   const [key, setKey] = useState("init-key");
+  const [zonesKeys, setZonesKeys] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
-      setLeadersArray(await getAllSellers());
+      const placeholderSellers = await getAllSellers();
+      const placeholderZonesObj = await getZones();
+      setZonesKeys(placeholderZonesObj);
+      setLeadersArray(
+        placeholderSellers.map((seller) => {
+          // console.log(client);
+          // console.log(placeholderAssessorsObj[client["sellerCreator"]]);
+          return {
+            ...seller,
+            zoneId: placeholderZonesObj[seller["zoneId"]],
+          };
+        })
+      );
       setIsLoading(false);
     };
     fetchData();
   }, []);
 
   // For handling ui update after leader elimination
+  /*
   const handleElimination = (id) => {
     setLeadersArray((prev) => prev.filter((leader) => leader.id !== id));
     setKey(`${id}`);
   };
-  console.log(leadersArray);
+  */
+  // console.log(leadersArray);
 
   return (
     <>
@@ -85,13 +101,14 @@ const LeadersListTableView = (props) => {
               {
                 Component: UpdateLeaderButton,
                 props: {},
-              },
+              } /*
               {
                 Component: DeleteLeaderButton,
                 props: {
                   handleElimination: handleElimination,
                 },
               },
+              */,
             ]}
           />
         </div>

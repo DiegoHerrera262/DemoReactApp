@@ -1,4 +1,5 @@
 import React from "react";
+import * as FileSaver from "file-saver";
 import fileInputStyles from "./FileInput.module.css";
 
 import emptyFileLogo from "./assets/emptyFileLogo.png";
@@ -19,6 +20,14 @@ const FileInput = (props) => {
   const formButtonStyle = props.edit
     ? fileInputStyles["edit-button-edit"]
     : fileInputStyles["edit-button"];
+
+  const handleDownload = () => {
+    FileSaver.saveAs(
+      formHook.values[fieldName],
+      formHook.values[fieldName].name
+    );
+  };
+  // console.log(formHook.values);
   return (
     <div className={fileInputStyles["wrapper"]}>
       <h3 className={fileInputStyles["h3"]}>{headName}</h3>
@@ -28,6 +37,7 @@ const FileInput = (props) => {
             src={iconSrc}
             alt={fieldName}
             className={fileInputStyles["file-icon"]}
+            onClick={handleDownload}
           />
         </div>
         <div className={fileInputStyles["info-container"]}>

@@ -18,8 +18,14 @@ import CreateBonusView from "./components/ViewBonusCreate";
 import CreateProducts from "./components/Products/createProducts/index";
 import CreateSupplier from "./components/suppliers/createSupplier/index";
 import ViewBonusUpdate from "./components/ViewBonusUpdate";
-import { getLeaderById } from "./endpoint/zoneLeaders.methods";
-import  SideBar from './components/lateralMenu/SideBar'
+import SideBar from "./components/lateralMenu/SideBar";
+import ViewSuppliersCreate from "./components/ViewSuppliersCreate";
+
+import {
+  getLeaderById,
+  getLeaderFullById,
+  getLeaderFilesById,
+} from "./endpoint/zoneLeaders.methods";
 
 const Headers = [
   {
@@ -65,7 +71,24 @@ function HomePage() {
 
   useEffect(() => {
     const fetchFakeData = async () => {
+      /*
+      const file = await getLeaderFilesById({
+        leaderId: 1,
+        fileKey: "contractImage",
+      });
+      const file2 = await getLeaderFilesById({
+        leaderId: 1,
+        fileKey: "imageUrl",
+      });
+      */
+      const leaderData = await getLeaderFullById({
+        leaderId: 1,
+        files: true,
+      });
       const res = await axios.get("https://jsonplaceholder.typicode.com/todos");
+      console.log(leaderData);
+      //console.log(file);
+      //console.log(file2);
       setDataset(res.data);
     };
     fetchFakeData();
@@ -114,6 +137,8 @@ function App() {
     <BrowserRouter>
       <div>
         <Switch>
+          <Route exact path="/test" render={() => <HomePage />} />
+
           <Route exact path="/" render={() => <ClientsMainView />} />
 
           {/* user reg routes */}
@@ -205,11 +230,13 @@ function App() {
             render={() => <CreateSupplier />}
           />
 
-<Route
+          <Route
             exact
-            path="/sidebar"
-            render={() => < SideBar />}
+            path="/suppliers/create"
+            render={() => <ViewSuppliersCreate />}
           />
+
+          <Route exact path="/sidebar" render={() => <SideBar />} />
         </Switch>
       </div>
     </BrowserRouter>

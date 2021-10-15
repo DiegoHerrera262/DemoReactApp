@@ -102,7 +102,7 @@ const CreateZoneLeaderForm = (props) => {
         .required("Campo requerido"),
       address: Yup.string()
         .matches(
-          /^[0-9a-zA-ZÁÉÍÓÚáéíóúñ,.#\s-]{0,40}$/,
+          /^[0-9a-zA-ZÁÉÍÓÚáéíóúñ,.#\s-]{0,100}$/,
           "Ingrese caracteres válidos en español, máx. 40."
         )
         .required("Campo requerido"),

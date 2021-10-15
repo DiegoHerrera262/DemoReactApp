@@ -19,6 +19,7 @@
 }
 
 .select {
+  /*max-width: 400px;*/
   box-sizing: border-box;
   /*font-size: 0.9em;*/
   font-size: 1.3em;

@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import { updateLeader } from "../../endpoint/zoneLeaders.methods";
+import { putLeader } from "../../endpoint/zoneLeaders.methods";
+import { putSeller } from "../../endpoint/sellers.methods";
 
 import { useFormik } from "formik";
 import Modal from "react-modal";
 import * as Yup from "yup";
 
 import FieldInput from "../FieldInput";
+import AddressInput from "../AddressInput";
 import SelectInput from "../SelectInput";
 import FileInput from "../FileInput";
 import ProfileImageInput from "../ProfileImageInput";
@@ -17,26 +19,38 @@ import errorImage from "../../assets/errorImage.png";
 import confirmationImage from "../../assets/confirmationImage.png";
 
 import zoneLeaderStyles from "./UpdateZoneLeaderForm.module.css";
+import { useLoadScript } from "@react-google-maps/api";
 
 // DO NOT DELETE THIS
 Modal.setAppElement("body");
 
-const GoogleMapsAPI = `https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${process.env.REACT_APP_GOOGLE_MAPS_TOKEN}`;
+const GoogleMapsToken = process.env.REACT_APP_GOOGLE_MAPS_TOKEN;
+const libraries = ["places"];
+// const GoogleMapsAPI = `https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${process.env.REACT_APP_GOOGLE_MAPS_TOKEN}`;
+const MAX_SIZE = 7 * 1024 * 1024;
 
 const UpdateZoneLeaderForm = (props) => {
-  const { labelKeys, typeKeys, selectValues, zoneKeys } = props;
+  const { labelKeys, typeKeys, selectValues, zoneKeys, leadersKeys, leaderId } =
+    props;
   let { defaultInitialValues } = props;
+  const valueKeys = Object.keys(typeKeys);
 
-  const valueKeys = Object.keys(defaultInitialValues);
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: GoogleMapsToken,
+    libraries: libraries,
+  });
 
+  /*
   defaultInitialValues = {
-    frontID: {},
-    rut: {},
-    bankData: {},
-    contract: {},
-    profileImage: null,
     ...defaultInitialValues,
+    superCode: "",
+    frontID: null,
+    rut: null,
+    bankData: null,
+    contract: null,
+    profileImage: null,
   };
+  */
 
   const leftFields = valueKeys.slice(0, Math.floor(valueKeys.length / 2));
   const rightFields = valueKeys.slice(Math.floor(valueKeys.length / 2));
@@ -56,6 +70,7 @@ const UpdateZoneLeaderForm = (props) => {
     latitude: 4.68357,
     longitude: -74.14443,
   });
+
   const [showCreatingLeaderMessage, setShowCreatingLeaderMessage] =
     useState(false);
   const [serverMessage, setServerMessage] = useState("");
@@ -68,16 +83,13 @@ const UpdateZoneLeaderForm = (props) => {
     /*set up validation schema with yup*/
     validationSchema: Yup.object({
       name: Yup.string()
-        .matches(
-          /^[a-zA-Z]{1,10}[\s]{0,1}[a-zA-Z]{0,10}$/,
-          "Ingrese un nombre válido"
-        )
+        .matches(/^[a-zA-ZÁÉÍÓÚáéíóúñ\s]{0,40}$/, "Ingrese un nombre válido")
         .required("Campo requerido"),
       lastName: Yup.string()
-        .matches(
-          /^[a-zA-Z]{1,10}[\s]{0,1}[a-zA-Z]{0,20}$/,
-          "Ingrese un nombre válido"
-        )
+        .matches(/^[a-zA-ZÁÉÍÓÚáéíóúñ\s]{1,50}$/, "Ingrese un nombre válido")
+        .required("Campo requerido"),
+      documentType: Yup.string()
+        .matches(/^[^-]*$/, "Seleccione un tipo de documento")
         .required("Campo requerido"),
       documentId: Yup.number()
         .positive()
@@ -93,13 +105,15 @@ const UpdateZoneLeaderForm = (props) => {
         .required("Campo requerido"),
       address: Yup.string()
         .matches(
-          /^[a-zA-Z]{2,4}[\s]{0,1}[a-zA-Z]{0,20}[\s]{0,1}[0-9]{0,3}[\s]{0,1}#[\s]{0,1}[0-9]{1,3}[a-zA-Z]{0,3}[\s]{0,1}-[\s]{0,1}[0-9]{1,3}[a-zA-Z]{0,3}$/,
-          "Ingrese una diercción válida"
+          /^[0-9a-zA-ZÁÉÍÓÚáéíóúñ,.#\s-]{0,40}$/,
+          "Ingrese caracteres válidos en español, máx. 40."
         )
         .required("Campo requerido"),
-      leaderCode: Yup.number()
-        .lessThan(999, "Ingrese un código numérico de 3 cifras")
-        .moreThan(100, "Ingrese un código numérico de 3 cifras")
+      leaderCode: Yup.string()
+        .matches(
+          /^[A-Z]{3,4}[0-9]{3}$/,
+          "Ingrese tres o cuatro mayúsculas seguidas de tres dígitos"
+        )
         .required("Campo requerido"),
       email: Yup.string()
         .email("Ingrese una dirección de email válida")
@@ -109,17 +123,90 @@ const UpdateZoneLeaderForm = (props) => {
         .moreThan(999999999, "Ingrese un número de celular válido en Colombia")
         .required("Campo requerido"),
       zone: Yup.string()
-        .matches(/^[a-zA-Z]{3,15}$/, "Escoja una zona")
+        .matches(/^[a-zA-ZÁÉÍÓÚáéíóúñ\s]{3,15}$/, "Escoja una zona")
         .required("Campo requerido"),
       endContractDate: Yup.date()
         .min(today, "Ingrese una fecha en el futuro")
         .required("Campo requerido"),
+      profileImage: Yup.mixed().test(
+        "fileSize",
+        "Ingrese archivo de máx. 5MB",
+        (value) => {
+          if (value) {
+            if (value.size) {
+              return value.size < MAX_SIZE;
+            }
+          }
+          return false;
+        }
+      ),
+      frontID: Yup.mixed().test(
+        "fileSize",
+        "Ingrese archivo de máx. 5MB",
+        (value) => {
+          if (value) {
+            if (value.size) {
+              return value.size < MAX_SIZE;
+            }
+          }
+          return false;
+        }
+      ),
+      rut: Yup.mixed().test(
+        "fileSize",
+        "Ingrese archivo de máx. 5MB",
+        (value) => {
+          if (value) {
+            if (value.size) {
+              return value.size < MAX_SIZE;
+            }
+          }
+          return false;
+        }
+      ),
+      bankData: Yup.mixed().test(
+        "fileSize",
+        "Ingrese archivo de máx. 5MB",
+        (value) => {
+          if (value) {
+            if (value.size) {
+              return value.size < MAX_SIZE;
+            }
+          }
+          return false;
+        }
+      ),
+      contract: Yup.mixed().test(
+        "fileSize",
+        "Ingrese archivo de máx. 5MB",
+        (value) => {
+          if (value) {
+            if (value.size) {
+              return value.size < MAX_SIZE;
+            }
+          }
+          return false;
+        }
+      ),
+      isLeader: Yup.boolean().required(),
+      superCode: Yup.string().when("isLeader", {
+        is: (isLeader) => isLeader === false,
+        then: Yup.string()
+          .matches(
+            /^[A-Z]{3,4}[0-9]{3} - [A-Za-z]{0,10}[\s]{0,1}[A-Za-z]{0,10}$/,
+            "Seleccione un líder de zona"
+          )
+          .required("Campo requerido"),
+      }),
     }),
     /*set up submit callback*/
     onSubmit: (values) => {
       setConfirmShowModal(true);
     },
   });
+
+  // console.log(formik.values);
+  // console.log(formik.errors);
 
   useEffect(() => {
     if (formik.values["profileImage"]) {
@@ -134,9 +221,7 @@ const UpdateZoneLeaderForm = (props) => {
   }, [formik]);
 
   const handleErrorClick = () => {
-    // See if there are any errors
     const numErrors = Object.keys(formik.errors).length;
-    // see if the fields are empty
     let emptyField = false;
     for (let i = 0; i < valueKeys.length; i++) {
       if (formik.values[valueKeys[i]] === "") {
@@ -151,37 +236,99 @@ const UpdateZoneLeaderForm = (props) => {
 
   const handleSubmitDataFromModal = async () => {
     const data = new FormData();
+    const redundancyMap = {
+      name: "name",
+      lastName: "lastName",
+      documentType: "documentType",
+      documentId: "documentId",
+      address: "address",
+      leaderCode: "sellerCode",
+      superCode: "superCode",
+      email: "email",
+      cellphone: "cellphone",
+      endContractDate: "contractExpires",
+      contract: "contractImage",
+      frontID: "documentImage",
+      rut: "rutImage",
+      isLeader: "isLeader",
+      profileImage: "imageUrl",
+      bankData: "bankCertification",
+    };
+    for (const key in formik.touched) {
+      if (
+        formik.initialValues[key] !== formik.values[key] &&
+        key !== "zone" &&
+        key !== "superCode"
+      ) {
+        console.log(redundancyMap[key]);
+        data.append(redundancyMap[key], formik.values[key]);
+      }
+    }
+    // console.log(formik.touched);
+    /*
     data.append("name", formik.values["name"]);
-    data.append("last_name", formik.values["lastName"]);
+    data.append("lastName", formik.values["lastName"]);
+    data.append("documentType", formik.values["documentType"]);
     data.append("documentId", formik.values["documentId"]);
     data.append("address", formik.values["address"]);
-    data.append("leader_code", formik.values["leaderCode"]);
-    data.append("email", formik.values["email"]);
-    data.append("cellphone", formik.values["cellphone"]);
-    data.append("zone_id", zoneKeys[formik.values["zone"]]);
-    data.append("endContractDate", formik.values["endContractDate"]);
-    data.append("contractDocument", formik.values["contract"]);
-    data.append("documentPhoto", formik.values["frontID"]);
-    data.append("rutDocument", formik.values["rut"]);
-    data.append("profileImage", formik.values["profileImage"]);
+    data.append("sellerCode", formik.values["leaderCode"]);
+    */
+    if (!formik.values["isLeader"]) {
+      for (const key in leadersKeys) {
+        if (leadersKeys[key] === formik.values["superCode"]) {
+          data.append("leaderId", key);
+        }
+      }
+    }
+    for (const key in zoneKeys) {
+      if (zoneKeys[key] === formik.values["zone"]) {
+        data.append("zoneId", key);
+      }
+    }
+    /*
+    data.append("contractExpires", formik.values["endContractDate"]);
+    data.append("contractImage", formik.values["contract"]);
+    data.append("documentImage", formik.values["frontID"]);
+    data.append("rutImage", formik.values["rut"]);
+    data.append("imageUrl", formik.values["profileImage"]);
     data.append("bankCertification", formik.values["bankData"]);
-
+    */
     setConfirmShowModal(false);
     setIsLoading(true);
 
     try {
-      const { message, correct } = await updateLeader(
-        parseInt(props.leaderId),
-        data
-      );
-      console.log(formik.values);
-      console.log(message);
+      let message = "";
+      let correct = false;
 
+      if (formik.values["isLeader"]) {
+        const res = await putLeader({ sellerData: data, id: leaderId });
+        message = res.message;
+        correct = res.correct;
+      }
+      if (!formik.values["isLeader"]) {
+        const res = await putSeller({ sellerData: data, id: leaderId });
+        message = res.message;
+        correct = res.correct;
+      }
+      // let { message, correct } = await postLeader(data);
+
+      console.log(message);
       setServerMessage(message);
 
       if (correct) {
-        setModalImage(confirmationImage);
+        /*
+        formik.resetForm();
+        formik.values = defaultInitialValues;
+        */
         setIsLoading(false);
+        /*
+        profileImageRef.current.value = "";
+        frontIdRef.current.value = "";
+        rutRef.current.value = "";
+        bankDataRef.current.value = "";
+        contractRef.current.value = "";
+      */
+        setModalImage(confirmationImage);
         setShowCreatingLeaderMessage(true);
         return;
       }
@@ -190,28 +337,29 @@ const UpdateZoneLeaderForm = (props) => {
     } catch (error) {
       console.log(error);
       setModalImage(errorImage);
-      setServerMessage("Actualización fallida. Intente nuevamente.");
+      setServerMessage("Creación fallida. Intente nuevamente.");
     }
 
     setIsLoading(false);
     setShowCreatingLeaderMessage(true);
   };
 
-  if (isLoading) {
+  if (isLoading || !isLoaded) {
     return <div className={zoneLeaderStyles["loading-div"]} />;
   }
 
   return (
-    <form onSubmit={formik.handleSubmit} className={zoneLeaderStyles["form"]}>
+    <form onSubmit={formik.handleSubmit}>
       <div className={zoneLeaderStyles["col-wrap"]}>
         <div className={zoneLeaderStyles["col-left"]}>
+          {/** */}
           <ProfileImageInput
-            edit
             src={profileImageSource}
             parentRef={profileImageRef}
-            labelKey="Foto líder de zona"
+            labelKey="Foto asesor"
             formHook={formik}
           />
+          {/**/}
           <br />
           {leftFields.map((field) => {
             if (typeKeys[field] === "select") {
@@ -225,6 +373,16 @@ const UpdateZoneLeaderForm = (props) => {
                 />
               );
             }
+            if (typeKeys[field] === "address") {
+              return (
+                <AddressInput
+                  key={field}
+                  fieldName={field}
+                  formHook={formik}
+                  labelKey={labelKeys[field]}
+                />
+              );
+            }
             return (
               <FieldInput
                 key={field}
@@ -235,18 +393,33 @@ const UpdateZoneLeaderForm = (props) => {
               />
             );
           })}
-          <div className={zoneLeaderStyles["map-container"]}>
-            <LeaderZoneMap
-              googleMapURL={GoogleMapsAPI}
-              loadingElement={<div style={{ height: `100%` }} />}
-              containerElement={<div style={{ height: `100%` }} />}
-              mapElement={<div style={{ height: `100%` }} />}
-              markerCoords={zoneMarkerCoords}
-              setCoords={setZoneMarkerCoords}
-            />
-          </div>
+          {
+            /**/
+            <div className={zoneLeaderStyles["map-container"]}>
+              <LeaderZoneMap
+                isLoaded={isLoaded}
+                loadError={loadError}
+                mapContainerStyle={{ height: `100%` }}
+                markerCoords={zoneMarkerCoords}
+                setCoords={setZoneMarkerCoords}
+              />
+            </div>
+            /**/
+          }
         </div>
         <div className={zoneLeaderStyles["col-right"]}>
+          {!formik.values["isLeader"] && (
+            <SelectInput
+              key={"superCode"}
+              fieldName={"superCode"}
+              formHook={formik}
+              labelKey={"Líder asociado"}
+              optionVals={[
+                "--Seleccione un líder de zona--",
+                ...Object.values(leadersKeys),
+              ]}
+            />
+          )}
           {rightFields.map((field) => {
             if (typeKeys[field] === "select") {
               return (
@@ -256,6 +429,16 @@ const UpdateZoneLeaderForm = (props) => {
                   formHook={formik}
                   labelKey={labelKeys[field]}
                   optionVals={selectValues[field]}
+                />
+              );
+            }
+            if (typeKeys[field] === "address") {
+              return (
+                <AddressInput
+                  key={field}
+                  fieldName={field}
+                  formHook={formik}
+                  labelKey={labelKeys[field]}
                 />
               );
             }
@@ -270,58 +453,66 @@ const UpdateZoneLeaderForm = (props) => {
             );
           })}
 
-          <h2
-            className={zoneLeaderStyles["h2"]}
-            style={{ paddingLeft: "0.8ch" }}
-          >
-            {" "}
-            Documentos{" "}
-          </h2>
+          <h2 className={zoneLeaderStyles["h2"]}> Documentos </h2>
 
-          <h3 className={zoneLeaderStyles["h3"]}> Documento de identidad </h3>
+          {/**/}
+
           <FileInput
-            edit
             fieldName="frontID"
             formHook={formik}
             parentRef={frontIdRef}
-            labelKey="Ingrese PDF"
-            accept=".pdf, image/*"
+            labelKey={
+              formik.values["frontID"]
+                ? `${formik.values["frontID"].name}`
+                : "Ingrese PDF"
+            }
+            headName="Documento de identidad"
+            accept=".pdf"
           />
 
-          <h3 className={zoneLeaderStyles["h3"]}> RUT </h3>
           <FileInput
-            edit
             fieldName="rut"
             formHook={formik}
             parentRef={rutRef}
-            labelKey="Ingrese PDF o Word"
-            accept=".pdf, .doc, .docx"
+            labelKey={
+              formik.values["rut"]
+                ? `${formik.values["rut"].name}`
+                : "Ingrese PDF"
+            }
+            headName="RUT"
+            accept=".pdf"
           />
 
-          <h3 className={zoneLeaderStyles["h3"]}> Certificación bancaria </h3>
           <FileInput
-            edit
             fieldName="bankData"
             formHook={formik}
             parentRef={bankDataRef}
-            labelKey="Ingrese PDF o Word"
-            accept=".pdf, .doc, .docx"
+            labelKey={
+              formik.values["bankData"]
+                ? `${formik.values["bankData"].name}`
+                : "Ingrese PDF"
+            }
+            headName="Certificación bancaria"
+            accept=".pdf"
           />
 
-          <h3 className={zoneLeaderStyles["h3"]}> Contrato </h3>
           <FileInput
-            edit
             fieldName="contract"
             formHook={formik}
             parentRef={contractRef}
-            labelKey="Ingrese PDF o Word"
-            accept=".pdf, .doc, .docx"
+            labelKey={
+              formik.values["contract"]
+                ? `${formik.values["contract"].name}`
+                : "Ingrese PDF"
+            }
+            headName="Contrato"
+            accept=".pdf"
           />
+          {/**/}
         </div>
       </div>
       <div
         style={{
-          width: "100%",
           textAlign: "center",
         }}
       >
@@ -342,7 +533,7 @@ const UpdateZoneLeaderForm = (props) => {
         className={zoneLeaderStyles["Modal"]}
         overlayClassName={zoneLeaderStyles["Overlay"]}
       >
-        <p align="center">Confirme actualización de líder</p>
+        <p align="center">Confirme actualización de asesor</p>
         <div style={{ textAlign: "center" }}>
           <button
             onClick={handleSubmitDataFromModal}

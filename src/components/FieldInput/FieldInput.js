@@ -11,6 +11,7 @@ const FieldInput = (props) => {
           className={fieldInputStyles["checkbox"]}
           id={fieldName}
           name={fieldName}
+          checked={formHook.values[fieldName]}
           type={typeKey}
           onChange={formHook.handleChange}
           onBlur={formHook.handleBlur}

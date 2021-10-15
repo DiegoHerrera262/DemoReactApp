@@ -181,7 +181,7 @@ const ClientForm = (props) => {
         )
         .required("Campo requerido"),
       storeName: Yup.string()
-        .matches(/^[a-zA-ZÁÉÍÓÚáéíóúñ\s]{2,40}$/, "Ingrese un nombre válido")
+        .matches(/^[a-zA-ZÁÉÍÓÚáéíóúñ0-9\s]{2,40}$/, "Ingrese un nombre válido")
         .required("Campo requerido"),
       locality: Yup.string()
         .matches(
